@@ -3,21 +3,20 @@
 import dynamic from 'next/dynamic'
 import { useEffect, useState } from 'react'
 import { HUD, SideNav, ActionBar } from '@/components/ui/HUD'
-import { Minimap } from '@/components/map/MapComponent'
 import { PlayersPanel, ChatPanel, GameInfoPanel } from '@/components/ui/GamePanels'
 import useSocket from '@/hooks/useSocket'
 import { useUIStore } from '@/stores/uiStore'
 
-// Dynamic import for Three.js to avoid SSR issues
-const MapComponent = dynamic(
-    () => import('@/components/map/MapComponent').then(mod => mod.MapComponent),
+// Dynamic import for 2D Map
+const MapComponent2D = dynamic(
+    () => import('@/components/map/MapComponent2D'),
     {
         ssr: false,
         loading: () => (
             <div className="w-full h-full bg-zinc-950 flex items-center justify-center">
                 <div className="text-center">
-                    <div className="text-4xl mb-4 animate-pulse">🎖️</div>
-                    <div className="text-zinc-400">Loading map...</div>
+                    <div className="text-4xl mb-4 animate-pulse">🗺️</div>
+                    <div className="text-zinc-400">Cargando mapa...</div>
                 </div>
             </div>
         ),
@@ -81,12 +80,7 @@ export default function GamePage() {
             <div className="absolute inset-0 pt-14 pl-16 flex">
                 {/* Map Area */}
                 <main className={`flex-1 relative transition-all duration-300 ${showRightPanel ? 'mr-80' : 'mr-0'}`}>
-                    <MapComponent />
-
-                    {/* Minimap */}
-                    <div className="absolute bottom-20 right-4">
-                        <Minimap />
-                    </div>
+                    <MapComponent2D />
                 </main>
 
                 {/* Right Panel - Players & Chat */}
