@@ -4,6 +4,7 @@ import { useState, useEffect, useMemo, useCallback } from 'react'
 import { useGameStore, Province, Army } from '@/stores/gameStore'
 import { useUIStore } from '@/stores/uiStore'
 import { usePlayerStore } from '@/stores/playerStore'
+import useSocket from '@/hooks/useSocket'
 
 // ============================================
 // 2D HEX MAP COMPONENT
@@ -108,6 +109,7 @@ export function MapComponent2D() {
     const { provinces, playerId, mapSeed, setProvinces, pendingMapUpdates, armies } = useGameStore()
     const { selectedProvinceId, selectProvince, hoveredProvinceId, setHoveredProvince, selectedArmyId, selectArmy } = useUIStore()
     const { color: playerColor } = usePlayerStore()
+    const { moveArmy } = useSocket()
 
     // Seeded Random Helper (Mulberry32)
     const mulberry32 = useCallback((a: number) => {
@@ -180,16 +182,17 @@ export function MapComponent2D() {
 
     // Handle province click
     const handleProvinceClick = useCallback((provinceId: string) => {
-        // If we have a selected army and click on a different province, try to move
+        // If we have a selected army and click on a different province, move it
         if (selectedArmyId) {
             const selectedArmy = armies.find(a => a.id === selectedArmyId)
             if (selectedArmy && selectedArmy.currentProvinceId !== provinceId) {
-                // TODO: Emit move command
-                console.log(`🚶 Move army ${selectedArmyId} to ${provinceId}`)
+                console.log(`🚶 Moving army ${selectedArmyId} to ${provinceId}`)
+                moveArmy(selectedArmyId, provinceId)
+                selectArmy(null) // Deselect army after move
             }
         }
         selectProvince(provinceId)
-    }, [selectedArmyId, armies, selectProvince])
+    }, [selectedArmyId, armies, selectProvince, moveArmy, selectArmy])
 
     // Handle army click
     const handleArmyClick = useCallback((e: React.MouseEvent, armyId: string) => {

@@ -200,19 +200,87 @@ io.on('connection', (socket) => {
         console.log(`💬 ${playerInfo.username}: ${data.message}`)
     })
 
-    // Army movement - Placeholder for now
+    // Army movement with conquest
     socket.on('army:move', (data) => {
         const playerInfo = connectedPlayers.get(socket.id)
         if (!playerInfo) return
 
-        console.log(`🚶 Army move: ${data.armyId} -> ${data.destinationProvinceId}`)
+        const room = gameRooms.get(playerInfo.gameId)
+        if (!room) return
 
-        // Broadcast movement to all players
+        const army = room.armies.get(data.armyId)
+        if (!army) {
+            console.log(`❌ Army not found: ${data.armyId}`)
+            return
+        }
+
+        // Verify ownership
+        if (army.playerId !== playerInfo.playerId) {
+            console.log(`❌ Not owner of army ${data.armyId}`)
+            return
+        }
+
+        const destProvinceId = data.destinationProvinceId
+        const destProvince = room.provinces.get(destProvinceId)
+        const player = room.players.get(playerInfo.playerId)
+
+        console.log(`🚶 ${playerInfo.username} moving army to ${destProvinceId}`)
+
+        // Update army position
+        army.currentProvinceId = destProvinceId
+        army.isMoving = false
+
+        // Check province ownership
+        if (!destProvince || !destProvince.ownerId) {
+            // Neutral province - AUTO CAPTURE
+            const newProvince = {
+                id: destProvinceId,
+                ownerId: playerInfo.playerId,
+                ownerColor: player?.color || army.playerColor
+            }
+            room.provinces.set(destProvinceId, newProvince)
+
+            console.log(`🚩 Province ${destProvinceId} captured by ${playerInfo.username}`)
+
+            // Broadcast capture
+            io.to(playerInfo.gameId).emit('province:captured', {
+                provinceId: destProvinceId,
+                newOwnerId: playerInfo.playerId,
+                newOwnerColor: player?.color || army.playerColor
+            })
+        } else if (destProvince.ownerId !== playerInfo.playerId) {
+            // Enemy province - COMBAT (simplified)
+            console.log(`⚔️ Battle at ${destProvinceId}!`)
+
+            // Simple combat: attacker wins if they have an army
+            // TODO: Implement proper combat system
+            const newProvince = {
+                id: destProvinceId,
+                ownerId: playerInfo.playerId,
+                ownerColor: player?.color || army.playerColor
+            }
+            room.provinces.set(destProvinceId, newProvince)
+
+            io.to(playerInfo.gameId).emit('battle:result', {
+                provinceId: destProvinceId,
+                winner: playerInfo.playerId,
+                winnerName: playerInfo.username
+            })
+
+            io.to(playerInfo.gameId).emit('province:captured', {
+                provinceId: destProvinceId,
+                newOwnerId: playerInfo.playerId,
+                newOwnerColor: player?.color || army.playerColor
+            })
+        }
+        // else: own province - just moving
+
+        // Broadcast army movement
         io.to(playerInfo.gameId).emit('army:moved', {
             armyId: data.armyId,
             playerId: playerInfo.playerId,
-            destinationProvinceId: data.destinationProvinceId,
-            isMoving: true
+            fromProvinceId: data.fromProvinceId,
+            destinationProvinceId: destProvinceId
         })
     })
 
