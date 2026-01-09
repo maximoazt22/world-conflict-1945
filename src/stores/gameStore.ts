@@ -97,6 +97,8 @@ interface GameState {
 
   // Map Data
   provinces: Province[]
+  mapSeed: number | null
+  pendingMapUpdates: Partial<Province>[]
 
   // Player Data
   playerId: string | null
@@ -126,6 +128,8 @@ interface GameState {
   setCurrentTick: (tick: number) => void
   setProvinces: (provinces: Province[]) => void
   updateProvince: (provinceId: string, data: Partial<Province>) => void
+  setMapSeed: (seed: number) => void
+  setPendingMapUpdates: (updates: Partial<Province>[]) => void
   setArmies: (armies: Army[]) => void
   addArmy: (army: Army) => void
   updateArmy: (armyId: string, data: Partial<Army>) => void
@@ -155,6 +159,8 @@ export const useGameStore = create<GameState>((set, get) => ({
   currentTick: 0,
   players: [], // Initial empty players
   provinces: [],
+  mapSeed: null,
+  pendingMapUpdates: [],
   playerId: null,
   playerNation: null,
   playerColor: null,
@@ -212,6 +218,10 @@ export const useGameStore = create<GameState>((set, get) => ({
     )
   })),
 
+  setMapSeed: (seed) => set({ mapSeed: seed }),
+
+  setPendingMapUpdates: (updates) => set({ pendingMapUpdates: updates }),
+
   setArmies: (armies) => set({ armies }),
 
   addArmy: (army) => set((state) => ({
@@ -256,6 +266,8 @@ export const useGameStore = create<GameState>((set, get) => ({
     gameStatus: null,
     currentTick: 0,
     provinces: [],
+    mapSeed: null,
+    pendingMapUpdates: [],
     playerId: null,
     playerNation: null,
     playerColor: null,

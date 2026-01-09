@@ -20,7 +20,10 @@ export function useSocket() {
         updatePlayerStatus,
         updateResources,
         setCurrentTick,
+        setProvinces,
         updateProvince,
+        setMapSeed,
+        setPendingMapUpdates,
         addBattle,
         updateBattle,
     } = useGameStore()
@@ -87,6 +90,16 @@ export function useSocket() {
             if (data.resources) {
                 updateResources(data.resources)
             }
+
+            // Sync Map
+            if (data.mapSeed) {
+                setMapSeed(data.mapSeed)
+            }
+            if (data.provinces) {
+                // IMPORTANT: Since these provinces from server only have ownerId data (not geometry),
+                // we treat them as "updates" to be applied after local map generation.
+                setPendingMapUpdates(data.provinces)
+            }
         })
 
         socket.on('player:joined', (player) => {
@@ -113,6 +126,7 @@ export function useSocket() {
         socket.on('province:captured', (data) => {
             updateProvince(data.provinceId, {
                 ownerId: data.newOwnerId,
+                ownerColor: data.newOwnerColor
             })
         })
 
@@ -156,7 +170,7 @@ export function useSocket() {
             socket?.off('battle:ended')
             socket?.off('chat:message')
         }
-    }, [setGameInfo, updateResources, setCurrentTick, updateProvince, addBattle, updateBattle, setConnectionStatus, updatePing])
+    }, [setGameInfo, updateResources, setCurrentTick, updateProvince, addBattle, updateBattle, setConnectionStatus, updatePing, setMapSeed, setPendingMapUpdates])
 
     // Actions
     const joinGame = useCallback((gameId: string, playerId: string, username: string, nation: string, color: string) => {

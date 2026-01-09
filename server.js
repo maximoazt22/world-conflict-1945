@@ -72,7 +72,9 @@ io.on('connection', (socket) => {
                 name: gameId,
                 players: new Map(),
                 tick: 0,
-                status: 'PLAYING'
+                status: 'PLAYING',
+                mapSeed: Math.floor(Math.random() * 1000000), // Random seed for map generation
+                provinces: new Map() // Track province ownership
             }
             gameRooms.set(gameId, room)
         }
@@ -103,6 +105,8 @@ io.on('connection', (socket) => {
             nation: player.nation,
             color: player.color,
             resources: player.resources,
+            mapSeed: room.mapSeed, // Send seed to client
+            provinces: Array.from(room.provinces.values()), // Send current province state
             currentPlayers: room.players.size,
             players: Array.from(room.players.values()).map(p => ({
                 id: p.id,
@@ -156,7 +160,7 @@ io.on('connection', (socket) => {
         console.log(`💬 ${playerInfo.username}: ${data.message}`)
     })
 
-    // Army movement
+    // Army movement - Placeholder for now
     socket.on('army:move', (data) => {
         const playerInfo = connectedPlayers.get(socket.id)
         if (!playerInfo) return
@@ -169,6 +173,31 @@ io.on('connection', (socket) => {
             playerId: playerInfo.playerId,
             destinationProvinceId: data.destinationProvinceId,
             isMoving: true
+        })
+    })
+
+    // Capture province (Simple version for MVP)
+    socket.on('province:capture', (data) => {
+        const playerInfo = connectedPlayers.get(socket.id)
+        if (!playerInfo) return
+
+        const room = gameRooms.get(playerInfo.gameId)
+        if (!room) return
+
+        // Update server state
+        room.provinces.set(data.provinceId, {
+            id: data.provinceId,
+            ownerId: playerInfo.playerId,
+            ownerColor: data.color // Or get from player
+        })
+
+        console.log(`🚩 Province ${data.provinceId} captured by ${playerInfo.username}`)
+
+        // Broadcast update
+        io.to(playerInfo.gameId).emit('province:captured', {
+            provinceId: data.provinceId,
+            newOwnerId: playerInfo.playerId,
+            newOwnerColor: data.color
         })
     })
 

@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef, useMemo, useState } from 'react'
+import { useRef, useMemo, useState, useEffect } from 'react'
 import { Canvas, useFrame, useThree, ThreeEvent } from '@react-three/fiber'
 import { OrbitControls, Text, Html } from '@react-three/drei'
 import * as THREE from 'three'
@@ -119,43 +119,77 @@ function ProvinceMesh({ province, isSelected, isHovered, isOwned, onClick, onHov
 // ============================================
 
 function MapScene() {
-    const { provinces, playerId } = useGameStore()
+    const { provinces, playerId, mapSeed, setProvinces, pendingMapUpdates } = useGameStore()
     const { selectedProvinceId, selectProvince, hoveredProvinceId, setHoveredProvince } = useUIStore()
     const { color: playerColor } = usePlayerStore()
 
-    // Generate demo provinces if none exist
-    const displayProvinces = useMemo(() => {
-        if (provinces.length > 0) return provinces
-
-        // Generate demo grid
-        const demo: Province[] = []
-        const gridSize = 8
-        for (let x = 0; x < gridSize; x++) {
-            for (let y = 0; y < gridSize; y++) {
-                // Offset every other row for hex pattern
-                const offsetX = y % 2 === 0 ? 0 : 0.9
-                demo.push({
-                    id: `demo-${x}-${y}`,
-                    name: `Province ${x}-${y}`,
-                    coordX: x * 1.8 + offsetX - gridSize,
-                    coordY: y * 1.5 - gridSize,
-                    coordZ: 0,
-                    ownerId: Math.random() > 0.7 ? 'player' : Math.random() > 0.5 ? 'enemy' : null,
-                    ownerName: Math.random() > 0.7 ? 'You' : Math.random() > 0.5 ? 'Enemy' : undefined,
-                    ownerColor: Math.random() > 0.7 ? '#4A5D4F' : Math.random() > 0.5 ? '#8B0000' : undefined,
-                    goldBonus: Math.random() * 10,
-                    ironBonus: Math.random() * 5,
-                    oilBonus: Math.random() * 3,
-                    foodBonus: Math.random() * 8,
-                    defenseBonus: Math.random() * 20,
-                    terrain: 'PLAINS',
-                    buildings: Math.random() > 0.7 ? [{ id: '1', type: 'BARRACKS', level: 1, isComplete: true }] : [],
-                    units: Math.random() > 0.8 ? [{ id: '1', type: 'INFANTRY', quantity: 10, strength: 5, morale: 100 }] : [],
-                })
-            }
+    // Seeded Random Helper (Mulberry32)
+    const mulberry32 = (a: number) => {
+        return function () {
+            var t = a += 0x6D2B79F5;
+            t = Math.imul(t ^ t >>> 15, t | 1);
+            t ^= t + Math.imul(t ^ t >>> 7, t | 61);
+            return ((t ^ t >>> 14) >>> 0) / 4294967296;
         }
-        return demo
-    }, [provinces])
+    }
+
+    // Generate provinces if none exist AND we have a seed
+    useEffect(() => {
+        if (provinces.length === 0 && mapSeed !== null) {
+            console.log("Generating map with seed:", mapSeed);
+            const random = mulberry32(mapSeed);
+
+            const demo: Province[] = []
+            const gridSize = 10 // Increased size for better map
+
+            for (let x = 0; x < gridSize; x++) {
+                for (let y = 0; y < gridSize; y++) {
+                    // Offset every other row for hex pattern
+                    const offsetX = y % 2 === 0 ? 0 : 0.9
+                    const terrainType = random() > 0.8 ? 'MOUNTAINS' : random() > 0.6 ? 'FOREST' : 'PLAINS'
+
+                    // Create base province
+                    const province: Province = {
+                        id: `${x}-${y}`,
+                        name: `Provincia ${x}-${y}`,
+                        coordX: x * 1.8 + offsetX - gridSize + 2,
+                        coordY: y * 1.5 - gridSize + 2,
+                        coordZ: 0,
+                        ownerId: null, // Default neutral
+                        ownerName: undefined,
+                        ownerColor: undefined,
+                        goldBonus: Math.floor(random() * 10) + 5,
+                        ironBonus: Math.floor(random() * 5) + 1,
+                        oilBonus: Math.floor(random() * 3),
+                        foodBonus: Math.floor(random() * 8) + 2,
+                        defenseBonus: terrainType === 'MOUNTAINS' ? 50 : terrainType === 'FOREST' ? 25 : 0,
+                        terrain: terrainType,
+                        buildings: [],
+                        units: [],
+                    }
+
+                    demo.push(province)
+                }
+            }
+
+            // Apply any pending updates from server (e.g. captured provinces)
+            if (pendingMapUpdates.length > 0) {
+                console.log("Applying pending map updates:", pendingMapUpdates.length);
+                pendingMapUpdates.forEach(update => {
+                    const target = demo.find(p => p.id === update.id);
+                    if (target) {
+                        if (update.ownerId !== undefined) target.ownerId = update.ownerId;
+                        if (update.ownerColor !== undefined) target.ownerColor = update.ownerColor;
+                    }
+                });
+            }
+
+            setProvinces(demo)
+        }
+    }, [mapSeed, provinces.length, setProvinces, pendingMapUpdates])
+
+    // Memoize provinces for rendering
+    const displayProvinces = useMemo(() => provinces, [provinces]);
 
     return (
         <>
