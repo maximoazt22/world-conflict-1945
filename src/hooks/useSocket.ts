@@ -233,6 +233,10 @@ export function useSocket() {
         socket?.emit('chat:send', { message, type })
     }, [])
 
+    const recruitUnit = useCallback((provinceId: string, unitType: string, quantity: number) => {
+        socket?.emit('army:recruit', { provinceId, unitType, quantity })
+    }, [])
+
     return {
         socket,
         isConnected,
@@ -241,6 +245,7 @@ export function useSocket() {
         leaveGame,
         moveArmy,
         attackProvince,
+        recruitUnit,
         sendChat,
     }
 }

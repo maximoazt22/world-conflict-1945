@@ -40,6 +40,11 @@ const TICK_RATE = 1000 // 1 second
 const RESOURCE_RATE = { gold: 10, iron: 5, oil: 2, food: 8 }
 const VICTORY_THRESHOLD = 30 // Provinces needed to win
 
+const UNIT_COSTS = {
+    infantry: { gold: 50, iron: 0, oil: 0, food: 20, strength: 1 },
+    tank: { gold: 150, iron: 100, oil: 20, food: 50, strength: 5 }
+}
+
 // Default game room
 const DEFAULT_GAME = 'world-war-1945'
 gameRooms.set(DEFAULT_GAME, {
@@ -224,6 +229,97 @@ io.on('connection', (socket) => {
         }
 
         console.log(`💬 ${playerInfo.username}: ${data.message}`)
+    })
+
+    // Unit Recruitment
+    socket.on('army:recruit', (data) => {
+        const playerInfo = connectedPlayers.get(socket.id)
+        if (!playerInfo) return
+
+        const room = gameRooms.get(playerInfo.gameId)
+        if (!room) return
+
+        const { provinceId, unitType, quantity } = data
+        const cost = UNIT_COSTS[unitType]
+
+        if (!cost || quantity < 1) return
+
+        const player = room.players.get(playerInfo.playerId)
+        if (!player) return
+
+        // Check ownership
+        const province = room.provinces.get(provinceId)
+        if (!province || province.ownerId !== playerInfo.playerId) {
+            console.log(`❌ Cannot recruit in province ${provinceId} (not owned)`)
+            return
+        }
+
+        // Check resources
+        const totalCost = {
+            gold: cost.gold * quantity,
+            iron: cost.iron * quantity,
+            oil: cost.oil * quantity,
+            food: cost.food * quantity
+        }
+
+        if (player.resources.gold < totalCost.gold ||
+            player.resources.iron < totalCost.iron ||
+            player.resources.oil < totalCost.oil ||
+            player.resources.food < totalCost.food) {
+            socket.emit('error', { message: 'Not enough resources' })
+            return
+        }
+
+        // Deduct resources
+        player.resources.gold -= totalCost.gold
+        player.resources.iron -= totalCost.iron
+        player.resources.oil -= totalCost.oil
+        player.resources.food -= totalCost.food
+
+        // Find existing army in province or create new
+        let army = null
+        room.armies.forEach(a => {
+            if (a.playerId === playerInfo.playerId && a.currentProvinceId === provinceId) {
+                army = a
+            }
+        })
+
+        if (army) {
+            // Add to existing army
+            const unit = army.units.find(u => u.type === unitType)
+            if (unit) {
+                unit.quantity += quantity
+            } else {
+                army.units.push({ type: unitType, quantity, strength: cost.strength })
+            }
+            // Notify update (using same event as spawn/move to refresh)
+            io.to(playerInfo.gameId).emit('army:moved', {
+                armyId: army.id,
+                destinationProvinceId: provinceId,
+                units: army.units
+            })
+        } else {
+            // Create new army
+            army = {
+                id: `army_${Date.now()}_${Math.random().toString(36).substr(2, 5)}`,
+                playerId: playerInfo.playerId,
+                playerColor: player.color, // Ensure color comes from player
+                currentProvinceId: provinceId,
+                units: [{ type: unitType, quantity, strength: cost.strength }],
+                isMoving: false,
+                name: `${playerInfo.username} ${unitType} Div`
+            }
+            room.armies.set(army.id, army)
+            io.to(playerInfo.gameId).emit('army:spawned', army)
+        }
+
+        // Send updated resources
+        socket.emit('player:resources', {
+            resources: player.resources,
+            income: { gold: 0, iron: 0, oil: 0, food: 0 } // Income logic handles the real rate
+        })
+
+        console.log(`🏭 ${playerInfo.username} recruited ${quantity} ${unitType} in ${provinceId}`)
     })
 
     // Army movement with conquest

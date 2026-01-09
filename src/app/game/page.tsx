@@ -6,6 +6,7 @@ import { HUD, SideNav, ActionBar } from '@/components/ui/HUD'
 import { PlayersPanel, ChatPanel, GameInfoPanel } from '@/components/ui/GamePanels'
 import useSocket from '@/hooks/useSocket'
 import { useUIStore } from '@/stores/uiStore'
+import { usePlayerStore } from '@/stores/playerStore'
 
 // Dynamic import for 2D Map
 const MapComponent2D = dynamic(
@@ -27,6 +28,7 @@ export default function GamePage() {
     const { isConnected, latency, joinGame } = useSocket()
     const [showRightPanel, setShowRightPanel] = useState(true)
     const { activePanel } = useUIStore()
+    const { setPlayer } = usePlayerStore()
 
     // Auto-join demo game when connected
     useEffect(() => {
@@ -37,6 +39,15 @@ export default function GamePage() {
             const color = localStorage.getItem('color') || '#4169E1'
 
             if (userId && username) {
+                // Initialize player store
+                setPlayer({
+                    playerId: userId,
+                    username,
+                    nation,
+                    color,
+                    isOnline: true
+                })
+
                 joinGame(
                     'demo-game-1',
                     userId,
@@ -55,6 +66,16 @@ export default function GamePage() {
                 localStorage.setItem('username', guestName)
                 localStorage.setItem('nation', 'Guest')
                 localStorage.setItem('color', randomColor)
+
+                // Initialize guest in player store
+                setPlayer({
+                    playerId: guestId,
+                    username: guestName,
+                    nation: 'Guest',
+                    color: randomColor,
+                    isOnline: true
+                })
+
                 joinGame(
                     'demo-game-1',
                     guestId,
@@ -65,7 +86,7 @@ export default function GamePage() {
                 console.log('🎮 Joining as guest...')
             }
         }
-    }, [isConnected, joinGame])
+    }, [isConnected, joinGame, setPlayer])
 
     return (
         <div className="relative w-screen h-screen overflow-hidden bg-zinc-950">

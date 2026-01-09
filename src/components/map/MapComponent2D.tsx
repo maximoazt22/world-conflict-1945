@@ -106,10 +106,10 @@ function HexTile({ province, isSelected, isHovered, hasArmy, army, isArmySelecte
 // ============================================
 
 export function MapComponent2D() {
-    const { provinces, playerId, mapSeed, setProvinces, pendingMapUpdates, armies } = useGameStore()
+    const { provinces, mapSeed, setProvinces, pendingMapUpdates, armies } = useGameStore()
     const { selectedProvinceId, selectProvince, hoveredProvinceId, setHoveredProvince, selectedArmyId, selectArmy } = useUIStore()
-    const { color: playerColor } = usePlayerStore()
-    const { moveArmy } = useSocket()
+    const { color: playerColor, playerId } = usePlayerStore()
+    const { moveArmy, recruitUnit } = useSocket()
 
     // Seeded Random Helper (Mulberry32)
     const mulberry32 = useCallback((a: number) => {
@@ -277,6 +277,41 @@ export function MapComponent2D() {
                                         <div className="text-green-400">✅ Conquistada</div>
                                     ) : (
                                         <div className="text-zinc-500">⚪ Neutral</div>
+                                    )}
+
+                                    {/* Recruitment UI */}
+                                    {p.ownerId === playerId && (
+                                        <div className="mt-3 pt-3 border-t border-zinc-700">
+                                            <div className="text-xs font-bold mb-2 text-zinc-300">🎖️ Reclutar:</div>
+                                            <div className="grid grid-cols-1 gap-2">
+                                                <button
+                                                    onClick={() => recruitUnit(p.id, 'infantry', 1)}
+                                                    className="flex items-center justify-between bg-zinc-800 hover:bg-zinc-700 hover:border-amber-500 p-2 rounded border border-zinc-600 transition-all group"
+                                                >
+                                                    <div className="flex items-center gap-2">
+                                                        <span className="text-lg">🛡️</span>
+                                                        <span className="font-semibold text-zinc-200">Infantería</span>
+                                                    </div>
+                                                    <div className="text-[10px] text-zinc-400 text-right">
+                                                        <div className="text-amber-400 font-mono">50 💰</div>
+                                                        <div className="text-green-400 font-mono">20 🌾</div>
+                                                    </div>
+                                                </button>
+                                                <button
+                                                    onClick={() => recruitUnit(p.id, 'tank', 1)}
+                                                    className="flex items-center justify-between bg-zinc-800 hover:bg-zinc-700 hover:border-amber-500 p-2 rounded border border-zinc-600 transition-all group"
+                                                >
+                                                    <div className="flex items-center gap-2">
+                                                        <span className="text-lg">🚜</span>
+                                                        <span className="font-semibold text-zinc-200">Tanque</span>
+                                                    </div>
+                                                    <div className="text-[10px] text-zinc-400 text-right">
+                                                        <div className="text-amber-400 font-mono">150 💰</div>
+                                                        <div className="text-zinc-400 font-mono">100 ⚙️</div>
+                                                    </div>
+                                                </button>
+                                            </div>
+                                        </div>
                                     )}
                                 </div>
                             </>
