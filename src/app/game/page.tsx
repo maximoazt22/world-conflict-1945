@@ -33,28 +33,34 @@ export default function GamePage() {
         if (isConnected) {
             const userId = localStorage.getItem('userId')
             const username = localStorage.getItem('username')
+            const nation = localStorage.getItem('nation') || 'USA'
+            const color = localStorage.getItem('color') || '#4169E1'
 
             if (userId && username) {
                 joinGame(
                     'demo-game-1',
                     userId,
                     username,
-                    'USA',
-                    '#4169E1'
+                    nation,
+                    color
                 )
-                console.log('🎮 Joining demo game...')
+                console.log(`🎮 Joining demo game as ${nation}...`)
             } else {
-                // If no login, create a guest session
+                // If no login, create a guest session with random nation
                 const guestId = `guest_${Date.now()}`
                 const guestName = `Guest${Math.floor(Math.random() * 1000)}`
+                const colors = ['#FF4444', '#44FF44', '#4444FF', '#FFFF44', '#FF44FF', '#44FFFF']
+                const randomColor = colors[Math.floor(Math.random() * colors.length)]
                 localStorage.setItem('userId', guestId)
                 localStorage.setItem('username', guestName)
+                localStorage.setItem('nation', 'Guest')
+                localStorage.setItem('color', randomColor)
                 joinGame(
                     'demo-game-1',
                     guestId,
                     guestName,
-                    'USA',
-                    '#4169E1'
+                    'Guest',
+                    randomColor
                 )
                 console.log('🎮 Joining as guest...')
             }
