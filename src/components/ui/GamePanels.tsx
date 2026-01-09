@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import useSocket from '@/hooks/useSocket'
+import { useGameStore } from '@/stores/gameStore'
 
 interface ChatMessage {
     id: string
@@ -22,17 +23,9 @@ interface ConnectedPlayer {
 
 export function PlayersPanel() {
     const { isConnected } = useSocket()
-    const [players, setPlayers] = useState<ConnectedPlayer[]>([])
+    const { players } = useGameStore()
 
-    // Listen for player updates (would connect to socket events)
-    useEffect(() => {
-        // Demo players for now
-        if (isConnected) {
-            setPlayers([
-                { id: 'demo_001', username: 'demo', nation: 'USA', color: '#4169E1', isOnline: true },
-            ])
-        }
-    }, [isConnected])
+    // Players are now synced via store, no mocks needed
 
     return (
         <div className="bg-zinc-800/90 border border-zinc-700 rounded-xl p-4 backdrop-blur-sm">
@@ -69,11 +62,12 @@ export function PlayersPanel() {
 
                 {players.length === 0 && (
                     <div className="text-sm text-zinc-500 text-center py-4">
-                        Esperando jugadores...
+                        {isConnected ? 'Esperando jugadores...' : 'Conectando...'}
                     </div>
                 )}
             </div>
 
+            {/* Invite button */}
             {isConnected && (
                 <div className="mt-3 pt-3 border-t border-zinc-700">
                     <button className="w-full py-2 bg-amber-500/20 text-amber-400 rounded-lg text-sm font-semibold hover:bg-amber-500/30 transition-colors">
@@ -85,6 +79,57 @@ export function PlayersPanel() {
     )
 }
 
+export function GameInfoPanel() {
+    const { isConnected, latency } = useSocket()
+    const { gameName, currentTick } = useGameStore()
+    const [wsUrl, setWsUrl] = useState('Desconocido')
+
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            const isProd = process.env.NODE_ENV === 'production'
+            setWsUrl(process.env.NEXT_PUBLIC_WS_URL || (isProd
+                ? 'wss://world-conflict-1945-production.up.railway.app'
+                : 'ws://localhost:3001'))
+        }
+    }, [])
+
+    return (
+        <div className="bg-zinc-800/90 border border-zinc-700 rounded-xl p-4 backdrop-blur-sm">
+            <h3 className="text-sm font-semibold text-zinc-400 mb-3 flex items-center gap-2">
+                <span>🎮</span>
+                <span>Info del Juego</span>
+            </h3>
+
+            <div className="space-y-2 text-sm">
+                <div className="flex justify-between">
+                    <span className="text-zinc-500">Estado:</span>
+                    <span className={isConnected ? 'text-green-400' : 'text-red-400'}>
+                        {isConnected ? '🟢 Conectado' : '🔴 Desconectado'}
+                    </span>
+                </div>
+                <div className="flex justify-between">
+                    <span className="text-zinc-500">Latencia:</span>
+                    <span className="text-zinc-100">{latency}ms</span>
+                </div>
+                <div className="flex justify-between">
+                    <span className="text-zinc-500">Partida:</span>
+                    <span className="text-zinc-100">{gameName || 'Cargando...'}</span>
+                </div>
+                <div className="flex justify-between">
+                    <span className="text-zinc-500">Turno:</span>
+                    <span className="text-zinc-100">{currentTick}</span>
+                </div>
+                <div className="flex justify-between">
+                    <span className="text-zinc-500">Servidor:</span>
+                    <span className="text-zinc-500 text-xs truncate max-w-[150px]" title={wsUrl}>
+                        {isConnected ? 'Railway Global' : 'Conectando...'}
+                    </span>
+                </div>
+            </div>
+        </div>
+    )
+}
+
 export function ChatPanel() {
     const { isConnected, sendChat } = useSocket()
     const [messages, setMessages] = useState<ChatMessage[]>([])
@@ -92,14 +137,11 @@ export function ChatPanel() {
     const [activeTab, setActiveTab] = useState<'global' | 'alliance'>('global')
     const messagesEndRef = useRef<HTMLDivElement>(null)
 
-    // Scroll to bottom on new messages
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
     }, [messages])
 
-    // Listen for incoming messages (from socket)
     useEffect(() => {
-        // Demo message
         if (isConnected && messages.length === 0) {
             setMessages([
                 {
@@ -126,26 +168,21 @@ export function ChatPanel() {
             type: activeTab,
         }
 
-        // Add locally
         setMessages((prev) => [...prev, newMessage])
-
-        // Send to server
         sendChat(inputText.trim(), activeTab)
-
         setInputText('')
     }
 
     return (
         <div className="bg-zinc-800/90 border border-zinc-700 rounded-xl backdrop-blur-sm flex flex-col h-80">
-            {/* Tabs */}
             <div className="flex border-b border-zinc-700">
                 {(['global', 'alliance'] as const).map((tab) => (
                     <button
                         key={tab}
                         onClick={() => setActiveTab(tab)}
                         className={`flex-1 py-2 text-sm font-medium transition-colors ${activeTab === tab
-                                ? 'text-amber-400 border-b-2 border-amber-400'
-                                : 'text-zinc-500 hover:text-zinc-300'
+                            ? 'text-amber-400 border-b-2 border-amber-400'
+                            : 'text-zinc-500 hover:text-zinc-300'
                             }`}
                     >
                         {tab === 'global' ? '🌍 Global' : '🤝 Alianza'}
@@ -153,7 +190,6 @@ export function ChatPanel() {
                 ))}
             </div>
 
-            {/* Messages */}
             <div className="flex-1 overflow-y-auto p-3 space-y-2">
                 {messages
                     .filter((m) => m.type === activeTab || m.type === 'global')
@@ -166,7 +202,6 @@ export function ChatPanel() {
                 <div ref={messagesEndRef} />
             </div>
 
-            {/* Input */}
             <div className="p-3 border-t border-zinc-700">
                 <div className="flex gap-2">
                     <input
@@ -185,40 +220,6 @@ export function ChatPanel() {
                     >
                         Enviar
                     </button>
-                </div>
-            </div>
-        </div>
-    )
-}
-
-export function GameInfoPanel() {
-    const { isConnected, latency } = useSocket()
-
-    return (
-        <div className="bg-zinc-800/90 border border-zinc-700 rounded-xl p-4 backdrop-blur-sm">
-            <h3 className="text-sm font-semibold text-zinc-400 mb-3 flex items-center gap-2">
-                <span>🎮</span>
-                <span>Info del Juego</span>
-            </h3>
-
-            <div className="space-y-2 text-sm">
-                <div className="flex justify-between">
-                    <span className="text-zinc-500">Estado:</span>
-                    <span className={isConnected ? 'text-green-400' : 'text-red-400'}>
-                        {isConnected ? '🟢 Conectado' : '🔴 Desconectado'}
-                    </span>
-                </div>
-                <div className="flex justify-between">
-                    <span className="text-zinc-500">Latencia:</span>
-                    <span className="text-zinc-100">{latency}ms</span>
-                </div>
-                <div className="flex justify-between">
-                    <span className="text-zinc-500">Partida:</span>
-                    <span className="text-zinc-100">demo-game-1</span>
-                </div>
-                <div className="flex justify-between">
-                    <span className="text-zinc-500">Servidor:</span>
-                    <span className="text-zinc-100">ws://localhost:3001</span>
                 </div>
             </div>
         </div>

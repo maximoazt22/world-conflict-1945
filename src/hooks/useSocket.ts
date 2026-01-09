@@ -14,6 +14,10 @@ export function useSocket() {
 
     const {
         setGameInfo,
+        setPlayers,
+        addPlayer,
+        removePlayer,
+        updatePlayerStatus,
         updateResources,
         setCurrentTick,
         updateProvince,
@@ -28,7 +32,12 @@ export function useSocket() {
 
     // Initialize socket connection
     useEffect(() => {
-        const wsUrl = process.env.NEXT_PUBLIC_WS_URL || 'http://localhost:3001'
+        // Force Railway URL in production
+        const isProd = process.env.NODE_ENV === 'production'
+        const railwayUrl = 'https://world-conflict-1945-production.up.railway.app'
+        const wsUrl = process.env.NEXT_PUBLIC_WS_URL || (isProd ? railwayUrl : 'http://localhost:3001')
+
+        console.log('🔌 Connecting to WebSocket:', wsUrl, 'isProd:', isProd)
 
         if (!socket) {
             socket = io(wsUrl, {
@@ -69,9 +78,28 @@ export function useSocket() {
                 maxPlayers: data.maxPlayers || 50,
                 currentPlayers: data.currentPlayers || 1,
             })
+
+            // Sync players
+            if (data.players) {
+                setPlayers(data.players)
+            }
+
             if (data.resources) {
                 updateResources(data.resources)
             }
+        })
+
+        socket.on('player:joined', (player) => {
+            console.log('👤 Player joined:', player.username)
+            addPlayer(player)
+            // Show notification
+            // toast.success(`${player.username} se unió a la partida`)
+        })
+
+        socket.on('player:left', (data) => {
+            console.log('👋 Player left:', data.playerId)
+            updatePlayerStatus(data.playerId, false)
+            // removePlayer(data.playerId) // Optional: remove or just mark offline
         })
 
         socket.on('game:tick', (data) => {

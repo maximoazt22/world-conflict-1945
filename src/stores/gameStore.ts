@@ -73,6 +73,14 @@ export interface Battle {
   winner: string | null
 }
 
+export interface Player {
+  id: string
+  username: string
+  nation: string
+  color: string
+  isOnline: boolean
+}
+
 // ============================================
 // GAME STORE
 // ============================================
@@ -83,6 +91,9 @@ interface GameState {
   gameName: string | null
   gameStatus: 'WAITING' | 'STARTING' | 'PLAYING' | 'PAUSED' | 'ENDED' | null
   currentTick: number
+
+  // Real-time Players
+  players: Player[]
 
   // Map Data
   provinces: Province[]
@@ -105,6 +116,10 @@ interface GameState {
   setGameId: (gameId: string) => void
   setGameInfo: (info: { id?: string; name?: string; status?: GameState['gameStatus']; maxPlayers?: number; currentPlayers?: number }) => void
   setPlayerInfo: (id: string, nation: string, color: string) => void
+  setPlayers: (players: Player[]) => void
+  addPlayer: (player: Player) => void
+  removePlayer: (playerId: string) => void
+  updatePlayerStatus: (playerId: string, isOnline: boolean) => void
   setResources: (resources: Resources) => void
   updateResources: (resources: Partial<Resources>) => void
   updateResource: (type: keyof Resources, amount: number) => void
@@ -132,17 +147,18 @@ const initialResources: Resources = {
   food: 750,
 }
 
-export const useGameStore = create<GameState>((set) => ({
+export const useGameStore = create<GameState>((set, get) => ({
   // Initial State
   gameId: null,
   gameName: null,
   gameStatus: null,
   currentTick: 0,
+  players: [], // Initial empty players
   provinces: [],
   playerId: null,
   playerNation: null,
   playerColor: null,
-  resources: initialResources,
+  resources: { gold: 0, iron: 0, oil: 0, food: 0 },
   armies: [],
   battles: [],
   activeBattleId: null,
@@ -151,18 +167,30 @@ export const useGameStore = create<GameState>((set) => ({
   // Actions
   setGameId: (gameId) => set({ gameId }),
 
-  setGameInfo: (info: { id?: string; name?: string; status?: GameState['gameStatus']; maxPlayers?: number; currentPlayers?: number }) =>
-    set({
-      gameId: info.id ?? null,
-      gameName: info.name ?? null,
-      gameStatus: info.status
-    }),
+  setGameInfo: (info) => set((state) => ({
+    gameId: info.id || state.gameId,
+    gameName: info.name || state.gameName,
+    gameStatus: info.status || state.gameStatus,
+  })),
 
   setPlayerInfo: (id, nation, color) => set({
     playerId: id,
     playerNation: nation,
     playerColor: color
   }),
+
+  setPlayers: (players) => set({ players }),
+  addPlayer: (player) => set((state) => {
+    // Avoid duplicates
+    if (state.players.find(p => p.id === player.id)) return state
+    return { players: [...state.players, player] }
+  }),
+  removePlayer: (playerId) => set((state) => ({
+    players: state.players.filter((p) => p.id !== playerId)
+  })),
+  updatePlayerStatus: (playerId, isOnline) => set((state) => ({
+    players: state.players.map((p) => p.id === playerId ? { ...p, isOnline } : p)
+  })),
 
   setResources: (resources) => set({ resources }),
 
