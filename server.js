@@ -344,7 +344,7 @@ function handlePlayerLeave(socket) {
     console.log(`👋 ${playerInfo.username} left the game`)
 }
 
-// Game tick loop - update resources for all players
+// Game tick loop - update resources for all players based on owned provinces
 setInterval(() => {
     gameRooms.forEach((room) => {
         if (room.status !== 'PLAYING') return
@@ -354,11 +354,28 @@ setInterval(() => {
         room.players.forEach((player) => {
             if (!player.isOnline) return
 
-            // Add resources
-            player.resources.gold += RESOURCE_RATE.gold
-            player.resources.iron += RESOURCE_RATE.iron
-            player.resources.oil += RESOURCE_RATE.oil
-            player.resources.food += RESOURCE_RATE.food
+            // Calculate income from owned provinces
+            let goldIncome = RESOURCE_RATE.gold // Base income
+            let ironIncome = RESOURCE_RATE.iron
+            let oilIncome = RESOURCE_RATE.oil
+            let foodIncome = RESOURCE_RATE.food
+
+            // Add bonuses from each owned province
+            room.provinces.forEach((province) => {
+                if (province.ownerId === player.id) {
+                    // Each province adds its bonus (simplified - use fixed values for now)
+                    goldIncome += 5
+                    ironIncome += 3
+                    oilIncome += 1
+                    foodIncome += 4
+                }
+            })
+
+            // Apply income
+            player.resources.gold += goldIncome
+            player.resources.iron += ironIncome
+            player.resources.oil += oilIncome
+            player.resources.food += foodIncome
         })
 
         // Broadcast tick to room
@@ -373,7 +390,20 @@ setInterval(() => {
                 if (!player.isOnline) return
                 const playerSocket = io.sockets.sockets.get(player.socketId)
                 if (playerSocket) {
-                    playerSocket.emit('player:resources', player.resources)
+                    // Calculate income for display
+                    let income = { gold: RESOURCE_RATE.gold, iron: RESOURCE_RATE.iron, oil: RESOURCE_RATE.oil, food: RESOURCE_RATE.food }
+                    room.provinces.forEach((prov) => {
+                        if (prov.ownerId === player.id) {
+                            income.gold += 5
+                            income.iron += 3
+                            income.oil += 1
+                            income.food += 4
+                        }
+                    })
+                    playerSocket.emit('player:resources', {
+                        ...player.resources,
+                        income // Send income rate too
+                    })
                 }
             })
         }
