@@ -135,7 +135,7 @@ export function GameInfoPanel() {
 }
 
 export function ChatPanel() {
-    const { isConnected, sendChat } = useSocket()
+    const { isConnected, sendChat, socket } = useSocket()
     const [messages, setMessages] = useState<ChatMessage[]>([])
     const [inputText, setInputText] = useState('')
     const [activeTab, setActiveTab] = useState<'global' | 'alliance'>('global')
@@ -145,6 +145,7 @@ export function ChatPanel() {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
     }, [messages])
 
+    // Welcome message
     useEffect(() => {
         if (isConnected && messages.length === 0) {
             setMessages([
@@ -160,11 +161,40 @@ export function ChatPanel() {
         }
     }, [isConnected, messages.length])
 
+    // Listen for incoming chat messages from server
+    useEffect(() => {
+        if (!socket) return
+
+        const handleChatMessage = (msg: ChatMessage) => {
+            // Avoid duplicates (own messages are added locally already)
+            setMessages((prev) => {
+                if (prev.some(m => m.id === msg.id)) return prev
+                return [...prev, msg]
+            })
+        }
+
+        const handleChatHistory = (history: ChatMessage[]) => {
+            setMessages((prev) => {
+                const welcomeMsg = prev.find(m => m.id === 'welcome')
+                const combined = welcomeMsg ? [welcomeMsg, ...history] : history
+                return combined
+            })
+        }
+
+        socket.on('chat:message', handleChatMessage)
+        socket.on('chat:history', handleChatHistory)
+
+        return () => {
+            socket.off('chat:message', handleChatMessage)
+            socket.off('chat:history', handleChatHistory)
+        }
+    }, [socket])
+
     const handleSend = () => {
         if (!inputText.trim() || !isConnected) return
 
         const newMessage: ChatMessage = {
-            id: `msg_${Date.now()}`,
+            id: `msg_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
             playerId: localStorage.getItem('userId') || 'unknown',
             playerName: localStorage.getItem('username') || 'Jugador',
             message: inputText.trim(),
