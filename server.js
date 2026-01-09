@@ -38,6 +38,7 @@ const chatHistory = [] // Global chat history
 // Game configuration
 const TICK_RATE = 1000 // 1 second
 const RESOURCE_RATE = { gold: 10, iron: 5, oil: 2, food: 8 }
+const VICTORY_THRESHOLD = 30 // Provinces needed to win
 
 // Default game room
 const DEFAULT_GAME = 'world-war-1945'
@@ -48,6 +49,31 @@ gameRooms.set(DEFAULT_GAME, {
     tick: 0,
     status: 'PLAYING'
 })
+
+// Check if player has won
+function checkVictory(room, playerInfo, io) {
+    let provinceCount = 0
+    room.provinces.forEach((prov) => {
+        if (prov.ownerId === playerInfo.playerId) {
+            provinceCount++
+        }
+    })
+
+    console.log(`📊 ${playerInfo.username} owns ${provinceCount}/${VICTORY_THRESHOLD} provinces`)
+
+    if (provinceCount >= VICTORY_THRESHOLD) {
+        console.log(`🏆 ${playerInfo.username} WINS THE GAME!`)
+        room.status = 'FINISHED'
+        room.winner = playerInfo.playerId
+
+        io.to(playerInfo.gameId).emit('game:victory', {
+            winnerId: playerInfo.playerId,
+            winnerName: playerInfo.username,
+            provinceCount: provinceCount,
+            message: `¡${playerInfo.username} ha conquistado ${provinceCount} provincias y gana la partida!`
+        })
+    }
+}
 
 // Socket connection handler
 io.on('connection', (socket) => {
@@ -248,30 +274,101 @@ io.on('connection', (socket) => {
                 newOwnerId: playerInfo.playerId,
                 newOwnerColor: player?.color || army.playerColor
             })
+
+            // Check victory condition
+            checkVictory(room, playerInfo, io)
         } else if (destProvince.ownerId !== playerInfo.playerId) {
-            // Enemy province - COMBAT (simplified)
+            // Enemy province - REAL COMBAT
             console.log(`⚔️ Battle at ${destProvinceId}!`)
 
-            // Simple combat: attacker wins if they have an army
-            // TODO: Implement proper combat system
-            const newProvince = {
-                id: destProvinceId,
-                ownerId: playerInfo.playerId,
-                ownerColor: player?.color || army.playerColor
+            // Calculate attacker strength
+            const attackerStrength = army.units.reduce((sum, u) => sum + (u.quantity * u.strength), 0)
+
+            // Find defender army (if any)
+            let defenderArmy = null
+            room.armies.forEach((a) => {
+                if (a.currentProvinceId === destProvinceId && a.playerId === destProvince.ownerId) {
+                    defenderArmy = a
+                }
+            })
+
+            let defenderStrength = 0
+            if (defenderArmy) {
+                defenderStrength = defenderArmy.units.reduce((sum, u) => sum + (u.quantity * u.strength), 0)
             }
-            room.provinces.set(destProvinceId, newProvince)
 
-            io.to(playerInfo.gameId).emit('battle:result', {
-                provinceId: destProvinceId,
-                winner: playerInfo.playerId,
-                winnerName: playerInfo.username
-            })
+            // Terrain defense bonus (simplified - 20% for defended provinces)
+            const defenseBonus = 1.2
+            const adjustedDefenderStrength = defenderStrength * defenseBonus
 
-            io.to(playerInfo.gameId).emit('province:captured', {
-                provinceId: destProvinceId,
-                newOwnerId: playerInfo.playerId,
-                newOwnerColor: player?.color || army.playerColor
-            })
+            console.log(`   Attacker: ${attackerStrength} vs Defender: ${adjustedDefenderStrength}`)
+
+            // Combat resolution
+            const attackerWins = attackerStrength > adjustedDefenderStrength
+
+            if (attackerWins) {
+                // Attacker captures province
+                const newProvince = {
+                    id: destProvinceId,
+                    ownerId: playerInfo.playerId,
+                    ownerColor: player?.color || army.playerColor
+                }
+                room.provinces.set(destProvinceId, newProvince)
+
+                // Remove defender army if exists
+                if (defenderArmy) {
+                    room.armies.delete(defenderArmy.id)
+                    io.to(playerInfo.gameId).emit('army:destroyed', { armyId: defenderArmy.id })
+                }
+
+                // Attacker loses some units (30% casualties)
+                army.units.forEach(u => {
+                    u.quantity = Math.ceil(u.quantity * 0.7)
+                })
+
+                io.to(playerInfo.gameId).emit('battle:result', {
+                    provinceId: destProvinceId,
+                    winner: playerInfo.playerId,
+                    winnerName: playerInfo.username,
+                    attackerStrength,
+                    defenderStrength: Math.floor(adjustedDefenderStrength)
+                })
+
+                io.to(playerInfo.gameId).emit('province:captured', {
+                    provinceId: destProvinceId,
+                    newOwnerId: playerInfo.playerId,
+                    newOwnerColor: player?.color || army.playerColor
+                })
+
+                // Check victory condition
+                checkVictory(room, playerInfo, io)
+            } else {
+                // Defender wins - attacker retreats
+                army.currentProvinceId = data.fromProvinceId || army.currentProvinceId
+
+                // Attacker loses more units (50% casualties)
+                army.units.forEach(u => {
+                    u.quantity = Math.ceil(u.quantity * 0.5)
+                })
+
+                // Defender also loses some (20%)
+                if (defenderArmy) {
+                    defenderArmy.units.forEach(u => {
+                        u.quantity = Math.ceil(u.quantity * 0.8)
+                    })
+                }
+
+                io.to(playerInfo.gameId).emit('battle:result', {
+                    provinceId: destProvinceId,
+                    winner: destProvince.ownerId,
+                    winnerName: 'Defender',
+                    attackerStrength,
+                    defenderStrength: Math.floor(adjustedDefenderStrength),
+                    attackerRetreated: true
+                })
+
+                console.log(`   ❌ Attack failed! Retreating...`)
+            }
         }
         // else: own province - just moving
 

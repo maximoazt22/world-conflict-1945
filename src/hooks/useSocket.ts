@@ -163,6 +163,24 @@ export function useSocket() {
             })
         })
 
+        socket.on('army:destroyed', (data) => {
+            console.log('💀 Army destroyed:', data.armyId)
+            useGameStore.getState().removeArmy(data.armyId)
+        })
+
+        socket.on('battle:result', (data) => {
+            console.log(`⚔️ Battle result: ${data.winnerName} wins! (${data.attackerStrength} vs ${data.defenderStrength})`)
+            if (data.attackerRetreated) {
+                console.log('❌ Attacker retreated!')
+            }
+            // Could add toast notification here
+        })
+
+        socket.on('game:victory', (data) => {
+            console.log(`🏆 GAME OVER! ${data.winnerName} wins with ${data.provinceCount} provinces!`)
+            alert(data.message) // Simple victory popup
+        })
+
         socket.on('chat:message', (data) => {
             console.log('💬 Chat:', data.playerName, data.message)
         })
