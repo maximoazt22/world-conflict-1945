@@ -24,6 +24,9 @@ export function useSocket() {
         updateProvince,
         setMapSeed,
         setPendingMapUpdates,
+        setArmies,
+        addArmy,
+        updateArmy,
         addBattle,
         updateBattle,
     } = useGameStore()
@@ -100,6 +103,11 @@ export function useSocket() {
                 // we treat them as "updates" to be applied after local map generation.
                 setPendingMapUpdates(data.provinces)
             }
+
+            // Sync Armies
+            if (data.armies) {
+                setArmies(data.armies)
+            }
         })
 
         socket.on('player:joined', (player) => {
@@ -138,6 +146,20 @@ export function useSocket() {
             updateBattle(data.battleId, {
                 status: 'COMPLETED',
                 winner: data.winner,
+            })
+        })
+
+        // Army events
+        socket.on('army:spawned', (army) => {
+            console.log('🎖️ Army spawned:', army.name)
+            addArmy(army)
+        })
+
+        socket.on('army:moved', (data) => {
+            console.log('🚶 Army moved:', data.armyId)
+            updateArmy(data.armyId, {
+                currentProvinceId: data.destinationProvinceId,
+                isMoving: false
             })
         })
 

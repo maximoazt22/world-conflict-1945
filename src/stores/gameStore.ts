@@ -49,6 +49,7 @@ export interface Army {
   id: string
   name: string | null
   playerId: string
+  playerColor: string
   currentProvinceId: string
   currentProvinceName?: string
   isMoving: boolean

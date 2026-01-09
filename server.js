@@ -71,13 +71,20 @@ io.on('connection', (socket) => {
                 id: gameId,
                 name: gameId,
                 players: new Map(),
+                armies: new Map(), // Track all armies
                 tick: 0,
                 status: 'PLAYING',
-                mapSeed: Math.floor(Math.random() * 1000000), // Random seed for map generation
-                provinces: new Map() // Track province ownership
+                mapSeed: Math.floor(Math.random() * 1000000),
+                provinces: new Map()
             }
             gameRooms.set(gameId, room)
         }
+
+        // Assign starting province (based on player count)
+        const playerIndex = room.players.size
+        const startX = playerIndex % 10
+        const startY = Math.floor(playerIndex / 10)
+        const startingProvinceId = `${startX}-${startY}`
 
         // Create player data
         const player = {
@@ -87,10 +94,34 @@ io.on('connection', (socket) => {
             nation: nation || 'USA',
             color: color || '#4169E1',
             resources: { gold: 1000, iron: 500, oil: 250, food: 750 },
-            provinces: [],
+            provinces: [startingProvinceId],
             isOnline: true,
             joinedAt: Date.now()
         }
+
+        // Claim starting province
+        room.provinces.set(startingProvinceId, {
+            id: startingProvinceId,
+            ownerId: player.id,
+            ownerColor: player.color
+        })
+
+        // Create starting army
+        const armyId = `army_${player.id}_1`
+        const army = {
+            id: armyId,
+            playerId: player.id,
+            playerColor: player.color,
+            name: `${nation} 1st Army`,
+            currentProvinceId: startingProvinceId,
+            isMoving: false,
+            destinationId: null,
+            units: [
+                { type: 'infantry', quantity: 100, strength: 10 },
+                { type: 'tank', quantity: 10, strength: 50 }
+            ]
+        }
+        room.armies.set(armyId, army)
 
         // Add player to room and tracking
         room.players.set(player.id, player)
@@ -105,8 +136,9 @@ io.on('connection', (socket) => {
             nation: player.nation,
             color: player.color,
             resources: player.resources,
-            mapSeed: room.mapSeed, // Send seed to client
-            provinces: Array.from(room.provinces.values()), // Send current province state
+            mapSeed: room.mapSeed,
+            provinces: Array.from(room.provinces.values()),
+            armies: Array.from(room.armies.values()), // Send all armies
             currentPlayers: room.players.size,
             players: Array.from(room.players.values()).map(p => ({
                 id: p.id,
@@ -117,13 +149,21 @@ io.on('connection', (socket) => {
             }))
         })
 
-        // Notify other players
+        // Notify other players about new player and their army
         socket.to(gameId).emit('player:joined', {
             playerId: player.id,
             username: player.username,
             nation: player.nation,
             color: player.color
         })
+
+        socket.to(gameId).emit('province:captured', {
+            provinceId: startingProvinceId,
+            newOwnerId: player.id,
+            newOwnerColor: player.color
+        })
+
+        socket.to(gameId).emit('army:spawned', army)
 
         // Send chat history
         socket.emit('chat:history', chatHistory.slice(-50))

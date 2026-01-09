@@ -115,12 +115,83 @@ function ProvinceMesh({ province, isSelected, isHovered, isOwned, onClick, onHov
 }
 
 // ============================================
+// ARMY MESH COMPONENT
+// ============================================
+
+interface ArmyMeshProps {
+    army: {
+        id: string
+        playerId: string
+        playerColor: string
+        name: string
+        currentProvinceId: string
+        units: { type: string; quantity: number; strength: number }[]
+    }
+    position: [number, number, number]
+    isSelected: boolean
+    onClick: () => void
+}
+
+function ArmyMesh({ army, position, isSelected, onClick }: ArmyMeshProps) {
+    const meshRef = useRef<THREE.Mesh>(null)
+
+    // Floating animation
+    useFrame((state) => {
+        if (meshRef.current) {
+            meshRef.current.position.y = 0.6 + Math.sin(state.clock.elapsedTime * 2) * 0.1
+        }
+    })
+
+    return (
+        <group position={position}>
+            {/* Army Icon (Tank/Soldier) */}
+            <mesh
+                ref={meshRef}
+                onClick={(e) => {
+                    e.stopPropagation()
+                    onClick()
+                }}
+                castShadow
+            >
+                <coneGeometry args={[0.25, 0.5, 4]} />
+                <meshStandardMaterial
+                    color={army.playerColor || '#FFD700'}
+                    metalness={0.6}
+                    roughness={0.3}
+                    emissive={isSelected ? '#FFD700' : army.playerColor || '#FFD700'}
+                    emissiveIntensity={isSelected ? 0.5 : 0.2}
+                />
+            </mesh>
+
+            {/* Selection Ring */}
+            {isSelected && (
+                <mesh position={[0, 0.3, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+                    <ringGeometry args={[0.3, 0.4, 16]} />
+                    <meshBasicMaterial color="#FFD700" side={THREE.DoubleSide} />
+                </mesh>
+            )}
+
+            {/* Army Name Label */}
+            <Html
+                position={[0, 1.2, 0]}
+                center
+                style={{ pointerEvents: 'none', whiteSpace: 'nowrap' }}
+            >
+                <div className="px-1.5 py-0.5 bg-zinc-900/90 rounded text-[10px] text-white border border-zinc-600">
+                    ⚔️ {army.units.reduce((sum, u) => sum + u.quantity, 0)} units
+                </div>
+            </Html>
+        </group>
+    )
+}
+
+// ============================================
 // MAP SCENE
 // ============================================
 
 function MapScene() {
-    const { provinces, playerId, mapSeed, setProvinces, pendingMapUpdates } = useGameStore()
-    const { selectedProvinceId, selectProvince, hoveredProvinceId, setHoveredProvince } = useUIStore()
+    const { provinces, playerId, mapSeed, setProvinces, pendingMapUpdates, armies } = useGameStore()
+    const { selectedProvinceId, selectProvince, hoveredProvinceId, setHoveredProvince, selectedArmyId, selectArmy } = useUIStore()
     const { color: playerColor } = usePlayerStore()
 
     // Seeded Random Helper (Mulberry32)
@@ -191,6 +262,18 @@ function MapScene() {
     // Memoize provinces for rendering
     const displayProvinces = useMemo(() => provinces, [provinces]);
 
+    // Get army positions based on their current province
+    const armyPositions = useMemo(() => {
+        return armies.map(army => {
+            const province = provinces.find(p => p.id === army.currentProvinceId)
+            if (!province) return null
+            return {
+                army,
+                position: [province.coordX, 0, province.coordY] as [number, number, number]
+            }
+        }).filter(Boolean)
+    }, [armies, provinces])
+
     return (
         <>
             {/* Lighting */}
@@ -223,6 +306,17 @@ function MapScene() {
                     isOwned={province.ownerId === playerId}
                     onClick={() => selectProvince(province.id)}
                     onHover={(hover) => setHoveredProvince(hover ? province.id : null)}
+                />
+            ))}
+
+            {/* Armies */}
+            {(armyPositions as Array<{ army: ArmyMeshProps['army']; position: [number, number, number] }>).map((item) => (
+                <ArmyMesh
+                    key={item.army.id}
+                    army={item.army}
+                    position={item.position}
+                    isSelected={selectedArmyId === item.army.id}
+                    onClick={() => selectArmy(item.army.id)}
                 />
             ))}
 
