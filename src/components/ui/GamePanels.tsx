@@ -112,6 +112,10 @@ export function GameInfoPanel() {
                     <span className="text-zinc-100">{latency}ms</span>
                 </div>
                 <div className="flex justify-between">
+                    <span className="text-zinc-500">Versión:</span>
+                    <span className="text-emerald-400 font-bold">v1.1 - Synced</span>
+                </div>
+                <div className="flex justify-between">
                     <span className="text-zinc-500">Partida:</span>
                     <span className="text-zinc-100">{gameName || 'Cargando...'}</span>
                 </div>
