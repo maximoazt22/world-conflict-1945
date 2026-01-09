@@ -140,6 +140,10 @@ export function useSocket() {
             })
         })
 
+        socket.on('game:restarted', () => {
+            window.location.reload()
+        })
+
         socket.on('battle:started', (data) => {
             addBattle(data)
         })
@@ -239,6 +243,10 @@ export function useSocket() {
         socket?.emit('army:recruit', { provinceId, unitType, quantity })
     }, [])
 
+    const restartGame = useCallback(() => {
+        socket?.emit('game:restart')
+    }, [])
+
     return {
         socket,
         isConnected,
@@ -248,6 +256,7 @@ export function useSocket() {
         moveArmy,
         attackProvince,
         recruitUnit,
+        restartGame,
         sendChat,
     }
 }

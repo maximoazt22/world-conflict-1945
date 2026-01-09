@@ -68,7 +68,7 @@ function checkVictory(room, playerInfo, io) {
 
     if (provinceCount >= VICTORY_THRESHOLD) {
         console.log(`🏆 ${playerInfo.username} WINS THE GAME!`)
-        room.status = 'FINISHED'
+        room.status = 'ENDED'
         room.winner = playerInfo.playerId
 
         io.to(playerInfo.gameId).emit('game:victory', {
@@ -505,6 +505,29 @@ io.on('connection', (socket) => {
     // Leave game
     socket.on('game:leave', () => {
         handlePlayerLeave(socket)
+    })
+
+    // Restart Game
+    socket.on('game:restart', () => {
+        const playerInfo = connectedPlayers.get(socket.id)
+        if (!playerInfo) return
+
+        const room = gameRooms.get(playerInfo.gameId)
+        if (!room) return
+
+        console.log(`🔄 Restarting game ${playerInfo.gameId}...`)
+
+        // Reset Room State
+        room.status = 'PLAYING'
+        room.tick = 0
+        room.winner = null
+        room.provinces.clear() // Resets all to neutral
+        room.armies.clear()
+        room.players.clear() // Force re-join logic
+        room.mapSeed = Date.now() // New map
+
+        // Broadcast reset to trigger reload
+        io.to(playerInfo.gameId).emit('game:restarted')
     })
 
     // Disconnect

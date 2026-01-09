@@ -4,6 +4,7 @@ import { useGameStore } from '@/stores/gameStore'
 import { usePlayerStore } from '@/stores/playerStore'
 import { useUIStore } from '@/stores/uiStore'
 import { useSessionStore } from '@/stores/sessionStore'
+import useSocket from '@/hooks/useSocket'
 import { ResourceBar } from './ResourceCard'
 
 export function HUD() {
@@ -11,6 +12,7 @@ export function HUD() {
     const { username, nation, allianceName } = usePlayerStore()
     const { connectionStatus, latency } = useSessionStore()
     const { showMinimap, toggleMinimap, toggleNotifications, showNotifications } = useUIStore()
+    const { restartGame } = useSocket()
 
     // Calculate rates (placeholder - would come from server)
     const rates = {
@@ -97,6 +99,16 @@ export function HUD() {
                         >
                             🔔
                         </button>
+
+                        {gameStatus === 'ENDED' && (
+                            <button
+                                onClick={restartGame}
+                                className="p-2 rounded-lg bg-red-500/20 text-red-500 hover:bg-red-500/30 transition-colors animate-pulse"
+                                title="Reiniciar Partida"
+                            >
+                                🔄
+                            </button>
+                        )}
                         <button
                             className="p-2 rounded-lg text-zinc-400 hover:bg-zinc-800 transition-colors"
                             title="Settings"
