@@ -1,0 +1,330 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================
+// AUTHENTICATION & USERS
+// ============================================
+
+model User {
+  id           String    @id @default(cuid())
+  username     String    @unique
+  email        String?   @unique
+  passwordHash String
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  lastLogin    DateTime?
+  player       Player?
+}
+
+model Player {
+  id           String        @id @default(cuid())
+  userId       String        @unique
+  nation       String
+  color        String        // Hex color code
+  goldRate     Float         @default(10.0)
+  ironRate     Float         @default(5.0)
+  oilRate      Float         @default(2.5)
+  foodRate     Float         @default(7.5)
+  reputation   Int           @default(100)
+  isOnline     Boolean       @default(false)
+  inSleepMode  Boolean       @default(false)
+  sleepModeEnd DateTime?
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  armies       Army[]
+  gamePlayer   GamePlayer[]
+  chatMessages ChatMessage[]
+  allianceId   String?
+  alliance     Alliance?     @relation(fields: [allianceId], references: [id])
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+}
+
+// ============================================
+// GAME & MAP
+// ============================================
+
+model Game {
+  id             String       @id @default(cuid())
+  name           String
+  mapId          String
+  maxPlayers     Int          @default(50)
+  currentPlayers Int          @default(0)
+  duration       Int          @default(604800) // 7 days in seconds
+  status         GameStatus   @default(WAITING)
+  currentTick    Int          @default(0)
+  createdById    String?
+  startedAt      DateTime?
+  endedAt        DateTime?
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  players        GamePlayer[]
+  provinces      Province[]
+  armies         Army[]
+  battles        Battle[]
+  chatMessages   ChatMessage[]
+  alliances      Alliance[]
+
+  @@index([status])
+  @@index([createdById])
+}
+
+model GamePlayer {
+  id         String   @id @default(cuid())
+  gameId     String
+  playerId   String
+  gold       Float    @default(1000)
+  iron       Float    @default(500)
+  oil        Float    @default(250)
+  food       Float    @default(750)
+  isActive   Boolean  @default(true)
+  joinedAt   DateTime @default(now())
+  game       Game     @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  player     Player   @relation(fields: [playerId], references: [id], onDelete: Cascade)
+
+  @@unique([gameId, playerId])
+  @@index([gameId])
+  @@index([playerId])
+}
+
+model Province {
+  id           String     @id @default(cuid())
+  gameId       String
+  name         String
+  coordX       Float
+  coordY       Float
+  coordZ       Float      @default(0)
+  ownerId      String?
+  goldBonus    Float      @default(0)
+  ironBonus    Float      @default(0)
+  oilBonus     Float      @default(0)
+  foodBonus    Float      @default(0)
+  defenseBonus Float      @default(0)
+  terrain      TerrainType @default(PLAINS)
+  capturedAt   DateTime?
+  game         Game       @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  buildings    Building[]
+  armiesHere   Army[]     @relation("ArmyCurrentProvince")
+  armiesMovingTo Army[]   @relation("ArmyDestination")
+  battles      Battle[]
+
+  @@index([gameId])
+  @@index([ownerId])
+}
+
+model Building {
+  id          String       @id @default(cuid())
+  provinceId  String
+  type        BuildingType
+  level       Int          @default(1)
+  isComplete  Boolean      @default(false)
+  completedAt DateTime?
+  startedAt   DateTime     @default(now())
+  province    Province     @relation(fields: [provinceId], references: [id], onDelete: Cascade)
+
+  @@index([provinceId])
+  @@index([type])
+}
+
+// ============================================
+// MILITARY
+// ============================================
+
+model Army {
+  id                 String    @id @default(cuid())
+  playerId           String
+  gameId             String
+  name               String?
+  isMoving           Boolean   @default(false)
+  currentProvinceId  String
+  destinationId      String?
+  movementStartedAt  DateTime?
+  estimatedArrival   DateTime?
+  player             Player    @relation(fields: [playerId], references: [id], onDelete: Cascade)
+  game               Game      @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  currentProvince    Province  @relation("ArmyCurrentProvince", fields: [currentProvinceId], references: [id])
+  destination        Province? @relation("ArmyDestination", fields: [destinationId], references: [id])
+  units              Unit[]
+  attackingBattles   Battle[]  @relation("AttackerArmy")
+  defendingBattles   Battle[]  @relation("DefenderArmy")
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+
+  @@index([playerId])
+  @@index([gameId])
+  @@index([currentProvinceId])
+}
+
+model Unit {
+  id       String   @id @default(cuid())
+  armyId   String
+  type     UnitType
+  quantity Int      @default(1)
+  strength Int      @default(1)
+  morale   Int      @default(100)
+  army     Army     @relation(fields: [armyId], references: [id], onDelete: Cascade)
+
+  @@index([armyId])
+  @@index([type])
+}
+
+// ============================================
+// BATTLES
+// ============================================
+
+model Battle {
+  id                 String       @id @default(cuid())
+  gameId             String
+  provinceId         String
+  attackerArmyId     String
+  defenderArmyId     String?
+  startTime          DateTime     @default(now())
+  duration           Int          @default(300) // 5 minutes in seconds
+  status             BattleStatus @default(PENDING)
+  attackerCasualties Int          @default(0)
+  defenderCasualties Int          @default(0)
+  winner             String?      // Player ID of winner
+  endedAt            DateTime?
+  game               Game         @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  province           Province     @relation(fields: [provinceId], references: [id])
+  attackerArmy       Army         @relation("AttackerArmy", fields: [attackerArmyId], references: [id])
+  defenderArmy       Army?        @relation("DefenderArmy", fields: [defenderArmyId], references: [id])
+
+  @@index([gameId])
+  @@index([status])
+  @@index([provinceId])
+}
+
+// ============================================
+// DIPLOMACY
+// ============================================
+
+model Alliance {
+  id        String   @id @default(cuid())
+  gameId    String
+  name      String
+  tag       String?  // Short 3-4 char tag
+  color     String?
+  members   Player[]
+  game      Game     @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@index([gameId])
+}
+
+model Pact {
+  id         String   @id @default(cuid())
+  gameId     String
+  player1Id  String
+  player2Id  String
+  type       PactType
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+
+  @@index([gameId])
+  @@index([player1Id])
+  @@index([player2Id])
+}
+
+// ============================================
+// CHAT
+// ============================================
+
+model ChatMessage {
+  id         String   @id @default(cuid())
+  gameId     String
+  playerId   String
+  message    String
+  type       ChatType @default(GLOBAL)
+  recipientId String? // For private messages
+  createdAt  DateTime @default(now())
+  game       Game     @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  player     Player   @relation(fields: [playerId], references: [id], onDelete: Cascade)
+
+  @@index([gameId])
+  @@index([type])
+  @@index([createdAt])
+}
+
+// ============================================
+// ENUMS
+// ============================================
+
+enum GameStatus {
+  WAITING
+  STARTING
+  PLAYING
+  PAUSED
+  ENDED
+}
+
+enum BattleStatus {
+  PENDING
+  ACTIVE
+  COMPLETED
+  CANCELLED
+}
+
+enum UnitType {
+  // Infantry
+  INFANTRY_SOLDADO
+  INFANTRY_SUBOFICIAL
+  INFANTRY_COMANDANTE
+  // Vehicles
+  TANK_LIGHT
+  TANK_MEDIUM
+  TANK_HEAVY
+  ARTILLERY
+  // Aircraft
+  AIRCRAFT_FIGHTER
+  AIRCRAFT_BOMBER
+  AIRCRAFT_TRANSPORT
+  // Naval
+  NAVAL_DESTROYER
+  NAVAL_CRUISER
+  NAVAL_BATTLESHIP
+  NAVAL_CARRIER
+}
+
+enum BuildingType {
+  MINE_GOLD
+  MINE_IRON
+  REFINERY_OIL
+  FARM
+  BARRACKS
+  FACTORY
+  AIRBASE
+  PORT
+  LABORATORY
+  FORTRESS
+}
+
+enum TerrainType {
+  PLAINS
+  FOREST
+  MOUNTAIN
+  DESERT
+  URBAN
+  COASTAL
+  WATER
+}
+
+enum PactType {
+  NON_AGGRESSION
+  TRADE
+  MILITARY_ACCESS
+}
+
+enum ChatType {
+  GLOBAL
+  ALLIANCE
+  PRIVATE
+}
