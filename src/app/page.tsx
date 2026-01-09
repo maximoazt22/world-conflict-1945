@@ -36,7 +36,7 @@ export default function HomePage() {
               🎮 Jugar Ahora
             </Link>
             <Link
-              href="/auth/register"
+              href="/login"
               className="px-8 py-4 bg-zinc-800 text-zinc-100 font-semibold text-lg rounded-xl hover:bg-zinc-700 transition-all border border-zinc-700"
             >
               📝 Crear Cuenta
