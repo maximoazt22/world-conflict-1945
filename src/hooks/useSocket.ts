@@ -128,7 +128,9 @@ export function useSocket() {
         })
 
         socket.on('player:resources', (data) => {
-            updateResources(data)
+            if (data.resources) {
+                updateResources(data.resources)
+            }
         })
 
         socket.on('province:captured', (data) => {
