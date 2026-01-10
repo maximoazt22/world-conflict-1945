@@ -9,11 +9,7 @@ const client = new MercadoPagoConfig({ accessToken: 'APP_USR-5130638905255947-01
 
 const app = express()
 app.use(cors({
-    origin: [
-        'http://localhost:3000',
-        'https://world-conflict-1945.vercel.app',
-        'https://*.vercel.app'
-    ],
+    origin: '*',
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization']
@@ -67,11 +63,7 @@ const httpServer = createServer(app)
 // Create Socket.IO server within existing Express server
 const io = new Server(httpServer, {
     cors: {
-        origin: [
-            'http://localhost:3000',
-            'https://world-conflict-1945.vercel.app',
-            'https://*.vercel.app'
-        ],
+        origin: '*',
         methods: ['GET', 'POST'],
         credentials: true
     },
