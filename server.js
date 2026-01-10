@@ -1,3 +1,4 @@
+console.log('--- 🎖️ SYSTEM STARTUP: WORLD CONFLICT 1945 ---')
 const express = require('express')
 const cors = require('cors')
 const { createServer } = require('http')
