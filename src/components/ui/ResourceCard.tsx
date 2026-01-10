@@ -98,7 +98,7 @@ interface ResourceBarProps {
 }
 
 export function ResourceBar({ resources, rates, lowThresholds }: ResourceBarProps) {
-    const defaultThresholds: Partial<Resources> = { gold: 100, steel: 50, oil: 25, food: 50 }
+    const defaultThresholds: Partial<Resources> = { money: 1000, materials: 500, energy: 500, food: 1000 }
     const thresholds = { ...defaultThresholds, ...lowThresholds }
 
     return (

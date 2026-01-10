@@ -4,53 +4,32 @@
 // RESOURCES
 // ============================================
 
+// ============================================
+// RESOURCES
+// ============================================
+
 export interface Resources {
     money: number
-    oil: number
-    gas: number
-    uranium: number
-    lithium: number
-    rareEarth: number
-    copper: number
-    gold: number
-    steel: number
-    silicon: number
     food: number
+    materials: number
+    energy: number
     manpower: number
-    // Backwards compat alias
-    iron?: number
 }
 
 export const RESOURCE_NAMES: Record<keyof Resources, string> = {
     money: 'Dinero',
-    oil: 'Petróleo',
-    gas: 'Gas',
-    uranium: 'Uranio',
-    lithium: 'Litio',
-    rareEarth: 'Tierras Raras',
-    copper: 'Cobre',
-    gold: 'Oro',
-    steel: 'Acero',
-    silicon: 'Silicio',
-    food: 'Comida',
+    food: 'Alimentos',
+    materials: 'Materiales',
+    energy: 'Energía',
     manpower: 'Mano de Obra',
-    iron: 'Hierro',
 }
 
 export const RESOURCE_ICONS: Record<keyof Resources, string> = {
     money: '💵',
-    oil: '🛢️',
-    gas: '🔥',
-    uranium: '☢️',
-    lithium: '🔋',
-    rareEarth: '💎',
-    copper: '🔶',
-    gold: '🪙',
-    steel: '⚙️',
-    silicon: '💻',
     food: '🌾',
+    materials: '🧱',
+    energy: '⚡',
     manpower: '👷',
-    iron: '⚙️',
 }
 
 // ============================================
@@ -100,7 +79,7 @@ export const UNIT_STATS: Record<UnitType, UnitStats> = {
         defense: 3,
         health: 100,
         speed: 10,
-        cost: { gold: 50, iron: 10, oil: 0, food: 20 },
+        cost: { money: 50, materials: 10, energy: 0, food: 20 },
         trainTime: 60,
         foodConsumption: 1,
     },
@@ -112,7 +91,7 @@ export const UNIT_STATS: Record<UnitType, UnitStats> = {
         defense: 5,
         health: 120,
         speed: 10,
-        cost: { gold: 100, iron: 20, oil: 0, food: 30 },
+        cost: { money: 100, materials: 20, energy: 0, food: 30 },
         trainTime: 120,
         foodConsumption: 1.5,
     },
@@ -124,7 +103,7 @@ export const UNIT_STATS: Record<UnitType, UnitStats> = {
         defense: 8,
         health: 150,
         speed: 10,
-        cost: { gold: 200, iron: 40, oil: 0, food: 50 },
+        cost: { money: 200, materials: 40, energy: 0, food: 50 },
         trainTime: 300,
         foodConsumption: 2,
     },
@@ -136,7 +115,7 @@ export const UNIT_STATS: Record<UnitType, UnitStats> = {
         defense: 10,
         health: 200,
         speed: 15,
-        cost: { gold: 300, iron: 100, oil: 30, food: 0 },
+        cost: { money: 300, materials: 100, energy: 30, food: 0 },
         trainTime: 600,
         foodConsumption: 0,
     },
@@ -148,7 +127,7 @@ export const UNIT_STATS: Record<UnitType, UnitStats> = {
         defense: 20,
         health: 350,
         speed: 12,
-        cost: { gold: 500, iron: 200, oil: 60, food: 0 },
+        cost: { money: 500, materials: 200, energy: 60, food: 0 },
         trainTime: 900,
         foodConsumption: 0,
     },
@@ -160,7 +139,7 @@ export const UNIT_STATS: Record<UnitType, UnitStats> = {
         defense: 35,
         health: 500,
         speed: 8,
-        cost: { gold: 800, iron: 350, oil: 100, food: 0 },
+        cost: { money: 800, materials: 350, energy: 100, food: 0 },
         trainTime: 1500,
         foodConsumption: 0,
     },
@@ -172,7 +151,7 @@ export const UNIT_STATS: Record<UnitType, UnitStats> = {
         defense: 5,
         health: 150,
         speed: 5,
-        cost: { gold: 400, iron: 150, oil: 40, food: 0 },
+        cost: { money: 400, materials: 150, energy: 40, food: 0 },
         trainTime: 720,
         foodConsumption: 0,
     },
@@ -184,7 +163,7 @@ export const UNIT_STATS: Record<UnitType, UnitStats> = {
         defense: 15,
         health: 100,
         speed: 50,
-        cost: { gold: 600, iron: 100, oil: 80, food: 0 },
+        cost: { money: 600, materials: 100, energy: 80, food: 0 },
         trainTime: 1200,
         foodConsumption: 0,
     },
@@ -196,7 +175,7 @@ export const UNIT_STATS: Record<UnitType, UnitStats> = {
         defense: 10,
         health: 150,
         speed: 30,
-        cost: { gold: 1000, iron: 150, oil: 120, food: 0 },
+        cost: { money: 1000, materials: 150, energy: 120, food: 0 },
         trainTime: 1800,
         foodConsumption: 0,
     },
@@ -208,7 +187,7 @@ export const UNIT_STATS: Record<UnitType, UnitStats> = {
         defense: 20,
         health: 200,
         speed: 40,
-        cost: { gold: 500, iron: 80, oil: 60, food: 0 },
+        cost: { money: 500, materials: 80, energy: 60, food: 0 },
         trainTime: 900,
         foodConsumption: 0,
     },
@@ -220,7 +199,7 @@ export const UNIT_STATS: Record<UnitType, UnitStats> = {
         defense: 25,
         health: 300,
         speed: 20,
-        cost: { gold: 700, iron: 200, oil: 100, food: 0 },
+        cost: { money: 700, materials: 200, energy: 100, food: 0 },
         trainTime: 2400,
         foodConsumption: 0,
     },
@@ -232,7 +211,7 @@ export const UNIT_STATS: Record<UnitType, UnitStats> = {
         defense: 40,
         health: 500,
         speed: 15,
-        cost: { gold: 1200, iron: 400, oil: 200, food: 0 },
+        cost: { money: 1200, materials: 400, energy: 200, food: 0 },
         trainTime: 3600,
         foodConsumption: 0,
     },
@@ -244,7 +223,7 @@ export const UNIT_STATS: Record<UnitType, UnitStats> = {
         defense: 60,
         health: 800,
         speed: 10,
-        cost: { gold: 2000, iron: 700, oil: 350, food: 0 },
+        cost: { money: 2000, materials: 700, energy: 350, food: 0 },
         trainTime: 7200,
         foodConsumption: 0,
     },
@@ -256,7 +235,7 @@ export const UNIT_STATS: Record<UnitType, UnitStats> = {
         defense: 50,
         health: 1000,
         speed: 8,
-        cost: { gold: 3000, iron: 1000, oil: 500, food: 0 },
+        cost: { money: 3000, materials: 1000, energy: 500, food: 0 },
         trainTime: 10800,
         foodConsumption: 0,
     },
@@ -303,10 +282,10 @@ export const BUILDING_STATS: Record<BuildingType, BuildingStats> = {
         icon: '💰',
         description: 'Produces gold over time',
         maxLevel: 5,
-        baseCost: { gold: 100, iron: 50, oil: 0, food: 0 },
+        baseCost: { money: 100, materials: 50, energy: 0, food: 0 },
         costMultiplier: 1.5,
         baseTime: 600,
-        effect: { resourceGeneration: { gold: 10 } },
+        effect: { resourceGeneration: { money: 10 } },
     },
     [BuildingType.MINE_IRON]: {
         name: 'Iron Mine',
@@ -314,10 +293,10 @@ export const BUILDING_STATS: Record<BuildingType, BuildingStats> = {
         icon: '⚙️',
         description: 'Produces iron over time',
         maxLevel: 5,
-        baseCost: { gold: 80, iron: 30, oil: 0, food: 0 },
+        baseCost: { money: 80, materials: 30, energy: 0, food: 0 },
         costMultiplier: 1.5,
         baseTime: 600,
-        effect: { resourceGeneration: { iron: 5 } },
+        effect: { resourceGeneration: { materials: 5 } },
     },
     [BuildingType.REFINERY_OIL]: {
         name: 'Oil Refinery',
@@ -325,10 +304,10 @@ export const BUILDING_STATS: Record<BuildingType, BuildingStats> = {
         icon: '🛢️',
         description: 'Produces oil over time',
         maxLevel: 5,
-        baseCost: { gold: 150, iron: 80, oil: 20, food: 0 },
+        baseCost: { money: 150, materials: 80, energy: 20, food: 0 },
         costMultiplier: 1.6,
         baseTime: 900,
-        effect: { resourceGeneration: { oil: 3 } },
+        effect: { resourceGeneration: { energy: 3 } },
     },
     [BuildingType.FARM]: {
         name: 'Farm',
@@ -336,7 +315,7 @@ export const BUILDING_STATS: Record<BuildingType, BuildingStats> = {
         icon: '🌾',
         description: 'Produces food over time',
         maxLevel: 5,
-        baseCost: { gold: 70, iron: 20, oil: 0, food: 10 },
+        baseCost: { money: 70, materials: 20, energy: 0, food: 10 },
         costMultiplier: 1.4,
         baseTime: 300,
         effect: { resourceGeneration: { food: 8 } },
@@ -347,7 +326,7 @@ export const BUILDING_STATS: Record<BuildingType, BuildingStats> = {
         icon: '🏛️',
         description: 'Trains infantry units',
         maxLevel: 5,
-        baseCost: { gold: 200, iron: 100, oil: 0, food: 50 },
+        baseCost: { money: 200, materials: 100, energy: 0, food: 50 },
         costMultiplier: 1.6,
         baseTime: 1200,
         effect: { unitCapacity: 20 },
@@ -358,7 +337,7 @@ export const BUILDING_STATS: Record<BuildingType, BuildingStats> = {
         icon: '🏭',
         description: 'Produces vehicles and artillery',
         maxLevel: 5,
-        baseCost: { gold: 400, iron: 250, oil: 50, food: 0 },
+        baseCost: { money: 400, materials: 250, energy: 50, food: 0 },
         costMultiplier: 1.7,
         baseTime: 2400,
         effect: { unitCapacity: 10 },
@@ -369,7 +348,7 @@ export const BUILDING_STATS: Record<BuildingType, BuildingStats> = {
         icon: '✈️',
         description: 'Produces aircraft',
         maxLevel: 5,
-        baseCost: { gold: 600, iron: 200, oil: 100, food: 0 },
+        baseCost: { money: 600, materials: 200, energy: 100, food: 0 },
         costMultiplier: 1.8,
         baseTime: 3600,
         effect: { unitCapacity: 8 },
@@ -380,7 +359,7 @@ export const BUILDING_STATS: Record<BuildingType, BuildingStats> = {
         icon: '⚓',
         description: 'Produces naval units',
         maxLevel: 5,
-        baseCost: { gold: 800, iron: 300, oil: 150, food: 0 },
+        baseCost: { money: 800, materials: 300, energy: 150, food: 0 },
         costMultiplier: 1.8,
         baseTime: 4800,
         effect: { unitCapacity: 5 },
@@ -391,7 +370,7 @@ export const BUILDING_STATS: Record<BuildingType, BuildingStats> = {
         icon: '🔬',
         description: 'Researches new technologies',
         maxLevel: 3,
-        baseCost: { gold: 500, iron: 150, oil: 50, food: 0 },
+        baseCost: { money: 500, materials: 150, energy: 50, food: 0 },
         costMultiplier: 2.0,
         baseTime: 3600,
         effect: { researchSpeed: 10 },
@@ -402,7 +381,7 @@ export const BUILDING_STATS: Record<BuildingType, BuildingStats> = {
         icon: '🏰',
         description: 'Increases province defense',
         maxLevel: 5,
-        baseCost: { gold: 300, iron: 200, oil: 0, food: 100 },
+        baseCost: { money: 300, materials: 200, energy: 0, food: 100 },
         costMultiplier: 1.6,
         baseTime: 1800,
         effect: { defenseBonus: 10 },
@@ -515,18 +494,11 @@ export const GAME_CONSTANTS = {
 
     // Resources
     STARTING_RESOURCES: {
-        money: 10000,
-        oil: 500,
-        gas: 300,
-        uranium: 50,
-        lithium: 100,
-        rareEarth: 80,
-        copper: 400,
-        gold: 200,
-        steel: 600,
-        silicon: 150,
-        food: 1000,
-        manpower: 50,
+        money: 20000,
+        food: 20000,
+        materials: 20000,
+        energy: 20000,
+        manpower: 1000,
     },
 
     // Map

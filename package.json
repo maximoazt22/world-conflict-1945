@@ -1,13 +1,13 @@
 {
   "name": "world-conflict-1945",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "server": "npx ts-node --esm src/server/index.ts",
     "dev:all": "concurrently \"npm run dev\" \"npm run server\"",
     "build": "next build",
-    "start": "next start",
+    "start": "npx ts-node src/server/main.ts",
     "lint": "eslint",
     "db:push": "npx prisma db push",
     "db:generate": "npx prisma generate",
@@ -24,7 +24,8 @@
     "lucide-react": "^0.562.0",
     "mercadopago": "^2.11.0",
     "socket.io": "^4.8.3",
-    "topojson-client": "^3.1.0"
+    "topojson-client": "^3.1.0",
+    "ts-node": "^10.9.2"
   },
   "devDependencies": {
     "@prisma/client": "^5.10.0",
@@ -35,6 +36,7 @@
     "@tanstack/react-query-devtools": "^5.91.2",
     "@types/bcryptjs": "^2.4.6",
     "@types/d3-geo": "^3.1.0",
+    "@types/express": "^5.0.6",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
@@ -52,10 +54,8 @@
     "prisma": "^5.10.0",
     "react": "19.2.3",
     "react-dom": "19.2.3",
-    "socket.io-client": "^4.8.3",
     "tailwindcss": "^4",
     "three": "^0.182.0",
-    "ts-node": "^10.9.2",
     "typescript": "^5",
     "zustand": "^5.0.9"
   }

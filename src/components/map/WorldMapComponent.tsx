@@ -13,18 +13,11 @@ const WORLD_URL = 'https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.jso
 // 2026 COMMODITY PRICES (Real Market Data)
 // Oil ~$55/barrel, Lithium ~$15k/ton, Uranium ~$135/lb, Copper ~$11k/ton, Gold ~$4800/oz
 const RESOURCE_CONFIG = {
-    money: { icon: '💵', name: 'USD', unit: 'B', price: 1, color: 'text-green-400' },           // Billones USD
-    oil: { icon: '🛢️', name: 'Petróleo', unit: 'Mb', price: 55, color: 'text-amber-600' },    // Millones de barriles, $55/b
-    gas: { icon: '🔥', name: 'Gas', unit: 'Bcf', price: 3, color: 'text-orange-400' },         // Billones pies cúbicos, $3/mcf
-    uranium: { icon: '☢️', name: 'Uranio', unit: 'klb', price: 135, color: 'text-yellow-300' }, // Miles de libras, $135/lb
-    lithium: { icon: '🔋', name: 'Litio', unit: 'kt', price: 15000, color: 'text-cyan-400' },   // Miles de toneladas, $15k/t
-    rareEarth: { icon: '💎', name: 'T.Raras', unit: 'kt', price: 50000, color: 'text-purple-400' }, // $50k/t
-    copper: { icon: '🔶', name: 'Cobre', unit: 'kt', price: 11000, color: 'text-orange-300' },  // $11k/t
-    gold: { icon: '🪙', name: 'Oro', unit: 't', price: 4800, color: 'text-yellow-400' },        // Toneladas, $4800/oz aprox
-    steel: { icon: '⚙️', name: 'Acero', unit: 'Mt', price: 600, color: 'text-gray-400' },       // Millones toneladas, $600/t
-    silicon: { icon: '💻', name: 'Silicio', unit: 'kt', price: 3000, color: 'text-blue-400' },  // $3k/t (semiconductor grade)
-    food: { icon: '🌾', name: 'Alimentos', unit: 'Mt', price: 300, color: 'text-green-500' },   // Millones toneladas
-    manpower: { icon: '👷', name: 'Población', unit: 'M', price: 0, color: 'text-sky-400' },    // Millones de trabajadores
+    money: { icon: '💵', name: 'Dinero', unit: 'M', color: 'text-emerald-400' },
+    food: { icon: '🌾', name: 'Alimentos', unit: 't', color: 'text-yellow-400' },
+    materials: { icon: '🧱', name: 'Materiales', unit: 't', color: 'text-stone-400' },
+    energy: { icon: '⚡', name: 'Energía', unit: 'kWh', color: 'text-amber-500' },
+    manpower: { icon: '👷', name: 'Mano de Obra', unit: '', color: 'text-sky-400' },
 }
 
 // Unit configs with sprites and stats
@@ -184,24 +177,36 @@ export function WorldMapComponent() {
                         '434': { oilBonus: 18, gasBonus: 12 }, // Libya
                         '012': { oilBonus: 12, gasBonus: 20 }, // Algeria
                     }
-                    const gameProvinces: Province[] = allCells.map(c => {
+                    const gameProvinces: Province[] = allCells.map((c, i) => {
+                        // Assign resources based on real world data roughly
                         const countryData = COUNTRY_RESOURCES[c.id] || {}
+                        let rType: 'FOOD' | 'MATERIALS' | 'ENERGY' = 'FOOD' // Default
+
+                        // Heuristic to assign type
+                        if (countryData.oilBonus || countryData.gasBonus || countryData.uraniumBonus) rType = 'ENERGY'
+                        else if (countryData.steelBonus || countryData.rareEarthBonus || countryData.lithiumBonus || countryData.copperBonus) rType = 'MATERIALS'
+
+                        // Randomize slightly for variety if no specific data
+                        if (!countryData.oilBonus && !countryData.steelBonus) {
+                            const rnd = Math.random()
+                            if (rnd > 0.6) rType = 'MATERIALS'
+                            else if (rnd > 0.8) rType = 'ENERGY'
+                        }
+
                         return {
                             id: c.id, name: c.name,
                             coordX: c.centroid[0], coordY: c.centroid[1], coordZ: 0,
                             ownerId: null, ownerColor: undefined,
-                            oilBonus: countryData.oilBonus || Math.floor(Math.random() * 5),
-                            gasBonus: countryData.gasBonus || Math.floor(Math.random() * 5),
-                            uraniumBonus: countryData.uraniumBonus || Math.floor(Math.random() * 2),
-                            lithiumBonus: countryData.lithiumBonus || Math.floor(Math.random() * 3),
-                            rareEarthBonus: countryData.rareEarthBonus || Math.floor(Math.random() * 2),
-                            copperBonus: countryData.copperBonus || Math.floor(Math.random() * 5),
-                            goldBonus: countryData.goldBonus || Math.floor(Math.random() * 3),
-                            steelBonus: countryData.steelBonus || 3 + Math.floor(Math.random() * 8),
-                            siliconBonus: countryData.siliconBonus || Math.floor(Math.random() * 5),
-                            foodBonus: countryData.foodBonus || 5 + Math.floor(Math.random() * 15),
-                            defenseBonus: Math.floor(Math.random() * 30),
-                            terrain: 'PLAINS', buildings: [], units: [],
+                            // New System Properties
+                            resourceType: rType,
+                            baseProduction: 1000 + Math.floor(Math.random() * 500),
+                            morale: 100,
+                            terrain: 'PLAINS',
+                            buildings: [],
+                            units: [],
+                            // Legacy filler to keep types satisfied if needed, or better: remove form type definition later
+                            oilBonus: 0, gasBonus: 0, uraniumBonus: 0, lithiumBonus: 0, rareEarthBonus: 0,
+                            copperBonus: 0, goldBonus: 0, steelBonus: 0, siliconBonus: 0, foodBonus: 0, defenseBonus: 0
                         }
                     })
                     setProvinces(gameProvinces)
@@ -314,20 +319,12 @@ export function WorldMapComponent() {
                     <span className="text-xs text-gray-500">DÍA</span>
                     <span className="text-lg font-bold" style={{ color: C.uiAccent }}>{gameDay}</span>
                 </div>
-                <div className="flex items-center gap-2 overflow-x-auto text-xs">
-                    {/* Macroeconomía 2026 realista - Valores por turno representan producción nacional */}
-                    <R icon="💵" val={resources?.money || 500} rate={myProvinces * 25} unit="B" c="text-green-400" />
-                    <R icon="🛢️" val={resources?.oil || 50} rate={myProvinces * 3} unit="Mb" c="text-amber-500" />
-                    <R icon="🔥" val={resources?.gas || 30} rate={myProvinces * 2} unit="Bcf" c="text-orange-400" />
-                    <R icon="☢️" val={resources?.uranium || 5} rate={Math.floor(myProvinces * 0.3)} unit="klb" c="text-yellow-300" />
-                    <R icon="🔋" val={resources?.lithium || 10} rate={Math.floor(myProvinces * 0.5)} unit="kt" c="text-cyan-400" />
-                    <R icon="💎" val={resources?.rareEarth || 3} rate={Math.floor(myProvinces * 0.2)} unit="kt" c="text-purple-400" />
-                    <R icon="🔶" val={resources?.copper || 200} rate={myProvinces * 5} unit="kt" c="text-orange-300" />
-                    <R icon="🪙" val={resources?.gold || 2} rate={Math.floor(myProvinces * 0.1)} unit="t" c="text-yellow-400" />
-                    <R icon="⚙️" val={resources?.steel || 100} rate={myProvinces * 8} unit="Mt" c="text-gray-400" />
-                    <R icon="💻" val={resources?.silicon || 15} rate={myProvinces * 1} unit="kt" c="text-blue-400" />
-                    <R icon="🌾" val={resources?.food || 500} rate={myProvinces * 10} unit="Mt" c="text-green-500" />
-                    <R icon="👷" val={resources?.manpower || 50} rate={myProvinces * 2} unit="M" c="text-sky-400" />
+                <div className="flex items-center gap-4 overflow-x-auto text-xs px-2">
+                    <R icon="💵" val={resources?.money || 0} rate={100} unit="M" c="text-emerald-400" />
+                    <R icon="🌾" val={resources?.food || 0} rate={50} unit="t" c="text-yellow-400" />
+                    <R icon="🧱" val={resources?.materials || 0} rate={50} unit="t" c="text-stone-400" />
+                    <R icon="⚡" val={resources?.energy || 0} rate={50} unit="kWh" c="text-amber-500" />
+                    <R icon="👷" val={resources?.manpower || 0} rate={10} unit="" c="text-sky-400" />
                 </div>
                 <div className="text-xs text-gray-400">{username} | <span className="text-white font-bold">{myProvinces}</span> prov</div>
             </div>
@@ -419,20 +416,23 @@ export function WorldMapComponent() {
                             </div>
 
                             {/* Resource Bonuses */}
-                            <div className="flex-1 p-3 grid grid-cols-2 gap-2 content-start overflow-y-auto">
-                                {Object.entries(selectedProv).filter(([k, v]) => k.includes('Bonus') && typeof v === 'number' && v > 0).map(([k, v]) => {
-                                    const resName = k.replace('Bonus', '');
-                                    const ICONS: any = { oil: '🛢️', gas: '🔥', uranium: '☢️', lithium: '🔋', rareEarth: '💎', copper: '🔶', gold: '🪙', steel: '⚙️', silicon: '💻', food: '🌾' };
-                                    return (
-                                        <div key={k} className="flex items-center gap-2 bg-gradient-to-br from-white/5 to-transparent p-2 rounded border border-white/5 hover:border-amber-500/30 transition-colors">
-                                            <span className="text-xl filter drop-shadow opacity-90">{ICONS[resName] || '📦'}</span>
-                                            <div className="flex flex-col leading-none">
-                                                <span className="text-[9px] text-zinc-500 uppercase font-bold tracking-wider">{resName}</span>
-                                                <span className="text-sm font-bold text-emerald-400">+{v as number}</span>
-                                            </div>
+                            <div className="flex-1 p-3 flex flex-col gap-2 content-start overflow-y-auto">
+                                <div className="text-[10px] text-zinc-500 uppercase font-bold tracking-wider mb-1">PRODUCCIÓN LOCAL</div>
+                                {selectedProv && (selectedProv as any).resourceType && (
+                                    <div className="flex items-center gap-3 bg-white/5 p-3 rounded border border-white/5">
+                                        <span className="text-3xl filter drop-shadow opacity-90">
+                                            {(RESOURCE_CONFIG as any)[(selectedProv as any).resourceType.toLowerCase()]?.icon || '📦'}
+                                        </span>
+                                        <div className="flex flex-col">
+                                            <span className="text-xs text-zinc-400 uppercase font-bold">
+                                                {(RESOURCE_CONFIG as any)[(selectedProv as any).resourceType.toLowerCase()]?.name || 'Recurso'}
+                                            </span>
+                                            <span className="text-xl font-bold text-emerald-400">
+                                                +{(selectedProv as any).baseProduction || 1000} <span className="text-xs text-zinc-500">/ día</span>
+                                            </span>
                                         </div>
-                                    )
-                                })}
+                                    </div>
+                                )}
                             </div>
                         </div>
 

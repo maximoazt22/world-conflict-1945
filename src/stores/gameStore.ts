@@ -5,23 +5,11 @@ import { create } from 'zustand'
 // ============================================
 
 export interface Resources {
-  // Currency
-  money: number           // Dinero (billones USD)
-  // Energy
-  oil: number             // Petróleo
-  gas: number             // Gas Natural
-  uranium: number         // Uranio (energía nuclear)
-  // Strategic Minerals
-  lithium: number         // Litio (baterías)
-  rareEarth: number       // Tierras Raras (tech)
-  copper: number          // Cobre (electrónica)
-  gold: number            // Oro (reservas)
-  // Industrial
-  steel: number           // Acero
-  silicon: number         // Silicio (chips)
-  // Basic
-  food: number            // Comida
-  manpower: number        // Mano de obra (millones)
+  money: number        // Money (USD/Gold)
+  food: number         // Grain + Fish
+  materials: number    // Wood + Iron
+  energy: number       // Coal + Oil + Gas
+  manpower: number     // Population available for army
 }
 
 export interface Province {
@@ -175,18 +163,11 @@ interface GameState {
 // lithium: kt, rareEarth: kt, copper: kt, gold: toneladas, steel: Mt, silicon: kt
 // food: Mt de productos agrícolas, manpower: Millones de trabajadores
 const initialResources: Resources = {
-  money: 500,        // $500B reservas
-  oil: 50,           // 50M barriles (~2 meses de producción de Argentina)
-  gas: 30,           // 30 Bcf de reservas
-  uranium: 5,        // 5 mil libras 
-  lithium: 10,       // 10kt (Chile es líder mundial ~200kt/año)
-  rareEarth: 3,      // 3kt (China produce ~60% mundial)
-  copper: 200,       // 200kt de reservas
-  gold: 2,           // 2 toneladas reservas (~$300M)
-  steel: 100,        // 100 Mt capacidad
-  silicon: 15,       // 15kt 
-  food: 500,         // 500 Mt producción anual
-  manpower: 50,      // 50 Millones de trabajadores
+  money: 20000,
+  food: 20000,
+  materials: 20000,
+  energy: 20000,
+  manpower: 1000,
 }
 
 export const useGameStore = create<GameState>((set, get) => ({
@@ -202,7 +183,7 @@ export const useGameStore = create<GameState>((set, get) => ({
   playerId: null,
   playerNation: null,
   playerColor: null,
-  resources: { money: 0, oil: 0, gas: 0, uranium: 0, lithium: 0, rareEarth: 0, copper: 0, gold: 0, steel: 0, silicon: 0, food: 0, manpower: 0 },
+  resources: { money: 0, food: 0, materials: 0, energy: 0, manpower: 0 },
   armies: [],
   battles: [],
   activeBattleId: null,
