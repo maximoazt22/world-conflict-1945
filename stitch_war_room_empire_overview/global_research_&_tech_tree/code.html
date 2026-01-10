@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Global Research &amp; Tech Tree</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&amp;family=Noto+Sans:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#19c3e6",
+                        "background-light": "#f1f2f4",
+                        "background-dark": "#121416",
+                        "tactical-dark": "#141517",
+                        "tactical-card": "#1c2526",
+                        "active-green": "#4CAF50",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"],
+                        "body": ["Noto Sans", "sans-serif"],
+                    },
+                    backgroundImage: {
+                        'blueprint-grid': 'linear-gradient(rgba(40, 201, 216, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(40, 201, 216, 0.05) 1px, transparent 1px)',
+                    },
+                    boxShadow: {
+                        'glow-green': '0 0 12px rgba(76, 175, 80, 0.6)',
+                        'glow-cyan': '0 0 8px rgba(25, 195, 230, 0.4)',
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        /* Custom circuit line animation */
+        @keyframes dash {
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+        .animate-dash {
+            stroke-dasharray: 20;
+            stroke-dashoffset: 40;
+            animation: dash 1s linear infinite;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-white font-display overflow-hidden h-screen w-full flex flex-col relative select-none">
+<!-- Top Header -->
+<header class="z-30 flex items-center bg-[#141517] border-b border-[#3c4f53] p-4 pb-2 justify-between shrink-0 shadow-lg">
+<div class="text-primary flex size-10 shrink-0 items-center justify-center bg-[#1c2526] rounded-lg border border-[#293638]">
+<span class="material-symbols-outlined text-xl">arrow_back</span>
+</div>
+<div class="flex flex-col items-center">
+<h2 class="text-white text-lg font-bold leading-tight tracking-wider uppercase">R&amp;D Division</h2>
+<div class="flex items-center gap-1 opacity-60">
+<span class="material-symbols-outlined text-[10px]">public</span>
+<span class="text-[10px] tracking-widest uppercase">Global Command</span>
+</div>
+</div>
+<div class="flex flex-col items-end justify-center bg-[#1c2526] px-3 py-1 rounded-lg border border-[#293638]">
+<span class="text-[#9db4b8] text-xs font-medium uppercase tracking-wider">Research Pts</span>
+<span class="text-primary text-base font-bold leading-none tracking-tight">1,450</span>
+</div>
+</header>
+<!-- Branch Selector Tabs -->
+<div class="z-30 bg-[#141517] border-b border-[#293638] shadow-md">
+<div class="flex overflow-x-auto hide-scrollbar px-2">
+<button class="group flex flex-col items-center justify-center min-w-[80px] py-3 flex-1 relative">
+<span class="material-symbols-outlined text-[#9db4b8] mb-1 group-hover:text-white transition-colors">hiking</span>
+<p class="text-[#9db4b8] text-[10px] font-bold uppercase tracking-wider group-hover:text-white">Infantry</p>
+<div class="absolute bottom-0 h-[2px] w-full bg-transparent"></div>
+</button>
+<button class="group flex flex-col items-center justify-center min-w-[80px] py-3 flex-1 relative">
+<span class="material-symbols-outlined text-primary mb-1 shadow-[0_0_8px_rgba(25,195,230,0.5)]">propane_tank</span>
+<p class="text-white text-[10px] font-bold uppercase tracking-wider shadow-[0_0_8px_rgba(25,195,230,0.5)]">Armored</p>
+<div class="absolute bottom-0 h-[2px] w-full bg-primary shadow-[0_0_8px_rgba(25,195,230,0.8)]"></div>
+</button>
+<button class="group flex flex-col items-center justify-center min-w-[80px] py-3 flex-1 relative">
+<span class="material-symbols-outlined text-[#9db4b8] mb-1 group-hover:text-white transition-colors">flight</span>
+<p class="text-[#9db4b8] text-[10px] font-bold uppercase tracking-wider group-hover:text-white">Aviation</p>
+<div class="absolute bottom-0 h-[2px] w-full bg-transparent"></div>
+</button>
+<button class="group flex flex-col items-center justify-center min-w-[80px] py-3 flex-1 relative">
+<span class="material-symbols-outlined text-[#9db4b8] mb-1 group-hover:text-white transition-colors">sailing</span>
+<p class="text-[#9db4b8] text-[10px] font-bold uppercase tracking-wider group-hover:text-white">Naval</p>
+<div class="absolute bottom-0 h-[2px] w-full bg-transparent"></div>
+</button>
+</div>
+</div>
+<!-- Main Tech Tree Canvas (Scrollable) -->
+<main class="flex-1 relative overflow-auto cursor-grab active:cursor-grabbing bg-[#121416] bg-blueprint-grid bg-[size:40px_40px]">
+<!-- Canvas Container - width needs to be large enough for horizontal scroll -->
+<div class="relative w-[1200px] h-[800px] p-8 min-h-full">
+<!-- Connection Lines (SVG Layer) -->
+<!-- Positioned behind nodes -->
+<svg class="absolute top-0 left-0 w-full h-full pointer-events-none z-0" style="stroke-linecap: square;">
+<defs>
+<lineargradient id="gradCompleted" x1="0%" x2="100%" y1="0%" y2="0%">
+<stop offset="0%" style="stop-color:#3c4f53;stop-opacity:1"></stop>
+<stop offset="100%" style="stop-color:#3c4f53;stop-opacity:1"></stop>
+</lineargradient>
+<lineargradient id="gradActive" x1="0%" x2="100%" y1="0%" y2="0%">
+<stop offset="0%" style="stop-color:#4CAF50;stop-opacity:1"></stop>
+<stop offset="100%" style="stop-color:#2e7d32;stop-opacity:0.5"></stop>
+</lineargradient>
+</defs>
+<!-- Line: Start -> Light Tank -->
+<polyline fill="none" points="60,300 120,300" stroke="#3c4f53" stroke-width="2"></polyline>
+<!-- Line: Light Tank -> Improved Chassis -->
+<polyline fill="none" points="280,300 340,300" stroke="#3c4f53" stroke-width="2"></polyline>
+<!-- Line: Light Tank -> Heavy Engines (Branch Down) -->
+<polyline fill="none" points="280,300 310,300 310,460 340,460" stroke="#3c4f53" stroke-width="2"></polyline>
+<!-- Line: Improved Chassis -> Sloped Armor (Researching) -->
+<polyline class="opacity-80" fill="none" points="500,300 560,300" stroke="#4CAF50" stroke-width="3"></polyline>
+<!-- Line: Improved Chassis -> Adv Optics (Locked) -->
+<polyline fill="none" points="500,300 530,300 530,140 560,140" stroke="#293638" stroke-dasharray="4 4" stroke-width="2"></polyline>
+<!-- Line: Heavy Engines -> Heavy Tank (Locked) -->
+<polyline fill="none" points="500,460 560,460" stroke="#293638" stroke-width="2"></polyline>
+</svg>
+<!-- Column 1 -->
+<div class="absolute top-[260px] left-[120px] z-10">
+<!-- Node: Light Tank (Completed) -->
+<div class="w-40 h-20 bg-[#1c2526] border border-[#3c4f53] rounded-lg p-2 flex flex-col justify-between opacity-60 hover:opacity-100 transition-opacity">
+<div class="flex justify-between items-start">
+<span class="text-[10px] text-[#9db4b8] font-bold tracking-wider">COMPLETED</span>
+<span class="material-symbols-outlined text-[#9db4b8] text-sm">check_circle</span>
+</div>
+<div class="flex items-end gap-2">
+<span class="material-symbols-outlined text-white text-2xl">minor_crash</span>
+<span class="text-white text-xs font-bold leading-tight">Light Tank<br/>Chassis</span>
+</div>
+</div>
+</div>
+<!-- Column 2 -->
+<div class="absolute top-[260px] left-[340px] z-10">
+<!-- Node: Improved Chassis (Completed) -->
+<div class="w-40 h-20 bg-[#1c2526] border border-[#3c4f53] rounded-lg p-2 flex flex-col justify-between opacity-60 hover:opacity-100 transition-opacity">
+<div class="flex justify-between items-start">
+<span class="text-[10px] text-[#9db4b8] font-bold tracking-wider">COMPLETED</span>
+<span class="material-symbols-outlined text-[#9db4b8] text-sm">check_circle</span>
+</div>
+<div class="flex items-end gap-2">
+<span class="material-symbols-outlined text-white text-2xl">foundation</span>
+<span class="text-white text-xs font-bold leading-tight">Reinforced<br/>Structure</span>
+</div>
+</div>
+</div>
+<div class="absolute top-[420px] left-[340px] z-10">
+<!-- Node: Heavy Engines (Available) -->
+<div class="w-40 h-20 bg-[#1c2526] border border-primary shadow-glow-cyan rounded-lg p-2 flex flex-col justify-between cursor-pointer group hover:bg-[#293638] transition-colors">
+<div class="flex justify-between items-start">
+<span class="text-[10px] text-primary font-bold tracking-wider group-hover:text-white">AVAILABLE</span>
+<span class="text-[10px] text-white bg-primary/20 px-1 rounded">350 RP</span>
+</div>
+<div class="flex items-end gap-2">
+<span class="material-symbols-outlined text-primary text-2xl group-hover:text-white">earth_engine</span>
+<span class="text-white text-xs font-bold leading-tight">V12 Diesel<br/>Engine</span>
+</div>
+</div>
+</div>
+<!-- Column 3 -->
+<div class="absolute top-[245px] left-[560px] z-20">
+<!-- Node: Sloped Armor (Researching - ACTIVE) -->
+<div class="relative w-44 h-28 bg-[#141517] border-2 border-active-green shadow-glow-green rounded-lg p-3 flex flex-col justify-between overflow-hidden">
+<!-- Progress Bar Background -->
+<div class="absolute bottom-0 left-0 h-1 bg-white/10 w-full">
+<div class="h-full bg-active-green w-[35%] shadow-[0_0_10px_#4CAF50]"></div>
+</div>
+<div class="flex justify-between items-start z-10">
+<div class="flex items-center gap-1">
+<div class="w-1.5 h-1.5 rounded-full bg-active-green animate-pulse"></div>
+<span class="text-[10px] text-active-green font-bold tracking-wider animate-pulse">RESEARCHING</span>
+</div>
+<span class="text-[10px] text-white font-mono opacity-80">4h 12m</span>
+</div>
+<div class="flex flex-col gap-1 z-10 mt-1">
+<div class="flex items-center gap-2 mb-1">
+<span class="material-symbols-outlined text-active-green text-3xl">shield</span>
+<span class="text-white text-sm font-bold leading-tight uppercase">Sloped<br/>Armor</span>
+</div>
+<p class="text-[9px] text-gray-400 leading-tight">Increases ricochet chance by 45%. Required for Medium Tanks.</p>
+</div>
+<!-- Scanline effect -->
+<div class="absolute inset-0 bg-gradient-to-b from-transparent via-white/5 to-transparent h-[200%] w-full animate-[spin_4s_linear_infinite] opacity-10 pointer-events-none"></div>
+</div>
+</div>
+<div class="absolute top-[100px] left-[560px] z-10">
+<!-- Node: Advanced Optics (Locked) -->
+<div class="w-40 h-20 bg-[#0e1011] border border-[#293638] border-dashed rounded-lg p-2 flex flex-col justify-between opacity-50 grayscale">
+<div class="flex justify-between items-start">
+<span class="text-[10px] text-gray-500 font-bold tracking-wider">LOCKED</span>
+<span class="material-symbols-outlined text-gray-500 text-sm">lock</span>
+</div>
+<div class="flex items-end gap-2">
+<span class="material-symbols-outlined text-gray-400 text-2xl">visibility</span>
+<span class="text-gray-400 text-xs font-bold leading-tight">Advanced<br/>Optics</span>
+</div>
+</div>
+</div>
+<div class="absolute top-[420px] left-[560px] z-10">
+<!-- Node: Heavy Tank (Locked) -->
+<div class="w-40 h-20 bg-[#0e1011] border border-[#293638] border-dashed rounded-lg p-2 flex flex-col justify-between opacity-50 grayscale">
+<div class="flex justify-between items-start">
+<span class="text-[10px] text-gray-500 font-bold tracking-wider">LOCKED</span>
+<span class="material-symbols-outlined text-gray-500 text-sm">lock</span>
+</div>
+<div class="flex items-end gap-2">
+<span class="material-symbols-outlined text-gray-400 text-2xl">airport_shuttle</span> <!-- Close enough to a tank/heavy vehicle -->
+<span class="text-gray-400 text-xs font-bold leading-tight">Heavy Tank<br/>Proto-1</span>
+</div>
+</div>
+</div>
+<!-- Future Nodes Hint -->
+<div class="absolute top-[280px] left-[800px] opacity-20 pointer-events-none">
+<span class="material-symbols-outlined text-6xl text-white">double_arrow</span>
+</div>
+</div>
+</main>
+<!-- Bottom Detail Sheet (Simulated Active State) -->
+<div class="z-40 bg-[#1c2526] border-t border-[#3c4f53] shadow-[0_-4px_20px_rgba(0,0,0,0.4)] rounded-t-xl">
+<!-- Drag Handle -->
+<div class="w-full flex justify-center pt-2 pb-1">
+<div class="w-12 h-1 bg-[#3c4f53] rounded-full"></div>
+</div>
+<div class="px-5 pb-6 pt-2">
+<div class="flex justify-between items-start mb-4">
+<div class="flex gap-4">
+<div class="size-16 rounded-lg bg-[#293638] flex items-center justify-center border border-active-green shadow-glow-green relative overflow-hidden">
+<span class="material-symbols-outlined text-active-green text-4xl relative z-10">shield</span>
+<!-- Background glow inside icon box -->
+<div class="absolute inset-0 bg-active-green opacity-10"></div>
+</div>
+<div>
+<div class="flex items-center gap-2 mb-1">
+<h3 class="text-white text-xl font-bold leading-none tracking-tight">SLOPED ARMOR</h3>
+<span class="bg-active-green/20 text-active-green text-[10px] font-bold px-1.5 py-0.5 rounded border border-active-green/30">TIER II</span>
+</div>
+<p class="text-[#9db4b8] text-xs max-w-[200px] leading-snug">Revolutionary armor geometry that drastically increases effective thickness against AP rounds.</p>
+</div>
+</div>
+<!-- Action / Speed Up -->
+<button class="flex flex-col items-center gap-1 group">
+<div class="size-10 rounded-full bg-[#293638] flex items-center justify-center border border-[#3c4f53] group-hover:border-white transition-colors">
+<span class="material-symbols-outlined text-white text-xl">bolt</span>
+</div>
+<span class="text-[10px] text-[#9db4b8] font-bold">BOOST</span>
+</button>
+</div>
+<!-- Research Status Bar -->
+<div class="bg-[#141517] p-3 rounded-lg border border-[#293638] flex flex-col gap-2">
+<div class="flex justify-between items-end text-xs">
+<span class="text-white font-medium">Research in progress...</span>
+<span class="text-active-green font-mono font-bold">35%</span>
+</div>
+<div class="h-2 w-full bg-[#293638] rounded-full overflow-hidden relative">
+<div class="h-full bg-active-green w-[35%] rounded-full relative overflow-hidden">
+<!-- Striped animation inside bar -->
+<div class="absolute inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.3)_50%,transparent_75%)] bg-[length:10px_10px]"></div>
+</div>
+</div>
+<div class="flex justify-between items-center mt-1">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[#9db4b8] text-sm">schedule</span>
+<span class="text-[#9db4b8] text-xs font-mono">4h 12m remaining</span>
+</div>
+<button class="text-active-green text-xs font-bold uppercase tracking-wide hover:underline decoration-active-green underline-offset-4">
+                        View Blueprint Details
+                    </button>
+</div>
+</div>
+</div>
+</div>
+</body></html>

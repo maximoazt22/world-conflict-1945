@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Commander Registration</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#3bff0f",
+                        "background-light": "#f6f8f5",
+                        "background-dark": "#13230f",
+                        "surface-dark": "#1a2e16",
+                        "surface-light": "#ffffff",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem", "sm": "0.125rem"},
+                    backgroundImage: {
+                        'grid-pattern': "linear-gradient(to right, #3bff0f1a 1px, transparent 1px), linear-gradient(to bottom, #3bff0f1a 1px, transparent 1px)",
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom scrollbar for the horizontal section */
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        
+        /* Scanline effect */
+        .scanlines {
+            background: linear-gradient(
+                to bottom,
+                rgba(255,255,255,0),
+                rgba(255,255,255,0) 50%,
+                rgba(0,0,0,0.2) 50%,
+                rgba(0,0,0,0.2)
+            );
+            background-size: 100% 4px;
+            pointer-events: none;
+        }
+
+        /* CRT Flicker Animation (optional feel without JS) */
+        @keyframes flicker {
+            0% { opacity: 0.97; }
+            50% { opacity: 1; }
+            100% { opacity: 0.98; }
+        }
+        .crt-flicker {
+            animation: flicker 0.15s infinite;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-800 dark:text-white overflow-x-hidden selection:bg-primary selection:text-black">
+<!-- Scanline Overlay -->
+<div class="fixed inset-0 z-50 pointer-events-none scanlines opacity-20 h-screen w-screen"></div>
+<!-- Background Grid -->
+<div class="fixed inset-0 z-0 bg-grid-pattern bg-[length:40px_40px] opacity-10 pointer-events-none"></div>
+<div class="relative z-10 flex flex-col min-h-screen max-w-md mx-auto border-x border-primary/20 bg-background-light dark:bg-background-dark shadow-2xl">
+<!-- Header -->
+<header class="sticky top-0 z-30 bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-sm border-b border-primary/30 p-4">
+<div class="flex items-center justify-between mb-2">
+<div class="flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined animate-pulse" style="font-size: 20px;">lock</span>
+<span class="text-xs font-bold tracking-widest">SECURE UPLINK // V.1945</span>
+</div>
+<div class="flex items-center gap-1">
+<div class="h-1.5 w-6 bg-primary rounded-sm"></div>
+<div class="h-1.5 w-1 bg-primary/30 rounded-sm"></div>
+<div class="h-1.5 w-1 bg-primary/30 rounded-sm"></div>
+</div>
+</div>
+<h1 class="text-xl font-bold leading-none tracking-tight">COMMANDER REGISTRATION</h1>
+</header>
+<!-- Main Content -->
+<main class="flex-1 flex flex-col p-4 gap-8 pb-32">
+<!-- Step 1: Identification -->
+<section class="relative">
+<div class="absolute -left-4 top-0 bottom-0 w-1 bg-gradient-to-b from-primary to-transparent opacity-50"></div>
+<div class="flex items-baseline justify-between mb-4">
+<h2 class="text-2xl font-bold tracking-tight text-primary">01 // IDENTIFICATION</h2>
+<span class="text-xs font-mono text-primary/60">[REQUIRED]</span>
+</div>
+<div class="space-y-4">
+<!-- Username Field -->
+<div class="group">
+<label class="block text-xs font-bold tracking-wider text-primary/80 mb-1.5 uppercase">Codename (Username)</label>
+<div class="relative flex items-center">
+<input class="w-full bg-surface-dark/50 border border-primary/30 rounded focus:border-primary focus:ring-1 focus:ring-primary text-white placeholder-white/30 px-4 py-3 font-mono text-sm transition-all" placeholder="ENTER TACTICAL HANDLE" type="text"/>
+<span class="material-symbols-outlined absolute right-3 text-primary/50 text-lg">badge</span>
+</div>
+</div>
+<!-- Email Field -->
+<div class="group">
+<label class="block text-xs font-bold tracking-wider text-primary/80 mb-1.5 uppercase">Comm Frequency (Email)</label>
+<div class="relative flex items-center">
+<input class="w-full bg-surface-dark/50 border border-primary/30 rounded focus:border-primary focus:ring-1 focus:ring-primary text-white placeholder-white/30 px-4 py-3 font-mono text-sm transition-all" placeholder="SECURE@DOMAIN.MIL" type="email"/>
+<span class="material-symbols-outlined absolute right-3 text-primary/50 text-lg">alternate_email</span>
+</div>
+</div>
+<!-- Password Field -->
+<div class="group">
+<label class="block text-xs font-bold tracking-wider text-primary/80 mb-1.5 uppercase">Access Key (Password)</label>
+<div class="relative flex items-center">
+<input class="w-full bg-surface-dark/50 border border-primary/30 rounded focus:border-primary focus:ring-1 focus:ring-primary text-white placeholder-white/30 px-4 py-3 font-mono text-sm transition-all" placeholder="••••••••••••" type="password"/>
+<span class="material-symbols-outlined absolute right-3 text-primary/50 text-lg cursor-pointer hover:text-primary">visibility</span>
+</div>
+<div class="flex gap-1 mt-2">
+<div class="h-1 flex-1 bg-red-500/50 rounded-full"></div>
+<div class="h-1 flex-1 bg-yellow-500/20 rounded-full"></div>
+<div class="h-1 flex-1 bg-primary/20 rounded-full"></div>
+</div>
+<p class="text-[10px] text-right text-primary/60 mt-1 font-mono">SECURITY LEVEL: WEAK</p>
+</div>
+</div>
+</section>
+<!-- Divider -->
+<div class="flex items-center gap-4 opacity-50">
+<div class="h-px bg-primary/40 flex-1"></div>
+<span class="material-symbols-outlined text-primary text-sm">satellite_alt</span>
+<div class="h-px bg-primary/40 flex-1"></div>
+</div>
+<!-- Step 2: Allegiance -->
+<section class="relative">
+<div class="absolute -left-4 top-0 bottom-0 w-1 bg-gradient-to-b from-transparent via-primary to-transparent opacity-50"></div>
+<div class="flex items-baseline justify-between mb-4">
+<h2 class="text-2xl font-bold tracking-tight text-primary">02 // ALLEGIANCE</h2>
+<span class="text-xs font-mono text-primary/60">[SELECT ONE]</span>
+</div>
+<!-- Horizontal Scroll Container -->
+<div class="flex overflow-x-auto gap-4 pb-6 -mx-4 px-4 hide-scrollbar snap-x snap-mandatory">
+<!-- Card: USA -->
+<div class="snap-center shrink-0 w-[280px] bg-surface-dark/80 border border-primary rounded-lg overflow-hidden relative group cursor-pointer hover:border-white transition-colors">
+<div class="absolute top-2 right-2 z-20">
+<div class="h-4 w-4 rounded-full border border-primary flex items-center justify-center">
+<div class="h-2 w-2 bg-primary rounded-full"></div>
+</div>
+</div>
+<div class="h-40 w-full bg-[#2a2a2a] relative overflow-hidden">
+<div class="absolute inset-0 bg-gradient-to-t from-surface-dark to-transparent z-10"></div>
+<!-- Flag Overlay -->
+<div class="absolute top-0 left-0 p-4 opacity-20 text-6xl font-black text-white select-none">USA</div>
+<!-- Leader Image -->
+<img alt="Leader" class="w-full h-full object-cover object-top mix-blend-overlay opacity-80" data-alt="Miniature painted figure of a generic WWII US General standing on a map table" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBBLYDcz37eLls4GnUKmPh_Zc9NZYe-eaJb42Vc1QL-l_ApIFHfPqdbx5IN2qROn9hVQUn8QmptNOFLbdaBVrK9HmXNO8t_EdpxUqpdg7JD_CzbyevZdsmkahgLooHeUnyEtgegTJO4FxQ6Q2IHRKnwKezhRabo_i11sP_5JHSOwFALPTE9SjjkC7qqEwOSU9YOwHulePpHdHdnUOzZ7TK6QADM-yZMrXAsDLgcUhOsI38AZZXwtbdtBbbUW7ku8IRKWRJg9GK7dPI"/>
+</div>
+<div class="p-4 relative z-20">
+<h3 class="text-xl font-bold text-white mb-1">UNITED STATES</h3>
+<p class="text-xs text-primary/80 mb-3 font-mono">LEADER: GEN. EISENHOWER</p>
+<div class="bg-black/40 rounded p-2 border border-white/5">
+<div class="flex items-center gap-2 mb-1">
+<span class="material-symbols-outlined text-primary text-sm">factory</span>
+<span class="text-xs font-bold text-white uppercase">Industrial Might</span>
+</div>
+<p class="text-[10px] text-gray-400 leading-relaxed">
+                                    Factories produce units 20% faster. Supply lines +15% durability.
+                                </p>
+</div>
+</div>
+</div>
+<!-- Card: Germany -->
+<div class="snap-center shrink-0 w-[280px] bg-surface-dark/40 border border-white/10 rounded-lg overflow-hidden relative group cursor-pointer hover:border-primary transition-colors">
+<div class="absolute top-2 right-2 z-20">
+<div class="h-4 w-4 rounded-full border border-white/30 flex items-center justify-center"></div>
+</div>
+<div class="h-40 w-full bg-[#2a2a2a] relative overflow-hidden">
+<div class="absolute inset-0 bg-gradient-to-t from-surface-dark to-transparent z-10"></div>
+<div class="absolute top-0 left-0 p-4 opacity-20 text-6xl font-black text-white select-none">GER</div>
+<img alt="Leader" class="w-full h-full object-cover mix-blend-overlay opacity-60" data-alt="Close up of a dark metallic texture resembling a tank hull" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDZ5TP87586uGbpeSUDmzW6_pf7Crkn9Ocsrz-fyE5ne3LO3nzyB1Z8C6Eh7VKVLSaP8_U1Nuwht0Iw_rnIjkLzugyP_iBwg6b727K1ZQL4WGhxHmD1IJzwwRKfeKc-OE2XPa7wa9vzIBtM-Le60yN5Knif5fXg7QGYWILa3d0sXxJUi8VvEToDhB4jOFoZ9LeoptENz16uGoYKvdYUnX9gUkZ1fHHV-Vt7frNq4VIiPZJdzEfTdrba7UgZowTZwJpu8_7v0LlwjXM"/>
+</div>
+<div class="p-4 relative z-20">
+<h3 class="text-xl font-bold text-gray-300 group-hover:text-white mb-1">GERMANY</h3>
+<p class="text-xs text-gray-500 mb-3 font-mono">LEADER: GEN. ROMMEL</p>
+<div class="bg-black/40 rounded p-2 border border-white/5">
+<div class="flex items-center gap-2 mb-1">
+<span class="material-symbols-outlined text-gray-400 text-sm">speed</span>
+<span class="text-xs font-bold text-gray-300 uppercase">Blitz Tactics</span>
+</div>
+<p class="text-[10px] text-gray-500 leading-relaxed">
+                                    Armor units +10% Movement Speed. First strike bonus on plains.
+                                </p>
+</div>
+</div>
+</div>
+<!-- Card: USSR -->
+<div class="snap-center shrink-0 w-[280px] bg-surface-dark/40 border border-white/10 rounded-lg overflow-hidden relative group cursor-pointer hover:border-primary transition-colors">
+<div class="absolute top-2 right-2 z-20">
+<div class="h-4 w-4 rounded-full border border-white/30 flex items-center justify-center"></div>
+</div>
+<div class="h-40 w-full bg-[#2a2a2a] relative overflow-hidden">
+<div class="absolute inset-0 bg-gradient-to-t from-surface-dark to-transparent z-10"></div>
+<div class="absolute top-0 left-0 p-4 opacity-20 text-6xl font-black text-white select-none">USSR</div>
+<img alt="Leader" class="w-full h-full object-cover mix-blend-overlay opacity-60" data-alt="Abstract red textured background representing soviet imagery" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC2UB_xxUH1vtLcD0xh2Q8h1CkO51hxsSAZYmXkDtF44nOL96EDVdteOEEmWt_EspBVkyhxeMKDtuS_neVU0PnFnD7gAdi8SNfeiL3b2Xlx-enGMyt0KWHpEO89UTuaCgZNipjc_O_MmHBUl767uhhobb03yS4cvzc6SkN1-gOO65J9FMHD_Ulr8unn5IlEPdJXQsXMh3JM5XYpZ_Cx0Pjw_7Rak7EZUt4rBFHBPjxqII7dUtfOQ0n6QeNNRrtH1AGEdpORu_qELH8"/>
+</div>
+<div class="p-4 relative z-20">
+<h3 class="text-xl font-bold text-gray-300 group-hover:text-white mb-1">SOVIET UNION</h3>
+<p class="text-xs text-gray-500 mb-3 font-mono">LEADER: GEN. ZHUKOV</p>
+<div class="bg-black/40 rounded p-2 border border-white/5">
+<div class="flex items-center gap-2 mb-1">
+<span class="material-symbols-outlined text-gray-400 text-sm">groups</span>
+<span class="text-xs font-bold text-gray-300 uppercase">Mass Mobilization</span>
+</div>
+<p class="text-[10px] text-gray-500 leading-relaxed">
+                                    Infantry cost reduced by 15%. Reinforcement rate doubled in winter.
+                                </p>
+</div>
+</div>
+</div>
+</div>
+<!-- Scroll Indicator -->
+<div class="flex justify-center gap-1 mt-2">
+<div class="h-1 w-8 bg-primary rounded-full"></div>
+<div class="h-1 w-2 bg-primary/20 rounded-full"></div>
+<div class="h-1 w-2 bg-primary/20 rounded-full"></div>
+</div>
+</section>
+</main>
+<!-- Footer Action -->
+<footer class="fixed bottom-0 max-w-md w-full z-40 bg-background-dark/95 border-t border-primary/20 backdrop-blur-md p-4">
+<button class="w-full group relative overflow-hidden rounded bg-primary h-14 flex items-center justify-center gap-3 transition-transform active:scale-[0.98]">
+<!-- Button Glitch Effect Overlay -->
+<div class="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+<span class="material-symbols-outlined text-black font-bold">token</span>
+<span class="text-black text-lg font-bold tracking-wider uppercase">Initialize Commander</span>
+</button>
+<p class="text-[10px] text-center text-primary/40 mt-3 font-mono">
+                BY CLICKING, YOU AGREE TO THE RULES OF ENGAGEMENT // ENCRYPTED
+            </p>
+</footer>
+</div>
+</body></html>

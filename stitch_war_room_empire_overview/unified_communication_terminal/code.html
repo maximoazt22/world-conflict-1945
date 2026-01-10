@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Unified Communication Terminal</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Noto+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Config -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#00aaff",
+                        "background-light": "#f1f2f4",
+                        "background-dark": "#111317",
+                        "surface-dark": "#181b21",
+                        "surface-border": "#2a323c",
+                        "text-dim": "#9ab0bc",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"],
+                        "body": ["Noto Sans", "sans-serif"],
+                    },
+                    backgroundImage: {
+                        'grid-pattern': "linear-gradient(to right, #2a323c 1px, transparent 1px), linear-gradient(to bottom, #2a323c 1px, transparent 1px)",
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom Scrollbar for the terminal feel */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #111317; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2a323c; 
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00aaff; 
+        }
+        
+        /* Scanline effect */
+        .scanline {
+            background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.2));
+            background-size: 100% 4px;
+            pointer-events: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-white font-display overflow-hidden h-screen flex flex-col">
+<!-- Header / Top Bar -->
+<header class="flex items-center bg-[#101618] border-b border-surface-border p-3 justify-between shrink-0 z-20 shadow-md">
+<div class="flex items-center gap-3">
+<div class="text-primary flex items-center justify-center p-1 border border-primary/30 rounded bg-primary/10">
+<span class="material-symbols-outlined text-[20px]">satellite_alt</span>
+</div>
+<div>
+<h1 class="text-white text-sm font-bold leading-none tracking-widest uppercase">Unified Terminal</h1>
+<span class="text-[10px] text-primary font-mono">WC-1945 // V.1.04</span>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<div class="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></div>
+<p class="text-text-dim text-xs font-bold tracking-widest">ENCRYPTED</p>
+</div>
+</header>
+<!-- Main Content: Split View (Stacked on Portrait, Side-by-Side on Landscape) -->
+<main class="flex-1 flex flex-col md:flex-row overflow-hidden relative">
+<!-- LEFT PANEL: ALLIANCE WAR ROOM -->
+<section class="flex flex-col w-full md:w-1/2 lg:w-5/12 border-b md:border-b-0 md:border-r border-surface-border bg-[#12151A] relative shrink-0 h-1/2 md:h-full">
+<!-- Panel Header -->
+<div class="px-4 py-2 border-b border-surface-border flex justify-between items-center bg-surface-dark/50 backdrop-blur-sm">
+<h2 class="text-xs font-bold text-text-dim tracking-[0.15em] flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px]">travel_explore</span>
+                    ALLIANCE WAR ROOM
+                </h2>
+<div class="px-2 py-0.5 rounded border border-yellow-500/30 bg-yellow-500/10 text-yellow-500 text-[10px] font-bold">
+                    ALERT LEVEL 4
+                </div>
+</div>
+<!-- Map Container -->
+<div class="relative flex-1 bg-black overflow-hidden group">
+<!-- Map Image -->
+<div class="absolute inset-0 bg-cover bg-center opacity-60 mix-blend-screen" data-alt="Dark stylized tactical map of Europe with glowing grid lines" data-location="European Theater" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuD7zZocbRZL3EBN4fALApN00mp1rUJRO8X0JihFHT1IXwGlgku2Eo92SQyi9RKEg9sVpMyGCB3UuUGfXyrH5lOn_GHjc4TynthIcZrDBXlkpB_eUuNg5YHEjdo4gzxWnHPz0BEfeIqeJgapqLeZgXhhJekg4-7uf3wEf7EHCAkcJadI_XZs2BdK845ToFljirJD_IYnHFY9DVFZytGON-C_jwp_lqpBe5pOi1tHkpgwv84q2s3MhyeDZNySCbzUaecMC0QARrmaYvk');">
+</div>
+<!-- Overlay Grid -->
+<div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/diagmonds-light.png')] opacity-10"></div>
+<!-- Tactical Overlays (Pure CSS UI Elements) -->
+<!-- Target Reticle -->
+<div class="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2">
+<div class="w-16 h-16 border border-primary/50 rounded-full flex items-center justify-center animate-ping absolute opacity-20"></div>
+<div class="w-16 h-16 border border-primary rounded-full flex items-center justify-center relative shadow-[0_0_15px_rgba(0,170,255,0.4)]">
+<div class="w-1 h-1 bg-white rounded-full"></div>
+<div class="absolute -top-6 text-[10px] text-primary font-bold bg-black/80 px-1">SECTOR 7G</div>
+</div>
+</div>
+<!-- Attack Vector Lines -->
+<svg class="absolute inset-0 w-full h-full pointer-events-none" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<lineargradient id="grad1" x1="0%" x2="100%" y1="0%" y2="0%">
+<stop offset="0%" style="stop-color:rgba(0,170,255,0);stop-opacity:0"></stop>
+<stop offset="100%" style="stop-color:#00aaff;stop-opacity:0.8"></stop>
+</lineargradient>
+</defs>
+<path d="M 50 300 Q 150 150 200 150" fill="none" stroke="url(#grad1)" stroke-dasharray="5,5" stroke-width="2"></path>
+<circle cx="50" cy="300" fill="#00aaff" r="4"></circle>
+</svg>
+<!-- HUD Stats Overlay -->
+<div class="absolute bottom-4 left-4 right-4 flex gap-2">
+<div class="bg-black/80 backdrop-blur border border-surface-border p-2 flex-1 rounded">
+<p class="text-[10px] text-text-dim uppercase">Coordination</p>
+<p class="text-xl font-bold text-white leading-none mt-1">92%</p>
+</div>
+<div class="bg-black/80 backdrop-blur border border-surface-border p-2 flex-1 rounded">
+<p class="text-[10px] text-text-dim uppercase">T-Minus</p>
+<p class="text-xl font-bold text-red-500 leading-none mt-1 font-mono">04:00</p>
+</div>
+</div>
+</div>
+<!-- Action Bar -->
+<div class="p-3 bg-surface-dark border-t border-surface-border">
+<button class="w-full bg-primary/10 hover:bg-primary/20 text-primary border border-primary/50 py-3 px-4 rounded font-bold tracking-widest flex items-center justify-center gap-2 transition-all active:scale-[0.98] group">
+<span class="material-symbols-outlined group-hover:animate-bounce">rocket_launch</span>
+                    CONFIRM DEPLOYMENT
+                </button>
+</div>
+</section>
+<!-- RIGHT PANEL: GLOBAL TRANSMISSION -->
+<section class="flex flex-col w-full md:w-1/2 lg:w-7/12 bg-[#0d0f12] h-1/2 md:h-full relative z-10">
+<!-- Panel Header -->
+<div class="px-4 py-2 border-b border-surface-border flex justify-between items-center bg-surface-dark/90 backdrop-blur-sm shadow-sm z-10">
+<h2 class="text-xs font-bold text-text-dim tracking-[0.15em] flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px]">forum</span>
+                    GLOBAL TRANSMISSION
+                </h2>
+<div class="flex items-center gap-2">
+<span class="text-[10px] text-text-dim">CH. 142.9</span>
+<span class="material-symbols-outlined text-[14px] text-primary">wifi</span>
+</div>
+</div>
+<!-- Chat Feed (Scrollable) -->
+<div class="flex-1 overflow-y-auto p-4 space-y-4 pb-20 scroll-smooth">
+<!-- Timestamp Separator -->
+<div class="flex items-center justify-center gap-2 opacity-50 my-2">
+<div class="h-px bg-surface-border w-12"></div>
+<span class="text-[10px] text-text-dim font-mono">TODAY 14:02</span>
+<div class="h-px bg-surface-border w-12"></div>
+</div>
+<!-- Message 1 -->
+<div class="flex gap-3 group">
+<div class="mt-1 flex-shrink-0">
+<div class="w-8 h-8 rounded bg-blue-900/30 border border-blue-500/30 flex items-center justify-center text-blue-400 font-bold text-xs relative">
+<span class="absolute -top-1 -right-1 flex h-2.5 w-2.5">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-sky-500"></span>
+</span>
+                            US
+                        </div>
+</div>
+<div class="flex flex-col max-w-[85%]">
+<div class="flex items-baseline gap-2">
+<span class="text-sm font-bold text-white">Cmdr. Shepard</span>
+<span class="text-[10px] text-primary border border-primary/20 px-1 rounded bg-primary/5">GEN</span>
+<span class="text-[10px] text-text-dim ml-auto">14:03</span>
+</div>
+<div class="bg-surface-border/30 rounded-r-lg rounded-bl-lg p-2.5 mt-1 border border-surface-border text-sm text-gray-200 leading-relaxed shadow-sm">
+                            Sector 4 requires immediate reinforcements. Axis forces are pushing the northern flank. Over.
+                        </div>
+</div>
+</div>
+<!-- Message 2 -->
+<div class="flex gap-3 group">
+<div class="mt-1 flex-shrink-0">
+<div class="w-8 h-8 rounded bg-red-900/20 border border-red-500/30 flex items-center justify-center text-red-400 font-bold text-xs">
+                            UK
+                        </div>
+</div>
+<div class="flex flex-col max-w-[85%]">
+<div class="flex items-baseline gap-2">
+<span class="text-sm font-bold text-white">Lt. Price</span>
+<span class="text-[10px] text-orange-400 border border-orange-400/20 px-1 rounded bg-orange-400/5">CPT</span>
+<span class="text-[10px] text-text-dim ml-auto">14:05</span>
+</div>
+<div class="bg-surface-border/30 rounded-r-lg rounded-bl-lg p-2.5 mt-1 border border-surface-border text-sm text-gray-200 leading-relaxed shadow-sm">
+                            Copy that. Air support is inbound. Hold the line for 2 mikes.
+                        </div>
+<!-- Reactions applied -->
+<div class="flex gap-1 mt-1">
+<div class="bg-surface-border/50 rounded-full px-1.5 py-0.5 text-[10px] flex items-center gap-1 border border-white/5">
+<span class="material-symbols-outlined text-[10px] text-green-400">shield</span> 2
+                            </div>
+</div>
+</div>
+</div>
+<!-- Message 3 (System) -->
+<div class="flex justify-center my-2">
+<div class="bg-primary/5 border border-primary/20 px-3 py-1 rounded-full flex items-center gap-2">
+<span class="material-symbols-outlined text-[12px] text-primary">radar</span>
+<span class="text-[10px] text-primary font-bold uppercase">Intel Update: Sector 7G compromise detected</span>
+</div>
+</div>
+<!-- Message 4 (Me) -->
+<div class="flex gap-3 flex-row-reverse group">
+<div class="mt-1 flex-shrink-0">
+<div class="w-8 h-8 rounded bg-emerald-900/30 border border-emerald-500/30 flex items-center justify-center text-emerald-400 font-bold text-xs">
+                            ME
+                        </div>
+</div>
+<div class="flex flex-col items-end max-w-[85%]">
+<div class="flex items-baseline gap-2 flex-row-reverse">
+<span class="text-sm font-bold text-white">Vanguard</span>
+<span class="text-[10px] text-text-dim">14:08</span>
+</div>
+<div class="bg-primary/10 rounded-l-lg rounded-br-lg p-2.5 mt-1 border border-primary/30 text-sm text-white leading-relaxed shadow-sm">
+                            Unit Alpha is in position. Awaiting the green light.
+                        </div>
+</div>
+</div>
+</div>
+<!-- Sticky Footer / Input -->
+<div class="absolute bottom-0 w-full bg-[#12151A] border-t border-surface-border p-3 backdrop-blur-md">
+<!-- Quick Reactions -->
+<div class="flex justify-center gap-4 mb-3">
+<button class="flex flex-col items-center gap-1 group">
+<div class="w-10 h-10 rounded-full bg-surface-border/50 border border-surface-border flex items-center justify-center group-hover:bg-yellow-500/20 group-hover:border-yellow-500/50 transition-all active:scale-90">
+<span class="material-symbols-outlined text-yellow-500 text-[20px]">military_tech</span>
+</div>
+<span class="text-[9px] text-text-dim uppercase tracking-wider">Salute</span>
+</button>
+<button class="flex flex-col items-center gap-1 group">
+<div class="w-10 h-10 rounded-full bg-surface-border/50 border border-surface-border flex items-center justify-center group-hover:bg-red-500/20 group-hover:border-red-500/50 transition-all active:scale-90">
+<span class="material-symbols-outlined text-red-500 text-[20px]">local_fire_department</span>
+</div>
+<span class="text-[9px] text-text-dim uppercase tracking-wider">Fire</span>
+</button>
+<button class="flex flex-col items-center gap-1 group">
+<div class="w-10 h-10 rounded-full bg-surface-border/50 border border-surface-border flex items-center justify-center group-hover:bg-green-500/20 group-hover:border-green-500/50 transition-all active:scale-90">
+<span class="material-symbols-outlined text-green-500 text-[20px]">shield</span>
+</div>
+<span class="text-[9px] text-text-dim uppercase tracking-wider">Defend</span>
+</button>
+</div>
+<!-- Input Field -->
+<div class="flex gap-2 items-center">
+<div class="relative flex-1">
+<input class="w-full bg-black border border-surface-border text-white text-sm rounded pl-3 pr-10 py-2.5 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/50 placeholder-gray-600 font-mono" placeholder="TRANSMIT MESSAGE..." type="text"/>
+<button class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-white">
+<span class="material-symbols-outlined text-[18px]">mic</span>
+</button>
+</div>
+<button class="bg-primary hover:bg-primary/90 text-white rounded p-2.5 flex items-center justify-center transition-colors">
+<span class="material-symbols-outlined text-[20px]">send</span>
+</button>
+</div>
+</div>
+</section>
+</main>
+<!-- CRT Screen Overlay Effect -->
+<div class="pointer-events-none fixed inset-0 z-50 mix-blend-overlay opacity-30 bg-[radial-gradient(circle_at_center,_transparent_50%,_#000_100%)]"></div>
+<div class="scanline fixed inset-0 z-40 h-full w-full pointer-events-none opacity-10"></div>
+</body></html>

@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Global Combat Event Briefing</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#06e0a9",
+                        "danger": "#C7293E",
+                        "background-light": "#f2f2f2",
+                        "background-dark": "#070708",
+                        "surface-dark": "#131419",
+                        "surface-lighter": "#1c1d24",
+                        "border-dark": "#2A2B33",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"],
+                        "mono": ["Space Grotesk", "monospace"], // Using Space Grotesk for mono feel as requested by context of "digital terminal"
+                    },
+                    backgroundImage: {
+                        'grid-pattern': "linear-gradient(to right, #2A2B33 1px, transparent 1px), linear-gradient(to bottom, #2A2B33 1px, transparent 1px)",
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom Scanline Effect */
+        .scanlines {
+            background: linear-gradient(
+                to bottom,
+                rgba(255,255,255,0),
+                rgba(255,255,255,0) 50%,
+                rgba(0,0,0,0.2) 50%,
+                rgba(0,0,0,0.2)
+            );
+            background-size: 100% 4px;
+            pointer-events: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 10;
+            opacity: 0.15;
+        }
+
+        /* Glitchy Text Animation Helper */
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+        .animate-blink-fast {
+            animation: blink 1s infinite;
+        }
+
+        .clip-corner-br {
+            clip-path: polygon(100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 0);
+        }
+        
+        /* Tactical Grid Background */
+        .tactical-grid {
+            background-size: 40px 40px;
+            mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-dark text-white font-display overflow-x-hidden selection:bg-primary selection:text-black">
+<!-- Scanline Overlay -->
+<div class="scanlines fixed inset-0 h-full w-full pointer-events-none"></div>
+<div class="relative min-h-screen flex flex-col pb-24">
+<!-- Header -->
+<header class="sticky top-0 z-30 bg-background-dark/95 backdrop-blur-sm border-b border-border-dark">
+<div class="flex items-center justify-between px-4 h-16">
+<button class="flex items-center justify-center size-10 rounded hover:bg-white/5 active:scale-95 transition-transform text-white/80">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<div class="flex flex-col items-center">
+<span class="text-[10px] tracking-[0.2em] text-white/40 uppercase">Terminal // 8492</span>
+<h2 class="text-sm font-bold tracking-wider text-white">EVENT BRIEFING</h2>
+</div>
+<div class="flex items-center gap-2">
+<div class="size-2 rounded-full bg-primary animate-blink-fast shadow-[0_0_8px_rgba(6,224,169,0.8)]"></div>
+<span class="text-xs font-bold text-primary tracking-widest">LIVE</span>
+</div>
+</div>
+</header>
+<!-- Alert Banner -->
+<div class="bg-danger py-2 px-4 flex items-center justify-center gap-3 shadow-[0_0_20px_rgba(199,41,62,0.4)] relative z-20">
+<span class="material-symbols-outlined text-white text-lg animate-pulse">warning</span>
+<p class="text-white text-xs md:text-sm font-bold tracking-widest uppercase">⚠ Event Active: Priority Alpha</p>
+<span class="material-symbols-outlined text-white text-lg animate-pulse">warning</span>
+</div>
+<!-- Main Content -->
+<main class="flex-1 flex flex-col gap-6 p-4 relative">
+<!-- Background Decoration -->
+<div class="absolute inset-0 bg-grid-pattern opacity-[0.03] tactical-grid pointer-events-none z-0"></div>
+<!-- Hero Section: Title & Timer -->
+<div class="relative z-10 flex flex-col gap-4 mt-2">
+<div class="flex flex-col">
+<span class="text-primary text-xs font-mono tracking-widest mb-1">CURRENT OPERATION</span>
+<h1 class="text-4xl md:text-5xl font-bold uppercase leading-[0.9] tracking-tight text-white drop-shadow-lg">
+                        Operation<br/><span class="text-white/40">Overlord</span>
+</h1>
+</div>
+<!-- Timer Component -->
+<div class="bg-surface-dark border border-border-dark p-4 rounded clip-corner-br">
+<div class="flex items-center justify-between mb-3">
+<span class="text-[10px] text-white/50 uppercase tracking-widest">Window Remaining</span>
+<span class="material-symbols-outlined text-white/30 text-sm">timer</span>
+</div>
+<div class="flex gap-2">
+<!-- Days -->
+<div class="flex flex-col items-center flex-1">
+<div class="bg-surface-lighter w-full h-12 flex items-center justify-center rounded border border-white/5 relative overflow-hidden group">
+<div class="absolute inset-x-0 top-0 h-[1px] bg-white/10"></div>
+<span class="text-2xl font-bold font-mono tabular-nums text-white">02</span>
+</div>
+<span class="text-[10px] uppercase text-white/40 mt-1 tracking-wider">Day</span>
+</div>
+<span class="text-2xl text-white/20 font-mono py-2">:</span>
+<!-- Hours -->
+<div class="flex flex-col items-center flex-1">
+<div class="bg-surface-lighter w-full h-12 flex items-center justify-center rounded border border-white/5 relative overflow-hidden">
+<div class="absolute inset-x-0 top-0 h-[1px] bg-white/10"></div>
+<span class="text-2xl font-bold font-mono tabular-nums text-white">04</span>
+</div>
+<span class="text-[10px] uppercase text-white/40 mt-1 tracking-wider">Hrs</span>
+</div>
+<span class="text-2xl text-white/20 font-mono py-2">:</span>
+<!-- Mins -->
+<div class="flex flex-col items-center flex-1">
+<div class="bg-surface-lighter w-full h-12 flex items-center justify-center rounded border border-white/5 relative overflow-hidden">
+<div class="absolute inset-x-0 top-0 h-[1px] bg-white/10"></div>
+<span class="text-2xl font-bold font-mono tabular-nums text-primary">22</span>
+</div>
+<span class="text-[10px] uppercase text-white/40 mt-1 tracking-wider">Min</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Map Visualization -->
+<div class="relative w-full aspect-video rounded overflow-hidden border border-border-dark group">
+<div class="absolute top-2 left-2 z-20 bg-black/60 backdrop-blur px-2 py-1 rounded border border-white/10">
+<p class="text-[10px] text-primary uppercase font-bold tracking-wider flex items-center gap-1">
+<span class="material-symbols-outlined text-[10px]">my_location</span>
+                        Normandy Sector 4
+                    </p>
+</div>
+<!-- Image with filter to look like tactical display -->
+<img alt="Satellite view of Normandy coastline with tactical grid overlay" class="w-full h-full object-cover grayscale opacity-60 mix-blend-luminosity" data-location="Normandy, France" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB-Jswh5Tlz2FCVP1JbbtU-qpP-Wzx2f19HbiLF_Qb1UnVA3_FKlLMWpK-S5WMDgCeJJIBz7kvQPX7B7-emeSLHWf_u5FXmnw3XsnGju9yYcPM_MfTK11Mp7CNo7OzcN-TFzr-LrVr1CssZjVl4Wu8f3klNKn13B8Xemy-JTmvEqcSyztv4hV7KsXBndTuKpF96GgJxQ_jByre5jWPHrjOxn_sH92tT-eVffU6Rdr-TSZiN9X3cLeYOxlp-lqXqDSlUjnwbLuSaCmQ"/>
+<!-- UI Overlays on map -->
+<div class="absolute inset-0 bg-[linear-gradient(transparent_95%,#06e0a9_100%)] opacity-20 bg-[length:100%_20px]"></div>
+<div class="absolute inset-0 border-[1px] border-white/10 m-2 rounded-sm"></div>
+<div class="absolute bottom-4 right-4 z-20">
+<span class="material-symbols-outlined text-danger animate-pulse text-3xl">target</span>
+</div>
+</div>
+<!-- Briefing Text -->
+<div class="border-l-2 border-primary pl-4 py-1">
+<h3 class="text-white text-lg font-bold uppercase mb-2">Intel Report</h3>
+<p class="text-white/70 text-sm leading-relaxed font-light">
+                    Surveillance confirms heavy panzer movement in <span class="text-primary font-medium">Sector 4</span>. Allied command requires immediate suppression of enemy armor. All units are authorized to engage at will.
+                </p>
+</div>
+<!-- Community Goal -->
+<div class="bg-surface-dark border border-border-dark p-5 rounded-lg relative overflow-hidden">
+<!-- Decorative background elements -->
+<div class="absolute top-0 right-0 p-2 opacity-10">
+<span class="material-symbols-outlined text-6xl">groups</span>
+</div>
+<div class="relative z-10">
+<h3 class="text-xs font-bold text-white/60 uppercase tracking-widest mb-4">Global Objective: Armor Neutralization</h3>
+<div class="flex items-baseline gap-2 mb-2">
+<span class="text-3xl font-bold text-primary tabular-nums tracking-tighter">450,210</span>
+<span class="text-sm text-white/40 font-mono">/ 1,000,000</span>
+</div>
+<!-- Segmented Progress Bar -->
+<div class="flex gap-1 h-3 w-full mb-2">
+<!-- Filled segments -->
+<div class="flex-1 bg-primary rounded-sm shadow-[0_0_8px_rgba(6,224,169,0.5)]"></div>
+<div class="flex-1 bg-primary rounded-sm shadow-[0_0_8px_rgba(6,224,169,0.5)]"></div>
+<div class="flex-1 bg-primary rounded-sm shadow-[0_0_8px_rgba(6,224,169,0.5)]"></div>
+<div class="flex-1 bg-primary/30 rounded-sm"></div> <!-- Current active segment partial -->
+<!-- Empty segments -->
+<div class="flex-1 bg-white/5 rounded-sm"></div>
+<div class="flex-1 bg-white/5 rounded-sm"></div>
+<div class="flex-1 bg-white/5 rounded-sm"></div>
+<div class="flex-1 bg-white/5 rounded-sm"></div>
+</div>
+<div class="flex justify-between items-center text-[10px] text-white/40 uppercase tracking-wider">
+<span>Progress: 45%</span>
+<span class="text-primary">+124/min</span>
+</div>
+</div>
+</div>
+<!-- Rewards Section -->
+<div class="flex flex-col gap-3">
+<div class="flex items-center justify-between px-1">
+<h3 class="text-sm font-bold text-white uppercase tracking-wider">Incentives</h3>
+<span class="text-[10px] bg-white/10 px-2 py-0.5 rounded text-white/60">TIER 1</span>
+</div>
+<div class="grid grid-cols-3 gap-3">
+<!-- Reward 1: Unlocked -->
+<div class="bg-surface-lighter border border-primary/30 p-3 rounded flex flex-col items-center gap-2 group relative">
+<div class="absolute top-1 right-1">
+<span class="material-symbols-outlined text-primary text-[14px]">check_circle</span>
+</div>
+<div class="size-10 bg-primary/10 rounded-full flex items-center justify-center text-primary mb-1">
+<span class="material-symbols-outlined">inventory_2</span>
+</div>
+<span class="text-[10px] text-center font-bold leading-tight text-primary">SUPPLY DROP</span>
+</div>
+<!-- Reward 2: Locked -->
+<div class="bg-surface-dark border border-white/5 p-3 rounded flex flex-col items-center gap-2 opacity-60">
+<div class="absolute top-1 right-1">
+<span class="material-symbols-outlined text-white/20 text-[14px]">lock</span>
+</div>
+<div class="size-10 bg-white/5 rounded-full flex items-center justify-center text-white/40 mb-1">
+<span class="material-symbols-outlined">military_tech</span>
+</div>
+<span class="text-[10px] text-center font-bold leading-tight text-white/40">ACE BADGE</span>
+</div>
+<!-- Reward 3: Locked -->
+<div class="bg-surface-dark border border-white/5 p-3 rounded flex flex-col items-center gap-2 opacity-60">
+<div class="absolute top-1 right-1">
+<span class="material-symbols-outlined text-white/20 text-[14px]">lock</span>
+</div>
+<div class="size-10 bg-white/5 rounded-full flex items-center justify-center text-white/40 mb-1">
+<span class="material-symbols-outlined">token</span>
+</div>
+<span class="text-[10px] text-center font-bold leading-tight text-white/40">500 GOLD</span>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer CTA -->
+<div class="fixed bottom-0 left-0 right-0 p-4 bg-background-dark/80 backdrop-blur border-t border-border-dark z-40">
+<button class="w-full bg-primary hover:bg-[#05cba0] active:translate-y-0.5 text-background-dark font-bold text-lg h-14 rounded clip-corner-br flex items-center justify-center gap-3 transition-all relative overflow-hidden group shadow-[0_0_25px_rgba(6,224,169,0.3)]">
+<!-- Button internal shine effect -->
+<div class="absolute top-0 left-0 w-full h-[1px] bg-white/40"></div>
+<span class="material-symbols-outlined text-2xl group-hover:rotate-90 transition-transform duration-300">target</span>
+<span class="tracking-widest">INITIATE DEPLOYMENT</span>
+<!-- Tactical corner detail on button -->
+<div class="absolute bottom-0 right-0 w-3 h-3 bg-black/20 clip-corner-br"></div>
+</button>
+</div>
+</div>
+</body></html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Game Splash Screen</title>
+<!-- Load Tailwind CSS v3 -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries">
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'game-gold': '#CBB26A',
+            'game-green': '#438e4e',
+            'game-green-glow': 'rgba(62, 142, 83, 0.6)',
+          },
+          fontFamily: {
+            'title': ['Oswald', 'sans-serif'],
+            'body': ['Roboto Condensed', 'sans-serif'],
+            'serif': ['Playfair Display', 'serif'],
+          },
+          backgroundImage: {
+            'map-pattern': "url('https://placehold.co/768x1376/1a1a1a/333333?text=World+Map+Background')",
+          }
+        }
+      }
+    }
+  </script>
+<!-- Load Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@700&amp;family=Playfair+Display:ital@0;1&amp;family=Roboto+Condensed:wght@700&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind Configuration for Custom Colors and Fonts -->
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'game-gold': '#CBB26A',
+            'game-green': '#438e4e',
+            'game-green-glow': 'rgba(62, 142, 83, 0.6)',
+          },
+          fontFamily: {
+            'title': ['Oswald', 'sans-serif'],
+            'body': ['Roboto Condensed', 'sans-serif'],
+            'serif': ['Playfair Display', 'serif'],
+          },
+          backgroundImage: {
+            'map-pattern': "url('https://placehold.co/768x1376/1a1a1a/333333?text=World+Map+Background')",
+          }
+        }
+      }
+    }
+  </script>
+<!-- Custom Styles for Specific Visual Effects -->
+<style data-purpose="visual-effects">
+    /* Ensure full height on mobile devices */
+    body, html {
+      height: 100%;
+      margin: 0;
+      overflow: hidden; /* Prevent scrolling on splash screen */
+    }
+
+    /* Custom glow effect for the main button */
+    .btn-glow {
+      box-shadow: 0px 10px 20px rgba(85, 158, 101, 0.6);
+    }
+    
+    /* Overlay to darken background image for better text contrast */
+    .bg-overlay {
+      background: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.7));
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-black text-white antialiased h-full w-full">
+<!-- BEGIN: Main Container -->
+<!-- 
+    This container holds the background image and the main content.
+    flex, flex-col, justify-center, items-center ensures content is centered.
+  -->
+<main class="relative w-full h-full flex flex-col justify-center items-center px-6 bg-[#0f0f0f]" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCyF8MJCxxiguC1arcdEKXgJTKJRNy4ZLnnqghX-oz-GDY7Lzotte3uUqD7Z8rBJ9shZQcBfr3H6MZIugnKCwkhQRlJ3uFU-UKefPAvlEn79mCb2tbhxhYXNJjFs0UPYH7d9nBMzuhttuIvhMVxvTlq57_IjsHoFyB5l4BqXY-XFClZRjmZUdllsIS4IKJU1fHNIcSJN04ysO_R-AmkPf0Th1_jEvl1X5G7g5IYoOTtf1xbM3thG7f2YHmVQ8clVCUBv4jBYgtHf5c'); background-size: cover; background-position: center;">
+<!-- Background Overlay for contrast -->
+<div class="absolute inset-0 z-0 bg-black/50"></div>
+<!-- BEGIN: Content Wrapper -->
+<div class="relative z-10 flex flex-col items-center w-full max-w-md text-center space-y-8 animate-fade-in-up">
+<!-- Title Section -->
+<!-- Using 'Oswald' font for that condensed, impactful look -->
+<h1 class="font-title text-5xl sm:text-6xl uppercase drop-shadow-lg leading-tight font-bold text-[4rem] text-[#D4C385] tracking-[-1px]">
+        Ready To<br/>Conquer
+      </h1>
+<!-- Action Button Section -->
+<!-- 
+        Large green button with rounded corners and a glow effect.
+        Contains text and an icon.
+      -->
+<button class="group relative py-4 px-8 btn-glow hover:bg-green-600 hover:scale-105 transition-all duration-300 ease-out active:scale-95 rounded-lg bg-[#559E65] w-[350px]">
+<div class="flex items-center justify-center space-x-3">
+<span class="font-body text-2xl sm:text-3xl font-bold text-white uppercase tracking-wide">
+            Start Conquering
+          </span>
+<!-- Explosion Icon Placeholder -->
+<svg class="w-8 h-8 text-white" fill="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 0L14.59 8.41L23.08 6.92L16.92 13.08L24 12L16.92 16.92L23.08 23.08L14.59 15.59L12 24L9.41 15.59L0.92 23.08L7.08 16.92L0 12L7.08 13.08L0.92 6.92L9.41 8.41L12 0Z"></path></svg>
+</div>
+</button>
+<!-- Footer Text Section -->
+<!-- Using serif font for elegance and contrast against the bold title -->
+<div class="opacity-90 mt-[32px]">
+<p class="font-serif text-game-gold text-lg sm:text-xl italic leading-relaxed">
+          Made with passion for<br/>strategy game lovers
+        </p>
+</div>
+</div>
+<!-- END: Content Wrapper -->
+</main>
+<!-- END: Main Container -->
+</body></html>

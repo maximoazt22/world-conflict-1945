@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Commander Login Portal</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&amp;family=Noto+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#3bff0f",
+                        "background-light": "#f2f2f2",
+                        "background-dark": "#0c0c0d",
+                        "surface-dark": "#1A1A1D",
+                        "border-dim": "#3e5639",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"],
+                        "body": ["Noto Sans", "sans-serif"],
+                    },
+                    borderRadius: {"DEFAULT": "0.125rem", "sm": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "9999px"},
+                    boxShadow: {
+                        'neon': '0 0 15px rgba(59, 255, 15, 0.4)',
+                        'neon-strong': '0 0 25px rgba(59, 255, 15, 0.6)',
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom scrollbar for webkit */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0c0c0d; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #3e5639; 
+            border-radius: 2px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #3bff0f; 
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-white antialiased overflow-x-hidden min-h-screen relative flex flex-col">
+<!-- Background Layer: Blurred Tactical Map -->
+<div class="fixed inset-0 z-0 overflow-hidden pointer-events-none">
+<div class="absolute inset-0 bg-cover bg-center opacity-20 blur-[6px] scale-105" data-alt="Blurred vintage tactical map in dark room" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuC1goOivxR5CT8mnX_SUnZ4JsLqKfZ2zgJ5ErunsS_L6nUivqDrpE5Mm8gFVkUlMgwKah93fdg7fn3u3guRSEsuvb063chIdrCndTFg_jCTMcogO2AuAEkkMeQUynycpaz4GKNgTUWjRI0aOK5ORjDmSHs-sTEw44_paee5eZ8Rxo80uxu3AQfkpZYllOv2gbxkqAiUD7zRNGTT83XbjN8Q8ugZ1OS6Y-cIs1PBNE2X2X8dB0z12u2KRhhLbJ-a7npfYa6e226O_Gw');">
+</div>
+<!-- Gradient Overlay to ensure text readability -->
+<div class="absolute inset-0 bg-gradient-to-b from-[#0c0c0d]/90 via-[#0c0c0d]/70 to-[#0c0c0d]"></div>
+<!-- Scanline effect -->
+<div class="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[length:100%_4px,3px_100%] pointer-events-none"></div>
+</div>
+<!-- Main Content Container -->
+<main class="relative z-10 flex-1 flex flex-col justify-center w-full max-w-md mx-auto px-6 py-8">
+<!-- Header Section -->
+<header class="mb-8 text-center">
+<div class="inline-flex items-center justify-center w-16 h-16 mb-6 border border-primary/30 bg-primary/5 rounded-full backdrop-blur-sm shadow-[0_0_15px_rgba(59,255,15,0.1)]">
+<span class="material-symbols-outlined text-primary text-[32px]">military_tech</span>
+</div>
+<h1 class="text-3xl md:text-4xl font-bold tracking-[0.2em] text-white mb-2 leading-tight">
+                COMMANDER<br/>PORTAL
+            </h1>
+<div class="flex items-center justify-center gap-2 mt-2">
+<div class="h-px w-8 bg-border-dim"></div>
+<p class="text-xs font-medium tracking-widest text-[#a0bc9a] uppercase">WC: 1945 // Secure Access</p>
+<div class="h-px w-8 bg-border-dim"></div>
+</div>
+</header>
+<!-- Login Module -->
+<form class="space-y-5" onsubmit="event.preventDefault();">
+<!-- Username Input -->
+<div class="group">
+<label class="block text-[10px] font-bold tracking-widest text-primary mb-2 uppercase ml-1">Callsign / Email</label>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none text-gray-500 group-focus-within:text-primary transition-colors duration-300">
+<span class="material-symbols-outlined text-[20px]">person</span>
+</div>
+<input class="block w-full pl-11 pr-4 py-4 bg-surface-dark border border-border-dim text-white placeholder-[#a0bc9a]/50 rounded focus:ring-0 focus:border-primary focus:shadow-neon focus:bg-[#151c14] transition-all duration-300 font-medium tracking-wide uppercase" placeholder="ENTER CREDENTIALS..." type="text"/>
+</div>
+</div>
+<!-- Password Input -->
+<div class="group">
+<label class="block text-[10px] font-bold tracking-widest text-primary mb-2 uppercase ml-1">Access Code</label>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none text-gray-500 group-focus-within:text-primary transition-colors duration-300">
+<span class="material-symbols-outlined text-[20px]">key</span>
+</div>
+<input class="block w-full pl-11 pr-12 py-4 bg-surface-dark border border-border-dim text-white placeholder-[#a0bc9a]/50 rounded focus:ring-0 focus:border-primary focus:shadow-neon focus:bg-[#151c14] transition-all duration-300 font-medium tracking-wide" placeholder="••••••••••••" type="password"/>
+<button class="absolute inset-y-0 right-0 flex items-center pr-4 text-[#a0bc9a] hover:text-primary transition-colors cursor-pointer" type="button">
+<span class="material-symbols-outlined text-[20px]">visibility</span>
+</button>
+</div>
+</div>
+<!-- Utilities Row -->
+<div class="flex items-center justify-between pt-1">
+<!-- Custom Toggle -->
+<label class="flex items-center cursor-pointer gap-3 group">
+<div class="relative">
+<input class="sr-only peer" type="checkbox"/>
+<div class="w-9 h-5 bg-[#2a3a27] rounded-full peer peer-checked:bg-primary/90 peer-focus:outline-none transition-all duration-300"></div>
+<div class="absolute left-[2px] top-[2px] bg-white w-4 h-4 rounded-full transition-all duration-300 peer-checked:translate-x-full shadow-sm"></div>
+</div>
+<span class="text-xs font-medium text-[#a0bc9a] group-hover:text-white transition-colors tracking-wide">MAINTAIN COMMS</span>
+</label>
+<a class="text-xs font-medium text-[#4D9CBE] hover:text-[#7ac8ea] hover:underline underline-offset-4 decoration-dashed transition-colors tracking-wide" href="#">
+                    LOST CREDENTIALS?
+                </a>
+</div>
+<!-- Primary Action -->
+<button class="relative w-full group mt-4">
+<div class="absolute -inset-0.5 bg-primary rounded opacity-50 blur group-hover:opacity-100 transition duration-300 group-hover:blur-md"></div>
+<div class="relative flex items-center justify-center w-full py-4 bg-primary text-black font-bold text-sm tracking-[0.15em] uppercase rounded hover:bg-[#32d60d] active:scale-[0.99] transition-all duration-200">
+<span class="material-symbols-outlined mr-2 text-[20px]">login</span>
+                    Enter Theatre
+                </div>
+</button>
+</form>
+<!-- Social Divider -->
+<div class="mt-8 mb-6 relative">
+<div aria-hidden="true" class="absolute inset-0 flex items-center">
+<div class="w-full border-t border-border-dim"></div>
+</div>
+<div class="relative flex justify-center">
+<span class="px-3 bg-background-dark text-[10px] uppercase tracking-widest text-[#a0bc9a]">Secure Connection Via</span>
+</div>
+</div>
+<!-- Social Login Buttons -->
+<div class="grid grid-cols-2 gap-4">
+<button class="flex items-center justify-center py-3 px-4 border border-border-dim bg-surface-dark hover:bg-[#25252a] hover:border-gray-500 rounded transition-all duration-200 group">
+<span class="material-symbols-outlined text-white group-hover:text-primary mr-2 text-[20px]">public</span>
+<span class="text-xs font-bold tracking-wider text-white">GOOGLE</span>
+</button>
+<button class="flex items-center justify-center py-3 px-4 border border-border-dim bg-surface-dark hover:bg-[#25252a] hover:border-[#5865F2] rounded transition-all duration-200 group">
+<span class="material-symbols-outlined text-white group-hover:text-[#5865F2] mr-2 text-[20px]">hub</span>
+<span class="text-xs font-bold tracking-wider text-white">DISCORD</span>
+</button>
+</div>
+<!-- Footer Info -->
+<footer class="mt-12 text-center opacity-40">
+<p class="text-[10px] tracking-widest text-white">SYSTEM V.4.0.2 // ENCRYPTED</p>
+</footer>
+</main>
+</body></html>

@@ -158,19 +158,20 @@ export default function LoginPage() {
                         {!isLogin && (
                             <div>
                                 <label className="block text-sm text-zinc-400 mb-1">Nación</label>
-                                <div className="grid grid-cols-4 gap-2">
+                                <div className="grid grid-cols-3 gap-2">
                                     {NATIONS.map((nation) => (
                                         <button
                                             key={nation.id}
                                             type="button"
                                             onClick={() => handleNationChange(nation.id)}
-                                            className={`p-2 rounded-lg border text-center transition-all ${formData.nation === nation.id
-                                                ? 'border-amber-500 bg-amber-500/20'
-                                                : 'border-zinc-700 bg-zinc-900 hover:border-zinc-600'
+                                            className={`flex flex-col items-center justify-center p-2 rounded-lg border transition-all h-20 ${formData.nation === nation.id
+                                                ? 'border-amber-500 bg-amber-500/20 shadow-[0_0_10px_rgba(245,158,11,0.3)]'
+                                                : 'border-zinc-700 bg-zinc-900 hover:border-zinc-600 hover:bg-zinc-800'
                                                 }`}
-                                            title={nation.nameEs}
+                                            title={nation.bonus.description}
                                         >
-                                            <span className="text-2xl">{nation.flag}</span>
+                                            <span className="text-2xl mb-1">{nation.flag}</span>
+                                            <span className="text-[10px] text-zinc-300 font-medium text-center leading-tight w-full truncate px-1">{nation.nameEs}</span>
                                         </button>
                                     ))}
                                 </div>

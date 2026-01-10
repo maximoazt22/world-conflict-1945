@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Alliance Diplomacy Center</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Noto+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#e9445f",
+                        "background-light": "#f7f7f3",
+                        "background-dark": "#141433",
+                        "surface-dark": "#1c1c42",
+                        "surface-highlight": "#2a2a5e",
+                        "status-ally": "#4A5D4F",
+                        "status-war": "#e9445f",
+                        "status-neutral": "#708090",
+                        "status-pact": "#4682B4",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"],
+                        "body": ["Noto Sans", "sans-serif"],
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px"},
+                    backgroundImage: {
+                        'scanlines': 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 0, 0, 0.3) 3px, rgba(0, 0, 0, 0.3) 4px)',
+                        'grid-pattern': 'linear-gradient(to right, rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.05) 1px, transparent 1px)'
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .glass-panel {
+            background: rgba(20, 20, 51, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+        }
+        
+        .glow-text {
+            text-shadow: 0 0 10px rgba(233, 68, 95, 0.5);
+        }
+        
+        .scanline-overlay {
+            pointer-events: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                to bottom,
+                transparent 0%,
+                rgba(0, 0, 0, 0.05) 50%,
+                transparent 100%
+            );
+            background-size: 100% 4px;
+            z-index: 50;
+        }
+
+        /* Custom scrollbar for tactical feel */
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #141433; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2a2a5e; 
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-white overflow-hidden">
+<!-- Screen Container -->
+<div class="relative flex h-screen w-full flex-col overflow-hidden bg-background-dark bg-[url('https://placeholder.pics/svg/300')] bg-cover bg-center" data-alt="Abstract dark radar background gradient" style="background-image: radial-gradient(circle at center, #1c1c42 0%, #141433 100%);">
+<!-- Scanline Overlay -->
+<div class="scanline-overlay"></div>
+<!-- Background Grid -->
+<div class="absolute inset-0 bg-grid-pattern bg-[length:40px_40px] opacity-20 pointer-events-none"></div>
+<!-- Top App Bar -->
+<div class="relative z-10 flex items-center bg-background-dark/90 backdrop-blur-md p-4 pb-2 justify-between border-b border-white/10 shadow-lg">
+<div class="text-white/80 hover:text-white flex size-10 shrink-0 items-center justify-center rounded-full hover:bg-white/10 transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-2xl">arrow_back</span>
+</div>
+<div class="flex flex-col items-center">
+<h2 class="text-white text-lg font-bold leading-tight tracking-wider uppercase glow-text">Diplomacy Hub</h2>
+<span class="text-[10px] text-white/50 tracking-[0.2em] font-light">SECURE CONNECTION</span>
+</div>
+<div class="text-white/80 hover:text-primary flex size-10 shrink-0 items-center justify-center rounded-full hover:bg-white/10 transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-2xl">settings</span>
+</div>
+</div>
+<!-- Scrollable Content Area -->
+<div class="relative z-0 flex-1 overflow-y-auto pb-32">
+<!-- Alliance Profile Header -->
+<div class="flex p-6 flex-col items-center w-full">
+<div class="relative group cursor-pointer">
+<div class="absolute -inset-1 bg-gradient-to-r from-primary to-purple-600 rounded-lg blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
+<div class="relative flex flex-col items-center bg-surface-dark border border-white/10 p-6 rounded-lg shadow-xl w-full max-w-sm">
+<!-- Alliance Logo -->
+<div class="relative mb-4">
+<div class="h-24 w-24 rounded-full border-2 border-white/20 p-1 bg-black/40 shadow-inner">
+<div class="h-full w-full rounded-full bg-cover bg-center" data-alt="Futuristic geometric eagle emblem representing the alliance" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBfyJG8Pz8w35jSmW_VYYVdnxdJiK1wo-CGqbmpdn8EB0YAePvaPre3EYt20IBnflkCxQKh5CVOrNUrLfQu_VtC0CPlMGh6WjGyCxlpjAlFWhi0KhnMqP6MRG7kPD2lOHvI9Z67eUYlnJjiTh8kFvHNKjakL8uxxP9SjiJYyK5b_sISs8wBoIE8njwJJxtk5Wxa3GKfo-PGMNCH4B_S1tucXfBUeONr5NRgNSpE7WdMpRAp_CMUBg-bsiLnvaIzecxkZ3b09tr4lWc");'></div>
+</div>
+<div class="absolute -bottom-2 -right-2 bg-primary text-white text-xs font-bold px-2 py-0.5 rounded border border-background-dark shadow-sm">LVL 5</div>
+</div>
+<!-- Alliance Text -->
+<h1 class="text-2xl font-bold tracking-tight text-white mb-1">AXIS 1941</h1>
+<p class="text-gray-400 text-xs uppercase tracking-widest mb-4">Dominating Europe since 1939</p>
+<!-- Stats Grid -->
+<div class="grid grid-cols-3 gap-4 w-full border-t border-white/10 pt-4">
+<div class="flex flex-col items-center">
+<span class="text-lg font-bold text-white">42</span>
+<span class="text-[10px] text-gray-500 uppercase">Members</span>
+</div>
+<div class="flex flex-col items-center border-l border-white/10 border-r">
+<span class="text-lg font-bold text-primary">2.4M</span>
+<span class="text-[10px] text-gray-500 uppercase">Power</span>
+</div>
+<div class="flex flex-col items-center">
+<span class="text-lg font-bold text-green-400">#4</span>
+<span class="text-[10px] text-gray-500 uppercase">Rank</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Members Roster Section -->
+<div class="px-4 mb-2">
+<h3 class="text-white/70 text-sm font-bold uppercase tracking-widest pl-2 mb-3 flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">groups</span> 
+                    Command Staff
+                </h3>
+</div>
+<!-- Member 1 -->
+<div class="px-4 mb-3">
+<div class="glass-panel rounded-lg p-3 flex items-center justify-between hover:bg-white/5 transition-colors cursor-pointer">
+<div class="flex items-center gap-4">
+<div class="relative">
+<div class="h-12 w-12 rounded bg-cover bg-center border border-white/20" data-alt="Portrait of General Rommel character" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuC6apyArEwJ-FaXUThPU8kKtuuXKCcfi2vKl82-5j2UT5BUxjIoNMzKNWh5kKKzJziGIBxjOXHD-UqnXX6EmJbSNRnZRL7KG4oFUazZMoUim3a1Gt_fGJpUAvL-vG1iFfBxzZ4o2Lt34GUh88ccvK-tYknTppZu87cWyFdMvcge9utab3BvVFuGYgieFW2CusTexmW2b4CImUhMol6cWUuOTJ66mNfyE01Cx52Di-upVWsLUrzkjF2dgR6XiK40pAWOMR_7QPT1wKM");'></div>
+<div class="absolute -bottom-1 -right-1 h-3 w-3 bg-green-500 rounded-full border-2 border-surface-dark"></div>
+</div>
+<div class="flex flex-col">
+<p class="text-white text-sm font-bold">Gen. Rommel</p>
+<p class="text-primary text-xs">Field Marshal</p>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<button class="h-8 w-8 flex items-center justify-center rounded hover:bg-white/10 text-gray-400 hover:text-white">
+<span class="material-symbols-outlined text-lg">mail</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Member 2 -->
+<div class="px-4 mb-6">
+<div class="glass-panel rounded-lg p-3 flex items-center justify-between hover:bg-white/5 transition-colors cursor-pointer">
+<div class="flex items-center gap-4">
+<div class="relative">
+<div class="h-12 w-12 rounded bg-cover bg-center border border-white/20" data-alt="Portrait of Commander Zhukov character" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDxnVQBG46DtZyqMwp0mJoWweaxP-foN3hH2vmaEE02e77sgQKRXIfSKjiV5tdYjk6qDNXGxSAqol5tQVZlhC9Vc5gGDMwGNC8i9cIpPJ60DV9gP-G-SVMY16aah9rTUEpeS9B2xEm7Bn-akSkg4oGLmRO5K2oFCj7zopHFvEQHBJmIp9vFlDyYwgEwWL52QpsBjkXOwi38oUhwWhLZ2iqs97eb49ZkfrsBvRvw6HrH-P07bNZyLFMh8rK3y20ezC5zcsAXnpBkVSg");'></div>
+<div class="absolute -bottom-1 -right-1 h-3 w-3 bg-gray-500 rounded-full border-2 border-surface-dark"></div>
+</div>
+<div class="flex flex-col">
+<p class="text-white text-sm font-bold">Cmdr. Zhukov</p>
+<p class="text-gray-400 text-xs">General</p>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<button class="h-8 w-8 flex items-center justify-center rounded hover:bg-white/10 text-gray-400 hover:text-white">
+<span class="material-symbols-outlined text-lg">mail</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Regional Intelligence (Geopolitics) -->
+<div class="px-4 mb-2">
+<h3 class="text-white/70 text-sm font-bold uppercase tracking-widest pl-2 mb-3 flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">radar</span> 
+                    Regional Intelligence
+                </h3>
+</div>
+<div class="flex flex-col gap-3 px-4 mb-6">
+<!-- Nation 1: War -->
+<div class="glass-panel rounded-lg p-3 border-l-4 border-l-status-war flex items-center justify-between">
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-2">
+<span class="text-white font-bold text-sm">France</span>
+<span class="text-xs text-gray-400">(NapoleonIV)</span>
+</div>
+<div class="flex items-center gap-3 text-xs text-gray-500">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[10px]">distance</span> 12km</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[10px]">thumb_down</span> Rep: 12</span>
+</div>
+</div>
+<div class="px-3 py-1 rounded bg-status-war/20 border border-status-war/30 text-status-war text-xs font-bold tracking-wider">
+                        WAR
+                    </div>
+</div>
+<!-- Nation 2: Ally -->
+<div class="glass-panel rounded-lg p-3 border-l-4 border-l-status-ally flex items-center justify-between">
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-2">
+<span class="text-white font-bold text-sm">Italy</span>
+<span class="text-xs text-gray-400">(Caesar22)</span>
+</div>
+<div class="flex items-center gap-3 text-xs text-gray-500">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[10px]">distance</span> 45km</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[10px]">thumb_up</span> Rep: 85</span>
+</div>
+</div>
+<div class="px-3 py-1 rounded bg-status-ally/20 border border-status-ally/30 text-green-400 text-xs font-bold tracking-wider">
+                        ALLY
+                    </div>
+</div>
+<!-- Nation 3: Neutral -->
+<div class="glass-panel rounded-lg p-3 border-l-4 border-l-status-neutral flex items-center justify-between">
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-2">
+<span class="text-white font-bold text-sm">Swiss Conf.</span>
+<span class="text-xs text-gray-400">(NeutralBot)</span>
+</div>
+<div class="flex items-center gap-3 text-xs text-gray-500">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[10px]">distance</span> 8km</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[10px]">handshake</span> Rep: 50</span>
+</div>
+</div>
+<div class="px-3 py-1 rounded bg-status-neutral/20 border border-status-neutral/30 text-gray-300 text-xs font-bold tracking-wider">
+                        NEUTRAL
+                    </div>
+</div>
+</div>
+<!-- Tactical Action Array -->
+<div class="px-4 pb-6">
+<h3 class="text-white/70 text-sm font-bold uppercase tracking-widest pl-2 mb-3 flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">gavel</span> 
+                    Diplomatic Actions
+                </h3>
+<div class="grid grid-cols-2 gap-3 mb-3">
+<!-- Pact -->
+<button class="relative overflow-hidden group glass-panel h-20 rounded-lg flex flex-col items-center justify-center gap-1 transition-all active:scale-95 border border-status-pact/30 hover:border-status-pact/60">
+<div class="absolute inset-0 bg-status-pact/10 group-hover:bg-status-pact/20 transition-colors"></div>
+<span class="material-symbols-outlined text-2xl text-blue-400 z-10">shield_lock</span>
+<span class="text-xs font-bold text-blue-100 z-10">Non-Aggression</span>
+</button>
+<!-- Propose Alliance -->
+<button class="relative overflow-hidden group glass-panel h-20 rounded-lg flex flex-col items-center justify-center gap-1 transition-all active:scale-95 border border-green-500/30 hover:border-green-500/60">
+<div class="absolute inset-0 bg-green-500/10 group-hover:bg-green-500/20 transition-colors"></div>
+<span class="material-symbols-outlined text-2xl text-green-400 z-10">handshake</span>
+<span class="text-xs font-bold text-green-100 z-10">Propose Alliance</span>
+</button>
+</div>
+<!-- Declare War Button -->
+<button class="relative w-full h-16 rounded-lg overflow-hidden group flex items-center justify-between px-6 transition-all active:scale-95 shadow-lg shadow-primary/20 hover:shadow-primary/40">
+<div class="absolute inset-0 bg-gradient-to-r from-red-900 to-primary opacity-90"></div>
+<!-- Warning stripes pattern -->
+<div class="absolute inset-0 opacity-20" style="background-image: repeating-linear-gradient(45deg, #000 25%, transparent 25%, transparent 50%, #000 50%, #000 75%, transparent 75%, transparent); background-size: 20px 20px;"></div>
+<div class="z-10 flex items-center gap-3">
+<div class="p-1.5 bg-black/30 rounded border border-white/20">
+<span class="material-symbols-outlined text-white text-xl">crossword</span>
+</div>
+<div class="flex flex-col items-start">
+<span class="text-white font-black uppercase tracking-wider text-sm">Declare War</span>
+<span class="text-white/60 text-[10px] font-mono">HOLD TO CONFIRM</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-white/50 z-10 animate-pulse">warning</span>
+</button>
+</div>
+<!-- Spacer for bottom dock -->
+<div class="h-24"></div>
+</div>
+<!-- Sticky Bottom Communication Terminal -->
+<div class="absolute bottom-0 w-full z-20">
+<!-- Glass background with top border -->
+<div class="bg-[#141433]/95 backdrop-blur-xl border-t border-white/10 p-2 pb-6 shadow-2xl">
+<!-- Chat Tabs -->
+<div class="flex gap-2 mb-2 px-2">
+<button class="flex-1 py-1.5 px-3 rounded bg-white/10 text-white text-xs font-bold border border-white/5 flex items-center justify-center gap-2 hover:bg-white/15">
+<span class="h-2 w-2 rounded-full bg-primary animate-pulse"></span>
+                        ALLIANCE (3)
+                    </button>
+<button class="flex-1 py-1.5 px-3 rounded bg-transparent text-gray-400 text-xs font-medium border border-transparent hover:bg-white/5 flex items-center justify-center">
+                        GLOBAL
+                    </button>
+</div>
+<!-- Chat Input Row -->
+<div class="flex items-center gap-2 px-2">
+<div class="flex-1 relative">
+<input class="w-full bg-black/40 border border-white/10 rounded px-4 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 font-body" placeholder="Requesting backup at sector 7..." type="text"/>
+<span class="absolute right-3 top-2.5 material-symbols-outlined text-gray-500 text-sm cursor-pointer hover:text-white">mic</span>
+</div>
+<button class="h-10 w-10 flex items-center justify-center bg-primary text-white rounded hover:bg-red-500 transition-colors shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined text-lg">send</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</body></html>

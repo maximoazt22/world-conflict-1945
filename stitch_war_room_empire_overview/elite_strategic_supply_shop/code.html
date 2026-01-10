@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Elite Strategic Supply Shop</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&amp;family=Manrope:wght@200..800&amp;display=swap" rel="stylesheet"/>
+<!-- Icons -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#8a0f24",
+                        "accent-gold": "#F8C819",
+                        "accent-teal": "#3A4E5A",
+                        "background-light": "#f1f1f4",
+                        "background-dark": "#0c0c0d",
+                        "surface-dark": "#161618",
+                        "surface-lighter": "#202022",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"],
+                        "body": ["Manrope", "sans-serif"],
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom scrollbar for webkit */
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0c0c0d;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #3A4E5A;
+            border-radius: 4px;
+        }
+        
+        .glass-panel {
+            background: rgba(12, 12, 13, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .crimson-glow {
+            box-shadow: 0 0 15px rgba(138, 15, 36, 0.3);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark min-h-screen flex flex-col font-body selection:bg-primary selection:text-white">
+<!-- Top Navigation / HUD -->
+<header class="sticky top-0 z-50 glass-panel w-full px-4 py-3 flex items-center justify-between">
+<!-- Profile / Rank -->
+<div class="flex items-center gap-3">
+<div class="relative group cursor-pointer">
+<div class="size-10 rounded-lg bg-cover bg-center border border-white/10 relative overflow-hidden" data-alt="Profile avatar of a military commander" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDkdqG86EGEhujO3PmSJNMUqHgG7sZKdCHIVWqQWNmt-oW_CwI9E6IdBPiwvUxp0KoRqlTuQWTV_nfx35GnbZBYMD9ETozye3kW6u2m5JksNs5C51s2abKimamGnObIIgoNlkpNlx4hSNQ1lVhQjSYt5Jhj0UX5a7QJkGImNbc_RjPP8EA3UKciJfIJs4F82ovlDxrtD6prIQy_C_8s8puo-VEOJwIuI5FbGE9G-_CyCKH6su_zIFpGqJfE2rY8XKUwojEUCnwYskk");'></div>
+<div class="absolute -bottom-1 -right-1 bg-primary text-white text-[10px] font-bold px-1 rounded border border-[#0c0c0d]">LVL 54</div>
+</div>
+<div class="hidden sm:block">
+<p class="text-white font-display text-sm font-bold tracking-wider">CMDR. VANCE</p>
+<p class="text-accent-teal text-xs font-medium">Global Rank #402</p>
+</div>
+</div>
+<!-- Currency HUD -->
+<div class="flex items-center gap-3">
+<!-- Gold -->
+<div class="flex items-center gap-2 bg-surface-dark/80 px-3 py-1.5 rounded-lg border border-white/5">
+<span class="material-symbols-outlined text-accent-gold text-[18px]">monetization_on</span>
+<span class="text-white font-display font-bold text-sm tracking-wide">14,500</span>
+</div>
+<!-- Diamonds -->
+<div class="flex items-center gap-2 bg-surface-dark/80 px-3 py-1.5 rounded-lg border border-white/5 relative overflow-hidden group">
+<div class="absolute inset-0 bg-primary/10 group-hover:bg-primary/20 transition-colors"></div>
+<span class="material-symbols-outlined text-cyan-400 text-[18px]">diamond</span>
+<span class="text-white font-display font-bold text-sm tracking-wide">250</span>
+<button class="bg-primary size-4 rounded-full flex items-center justify-center text-white ml-1 hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-[12px]">add</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Main Content Scroll Area -->
+<main class="flex-1 overflow-y-auto pb-24">
+<!-- Limited Time Offer Section -->
+<section class="p-4 pt-6 space-y-4">
+<div class="flex items-center justify-between">
+<h2 class="text-white font-display text-xl font-bold tracking-tight flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">warning</span>
+                    LIMITED OFFER
+                </h2>
+<div class="flex items-center gap-1.5 text-accent-teal text-xs font-mono">
+<span>REFRESH IN:</span>
+<span class="text-primary font-bold">02:14:55</span>
+</div>
+</div>
+<!-- Hero Card: Tiger II -->
+<div class="group relative w-full rounded-xl overflow-hidden bg-surface-dark border border-white/10 shadow-2xl shadow-black/50">
+<!-- Background Image -->
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105" data-alt="Dark moody render of a heavy Tiger II tank in a hangar" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuD9RFzzxXED5fRQ0wOsUSnXnt4sREfInG-akKsZCYFLO1sRDKuIlBwemhIcwe_YIbfMKetxrgZXjhUldLSiDlfm_Femw2lFSgFv2IuVj-rk17RtxSsIkFMopr0QZ8gCG5ohBjO_pi73Zqf-UvplOYwPQxBQRRwjmyuj68BO22iojisJHlK5_eX2v6rC614rsBfavl6ZejA1Vgxk6MdYQ-jo-aNEsouGt1dvVJc418dOZvoCHJWlHjJUjMOkOb4jWO8UNUhPzwRXK8M");'>
+<div class="absolute inset-0 bg-gradient-to-t from-[#0c0c0d] via-[#0c0c0d]/60 to-transparent"></div>
+</div>
+<!-- Content -->
+<div class="relative p-5 pt-32 sm:pt-48 flex flex-col gap-3">
+<div class="flex justify-between items-start">
+<div>
+<div class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-primary/20 border border-primary/30 backdrop-blur-sm mb-2">
+<span class="material-symbols-outlined text-primary text-[14px] filled">star</span>
+<span class="text-primary text-[10px] font-bold uppercase tracking-wider">Legendary Drop</span>
+</div>
+<h3 class="text-white font-display text-2xl font-bold leading-tight uppercase">Tiger II <span class="text-white/60">Black Ops</span></h3>
+<p class="text-accent-teal text-sm mt-1">Prototype Heavy Tank • Armor +15% • Stealth Coating</p>
+</div>
+</div>
+<!-- Action Bar -->
+<div class="mt-2 flex items-center justify-between gap-4 p-3 rounded-lg bg-black/40 border border-white/5 backdrop-blur-md">
+<div class="flex flex-col">
+<span class="text-[10px] text-white/50 uppercase tracking-widest">Cost</span>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-cyan-400 text-[16px]">diamond</span>
+<span class="text-white font-bold text-lg">2,000</span>
+</div>
+</div>
+<button class="flex-1 bg-primary hover:bg-primary/90 text-white font-display font-bold text-sm uppercase tracking-wide py-3 px-4 rounded transition-all active:scale-95 crimson-glow flex items-center justify-center gap-2">
+<span>Acquire Asset</span>
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Exclusive Assets Grid (Bento) -->
+<section class="px-4 pb-6">
+<div class="flex items-center justify-between mb-4">
+<h2 class="text-white font-display text-lg font-bold tracking-tight">EXCLUSIVE ASSETS</h2>
+<button class="text-accent-teal text-xs font-bold hover:text-white transition-colors flex items-center gap-1">
+                    VIEW ALL <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+</button>
+</div>
+<div class="grid grid-cols-2 gap-3">
+<!-- Item 1: Wide Card (Camo) -->
+<div class="col-span-2 relative bg-surface-lighter rounded-lg overflow-hidden border border-white/5 group">
+<div class="absolute top-2 right-2 z-10 bg-black/60 backdrop-blur text-white text-[10px] font-bold px-2 py-1 rounded border border-white/10">RARE</div>
+<div class="flex h-32">
+<div class="w-1/2 bg-cover bg-center" data-alt="Pattern of a camouflage texture for a tank" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuB4ikc8QuCi4ISKISEnHGKlLk_sF9prFCUNhkv-9LsK1Xst3b5z8MtNDE5fxHbayVUDKmlcIoZmqM3aRxP_8rVnLybGYJAFwhMRUef83XuK5VCU3ke7VFXHMiRc508wDi2wEzMZ7iU1ceGla-KeRA66eA5gaih1Ty0OQwjvu20ibN9WOJLfVsCnk2WDK3-lir3hDuYntK1ZTprUS3oQPIbmwPlIZHFdwGGC6AkilUSf2GR3_mKNOCxcKAKXlJDHXuQJA3Ipsf449gg");'></div>
+<div class="w-1/2 p-3 flex flex-col justify-between bg-gradient-to-r from-surface-lighter to-transparent absolute right-0 inset-y-0 pl-10">
+<div>
+<h4 class="text-white font-display font-bold text-lg leading-tight">PHANTOM CAMO</h4>
+<p class="text-accent-teal text-xs mt-1">Forest Environment</p>
+</div>
+<button class="w-full bg-surface-dark hover:bg-white/5 border border-white/10 text-white text-xs font-bold py-2 rounded flex items-center justify-center gap-1 transition-colors">
+<span class="material-symbols-outlined text-accent-gold text-[14px]">monetization_on</span>
+                                500
+                            </button>
+</div>
+</div>
+</div>
+<!-- Item 2: Tall Card (Avatar) -->
+<div class="row-span-2 relative bg-surface-lighter rounded-lg overflow-hidden border border-white/5 flex flex-col group hover:border-primary/50 transition-colors">
+<div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<div class="flex-1 bg-cover bg-center min-h-[140px]" data-alt="Portrait of General Eisenberg looking stern" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCT6gDsbaymBkmabS6NZCnovO73ZLOQjFctgsONFy1t5uElRwlTM7PsWJH_j0HaL-46ePsCclsUiJcrf4mppFBipja_MtEciwkeGSB2jpoDiEcVA70heWrZAyo-51VtoB558vv6BdSuJxDbBpjnI0AwG5eJdtDisTX5EgUeTTf4w5y1onOGYkF6_ySYsjbRZsYEXp1fqfm7NtOrI70-COy1gyaOsiJppIwPE2D_W45nelV_gd7rNdQ5JvStiZRmI3pxDgp9GHqyek8");'>
+<div class="absolute bottom-0 inset-x-0 h-1/2 bg-gradient-to-t from-surface-lighter to-transparent"></div>
+</div>
+<div class="p-3 relative z-10 bg-surface-lighter">
+<h4 class="text-white font-display font-bold text-base leading-tight">GEN. EISENBERG</h4>
+<p class="text-accent-teal text-[10px] mb-3">Infantry Command +5%</p>
+<button class="w-full bg-primary text-white text-xs font-bold py-2 rounded shadow-lg shadow-primary/20 flex items-center justify-center gap-1">
+<span class="material-symbols-outlined text-cyan-200 text-[14px]">diamond</span>
+                            150
+                        </button>
+</div>
+</div>
+<!-- Item 3: Square Card (Resource) -->
+<div class="aspect-square relative bg-surface-lighter rounded-lg p-3 flex flex-col justify-between border border-white/5 hover:bg-surface-dark transition-colors">
+<div class="self-end bg-accent-gold/10 text-accent-gold text-[9px] font-bold px-1.5 py-0.5 rounded border border-accent-gold/20">-20%</div>
+<div class="flex justify-center my-1">
+<span class="material-symbols-outlined text-white/80 text-[40px]">deployed_code</span>
+</div>
+<div>
+<h4 class="text-white font-display font-bold text-sm truncate">MUNITIONS</h4>
+<div class="flex items-center gap-1 mt-1 text-accent-gold">
+<span class="material-symbols-outlined text-[12px]">monetization_on</span>
+<span class="text-xs font-bold">100</span>
+</div>
+</div>
+</div>
+<!-- Item 4: Square Card (Booster) -->
+<div class="aspect-square relative bg-surface-lighter rounded-lg p-3 flex flex-col justify-between border border-white/5 hover:bg-surface-dark transition-colors">
+<div class="self-start text-accent-teal text-[9px] font-bold uppercase tracking-wider">Booster</div>
+<div class="flex justify-center my-1">
+<span class="material-symbols-outlined text-white/80 text-[40px]">folder_open</span>
+</div>
+<div>
+<h4 class="text-white font-display font-bold text-sm truncate">INTEL PACK</h4>
+<div class="flex items-center gap-1 mt-1 text-cyan-400">
+<span class="material-symbols-outlined text-[12px]">diamond</span>
+<span class="text-xs font-bold">50</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation -->
+<nav class="fixed bottom-0 w-full z-50 glass-panel pb-safe">
+<div class="flex items-center justify-around h-16 max-w-lg mx-auto px-2">
+<button class="flex flex-col items-center justify-center gap-1 w-16 h-full text-primary relative">
+<div class="absolute top-0 inset-x-4 h-0.5 bg-primary shadow-[0_0_10px_#8a0f24]"></div>
+<span class="material-symbols-outlined text-[24px]">storefront</span>
+<span class="text-[10px] font-bold tracking-wider">SHOP</span>
+</button>
+<button class="flex flex-col items-center justify-center gap-1 w-16 h-full text-white/40 hover:text-white transition-colors">
+<span class="material-symbols-outlined text-[24px]">inventory_2</span>
+<span class="text-[10px] font-medium tracking-wider">DEPOT</span>
+</button>
+<div class="relative -top-5">
+<button class="size-14 rounded-full bg-gradient-to-br from-surface-lighter to-black border border-white/10 flex items-center justify-center shadow-lg text-white hover:border-primary/50 transition-colors">
+<span class="material-symbols-outlined text-[28px]">rocket_launch</span>
+</button>
+</div>
+<button class="flex flex-col items-center justify-center gap-1 w-16 h-full text-white/40 hover:text-white transition-colors">
+<span class="material-symbols-outlined text-[24px]">garage_home</span>
+<span class="text-[10px] font-medium tracking-wider">HANGAR</span>
+</button>
+<button class="flex flex-col items-center justify-center gap-1 w-16 h-full text-white/40 hover:text-white transition-colors">
+<span class="material-symbols-outlined text-[24px]">badge</span>
+<span class="text-[10px] font-medium tracking-wider">PROFILE</span>
+</button>
+</div>
+</nav>
+<!-- Background texture overlay for grit -->
+<div class="fixed inset-0 pointer-events-none opacity-[0.03] z-[60]" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBesRLiCUOQSzQ1UHZ76ySA-_5oTowtu_BUp5Bc6v8FLwB91ml3EP47qnjw7t7_r5bktKSb9EklDSlEjFvmbP43mg-MlapjZrbKGyn5EiqUFoqHdNdRCXfGNHuK4PyXythavE5SBH112b8pKYsZOWhFj1W9_jeu_NuYPFlMEKwqjpJBgZa_zXPuQHThS4K8v5vHOuh_Krm-a8ctuWKcy6vPQgqSjT1KsRqq5a_8leTvc3tnsV9gTq81JNogxndeaFqurq9XeyJgggs");'>
+</div>
+</body></html>

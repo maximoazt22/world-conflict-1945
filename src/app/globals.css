@@ -1,23 +1,31 @@
 @import "tailwindcss";
 
 :root {
-  --background: #09090b;
+  /* Design Tokens from Stitch War Room */
+  --primary: #00aaff;
+  --background-dark: #0f1c23;
+  --background-light: #f5f7f8;
+  --alert-red: #E03D3D;
+  --warn-amber: #FFB333;
+  --glass: rgba(15, 28, 35, 0.85);
+
+  /* ShadCN / Base mapping */
+  --background: #0f1c23;
   --foreground: #fafafa;
-  --card: #18181b;
+  --card: #14232c;
   --card-foreground: #fafafa;
-  --primary: #f59e0b;
-  --primary-foreground: #0a0a0a;
-  --secondary: #27272a;
+  --primary-foreground: #000000;
+  --secondary: #1b2830;
   --secondary-foreground: #fafafa;
-  --muted: #27272a;
-  --muted-foreground: #a1a1aa;
-  --accent: #f59e0b;
-  --accent-foreground: #0a0a0a;
-  --destructive: #ef4444;
+  --muted: #1b2830;
+  --muted-foreground: #9ab0bc;
+  --accent: #00aaff;
+  --accent-foreground: #000000;
+  --destructive: #E03D3D;
   --destructive-foreground: #fafafa;
-  --border: #27272a;
-  --input: #27272a;
-  --ring: #f59e0b;
+  --border: #27343a;
+  --input: #1b2830;
+  --ring: #00aaff;
 }
 
 * {
@@ -35,139 +43,103 @@ body {
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  font-family: var(--font-noto-sans), system-ui, sans-serif;
+  background-image:
+    linear-gradient(rgba(15, 28, 35, 0.9), rgba(15, 28, 35, 0.9)),
+    url("https://www.transparenttextures.com/patterns/cubes.png");
+  /* Fallback texture */
 }
 
-/* Custom scrollbar for dark theme */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-space-grotesk), sans-serif;
+}
+
+/* Custom Utilities */
+.glass-panel {
+  background: rgba(15, 28, 35, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.text-glow {
+  text-shadow: 0 0 10px rgba(0, 170, 255, 0.6);
+}
+
+.text-glow-red {
+  text-shadow: 0 0 10px rgba(224, 61, 61, 0.6);
+}
+
+.map-glow {
+  filter: drop-shadow(0 0 8px rgba(0, 170, 255, 0.4));
+}
+
+.hex-container {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Grid Background */
+.bg-grid-pattern {
+  background-image: linear-gradient(to right, #1b2830 1px, transparent 1px),
+    linear-gradient(to bottom, #1b2830 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* Scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #18181b;
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #3f3f46;
-  border-radius: 4px;
+  background: #27343a;
+  border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #52525b;
-}
-
-/* Selection color */
-::selection {
-  background: rgba(245, 158, 11, 0.3);
-  color: #fafafa;
-}
-
-/* Focus styles */
-:focus-visible {
-  outline: 2px solid var(--ring);
-  outline-offset: 2px;
-}
-
-/* Smooth scroll */
-html {
-  scroll-behavior: smooth;
+  background: #00aaff;
 }
 
 /* Animations */
-@keyframes pulse-glow {
-  0%, 100% {
-    box-shadow: 0 0 10px rgba(245, 158, 11, 0.3);
-  }
-  50% {
-    box-shadow: 0 0 20px rgba(245, 158, 11, 0.5);
-  }
-}
-
-@keyframes fade-in {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.animate-fade-in {
-  animation: fade-in 0.3s ease-out;
-}
-
-.animate-pulse-glow {
-  animation: pulse-glow 2s ease-in-out infinite;
-}
-
-/* Glass effect utility */
-.glass {
-  background: rgba(24, 24, 27, 0.8);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(63, 63, 70, 0.5);
-}
-
-/* Game specific styles */
-.province-owned {
-  --province-color: #4A5D4F;
-}
-
-.province-enemy {
-  --province-color: #8B0000;
-}
-
-.province-neutral {
-  --province-color: #708090;
-}
-
-.province-selected {
-  --province-color: #FFD700;
-}
-
-/* Three.js canvas container */
-.canvas-container {
-  width: 100%;
-  height: 100%;
-  position: relative;
-}
-
-.canvas-container canvas {
-  display: block;
-}
-
-/* Tooltip styles */
-.tooltip {
-  position: absolute;
-  z-index: 100;
-  pointer-events: none;
-  background: rgba(24, 24, 27, 0.95);
-  border: 1px solid rgba(63, 63, 70, 0.5);
-  border-radius: 8px;
-  padding: 8px 12px;
-  font-size: 14px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
-}
-
-/* Loading states */
-.loading-shimmer {
-  background: linear-gradient(
-    90deg,
-    rgba(39, 39, 42, 0) 0%,
-    rgba(63, 63, 70, 0.5) 50%,
-    rgba(39, 39, 42, 0) 100%
-  );
-  background-size: 200% 100%;
-  animation: shimmer 1.5s infinite;
-}
-
-@keyframes shimmer {
+@keyframes scan {
   0% {
-    background-position: -200% 0;
+    top: 0%;
+    opacity: 0;
   }
+
+  10% {
+    opacity: 1;
+  }
+
+  90% {
+    opacity: 1;
+  }
+
   100% {
-    background-position: 200% 0;
+    top: 100%;
+    opacity: 0;
   }
+}
+
+.scanner-line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #00aaff, transparent);
+  animation: scan 8s linear infinite;
+  opacity: 0.3;
+  pointer-events: none;
+  z-index: 50;
 }

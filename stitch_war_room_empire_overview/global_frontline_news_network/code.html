@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Global Frontline News Network</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&amp;family=Noto+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#b69a2b",
+                        "primary-dark": "#8a731d",
+                        "accent-red": "#8a1c1c",
+                        "background-light": "#ebe6e0",
+                        "background-dark": "#17191c",
+                        "paper-white": "#dcd8c8",
+                        "ink-black": "#121212",
+                    },
+                    fontFamily: {
+                        "display": ["Newsreader", "serif"],
+                        "sans": ["Noto Sans", "sans-serif"],
+                    },
+                    backgroundImage: {
+                        'paper-texture': "url('https://www.transparenttextures.com/patterns/cream-paper.png')",
+                    },
+                    boxShadow: {
+                        'hard': '4px 4px 0px 0px rgba(182, 154, 43, 0.5)',
+                        'hard-sm': '2px 2px 0px 0px rgba(182, 154, 43, 0.5)',
+                    }
+                },
+            },
+        }
+    </script>
+<style>/* Custom Styles for Newspaper feel */
+.text-justify-newspaper {
+    text-align: justify;
+    text-justify: inter-word
+    }
+.sepia-filter {
+    filter: sepia(30%) contrast(110%) grayscale(40%)
+    }
+.noir-filter {
+    filter: grayscale(100%) contrast(120%) brightness(90%)
+    }
+.paper-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuCC1UG_jWt_EPiZEEZBgEM_0gHxGEnQCMTjcbposvfzp5w_L4gI4ER9RdFu8_1IpjhbGHJxAIDbrqeNN38NQSi9SNrv-9gVPMgAue2lAgU4X0511mJYNc7-9dSlsA5lalRkmhg3Rh_eS1i645XiuwGOU-nc57X8oLZRuS5lmQeeP7jWLV_o169TjKy8cILnAZAJWCNES3ywsQRc-JPP1J_R4zjwBgqdiiZsrEaFTHjFWZP3MvGMv29UmlRZGj80Rj47peYtWYe7q78);
+    pointer-events: none;
+    z-index: 50;
+    mix-blend-mode: overlay
+    }
+.line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden
+    }
+/* Hide scrollbar for clean UI */
+.no-scrollbar::-webkit-scrollbar {
+    display: none
+    }
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none
+    }</style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-ink-black dark:text-paper-white font-display antialiased overflow-hidden selection:bg-primary selection:text-white">
+<!-- Texture Overlay -->
+<div class="paper-overlay"></div>
+<!-- Main Container -->
+<div class="relative flex h-full min-h-screen w-full flex-col max-w-md mx-auto shadow-2xl overflow-hidden border-x border-white/5">
+<!-- Header / Masthead -->
+<header class="shrink-0 bg-background-dark pt-6 pb-2 px-4 border-b-4 border-double border-primary/40 relative z-10">
+<div class="flex items-center justify-between mb-3">
+<button class="text-primary hover:text-white transition-colors">
+<span class="material-symbols-outlined" style="font-size: 28px;">menu</span>
+</button>
+<div class="text-center">
+<h1 class="text-4xl font-black uppercase tracking-widest text-white leading-none font-display transform scale-y-90">The Daily Frontline</h1>
+</div>
+<button class="text-primary hover:text-white transition-colors">
+<span class="material-symbols-outlined" style="font-size: 28px;">search</span>
+</button>
+</div>
+<div class="flex justify-between items-center text-xs font-bold text-[#888] uppercase tracking-wider border-t border-white/10 pt-2 font-sans">
+<span>Vol. VIII</span>
+<span>Late Edition</span>
+<span>Oct 14, 1945</span>
+</div>
+</header>
+<!-- Scrollable Content Area -->
+<main class="flex-1 overflow-y-auto no-scrollbar pb-20 relative z-0">
+<!-- Breaking News Ticker -->
+<div class="bg-accent-red/10 border-b border-accent-red/30 py-2 px-4 flex items-center gap-3">
+<div class="bg-accent-red text-white text-[10px] font-bold px-1.5 py-0.5 uppercase tracking-wider shrink-0 animate-pulse">
+                    Breaking
+                </div>
+<div class="overflow-hidden whitespace-nowrap w-full">
+<p class="text-accent-red dark:text-red-400 text-sm font-medium font-sans truncate">
+                        URGENT: Northern Alliance breaks ceasefire in Sector 4... Reinforcements requested immediately at coordinates 45.22, 12.01.
+                    </p>
+</div>
+</div>
+<!-- Hero Article -->
+<article class="p-4 border-b border-white/10">
+<div class="relative w-full aspect-[16/9] mb-4 overflow-hidden rounded-sm border border-white/10">
+<div class="absolute inset-0 bg-black/20 z-10"></div>
+<img alt="Black and white photo of tanks rolling across a dusty field during a major offensive" class="w-full h-full object-cover noir-filter hover:scale-105 transition-transform duration-1000" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBV87YEuTRn0TpdpulH3-d3h6ckhMht7C01DGiW2TEU4M8dxKZLqNUDWWjfRoLi6-1UjSW15dDpWeS8UUOKmK8qF1a64IEf6x6_Je_MA1PGCPR-JiOaVnjfReoSeB-saf_uFH_4XMujWvcz6OR_D0C_ArCBaTimn91dtnKXra4hJxxgIdg3p-3sPvjKr8raQ_lSB-nkXksi37ExZnBcreIfaku_wzwrReML7t6jn1PIYWCRHssoiTbgEJXD264_HjpGJF7sAM8LLZw"/>
+<div class="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/90 to-transparent z-20">
+<span class="text-xs font-sans text-primary uppercase tracking-widest font-bold mb-1 block">Western Front</span>
+</div>
+</div>
+<h2 class="text-3xl font-bold leading-none mb-2 text-white uppercase tracking-tight">Operation Overlord Successful</h2>
+<div class="columns-1 gap-4 text-justify-newspaper">
+<p class="text-[#b5b1a1] text-base leading-snug mb-3">
+<span class="float-left text-4xl font-bold text-primary mr-2 leading-none mt-[-4px]">A</span>llied forces have breached the Atlantic Wall in a historic dawn raid. Casualties reported moderate as the beachhead is secured. General Eisenhower reports that "The eyes of the world are upon us" as the first wave successfully establishes a foothold.
+                    </p>
+</div>
+<div class="flex items-center justify-between mt-4 pt-3 border-t border-dashed border-white/20">
+<span class="text-xs text-gray-500 font-sans italic">By War Correspondent J. Doe</span>
+<button class="flex items-center gap-1 text-primary text-sm font-bold uppercase tracking-wider hover:text-white transition-colors">
+                        Read Full Report
+                        <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+</article>
+<!-- Grid Layout for Secondary Content -->
+<div class="grid grid-cols-12 gap-0 border-b border-white/10">
+<!-- Propaganda / Ad Column (Left) -->
+<div class="col-span-5 p-4 border-r border-white/10 bg-[#1c1e22]">
+<div class="bg-[#2a2d33] p-1 shadow-hard transform -rotate-2 hover:rotate-0 transition-transform duration-300 mb-2">
+<div class="relative aspect-[3/4] border-4 border-[#e3dac3] overflow-hidden">
+<img alt="Vintage propaganda poster showing a fist clenching a flag" class="w-full h-full object-cover sepia-filter opacity-90 mix-blend-multiply" data-alt="Vintage style propaganda poster featuring a stylized eagle and bold typography saying VICTORY NEEDS YOU" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCoBXXR9rqEBkpIXM8Jt6tPDnAkmJHASLURKF1unCxRaEiB5b9vEH0IF5xXY_zJepoVrqVGOws-OSv4z1AlvN4wmFQDJ3mmyqCdaapsp_JiqWliiWHugxZs5z9tyFwlQJROcQul5sFodhl8gAFkvYyz72Th5gixaaHWiC_xXlOFqUmvUG5g6myBpvbR99bosBkadU1-43wIAWN5a8cz4Cy63iX1AcbzI0uyq70qdfInp3l1g__T9EeUogseUHyhm8aYkSBtGLswQd0"/>
+<div class="absolute inset-0 flex items-center justify-center flex-col bg-accent-red/20 mix-blend-overlay p-2 text-center">
+<h3 class="text-3xl font-black text-[#e3dac3] uppercase leading-none drop-shadow-md">Join<br/>The<br/>Fight</h3>
+</div>
+</div>
+</div>
+<p class="text-[10px] text-center text-gray-500 font-sans mt-3 uppercase tracking-widest">Ministry of Info</p>
+</div>
+<!-- Editorial Column (Right) -->
+<div class="col-span-7 p-4">
+<div class="flex items-center justify-between mb-3 border-b border-primary/30 pb-1">
+<h3 class="text-primary font-bold uppercase tracking-widest text-sm">Editorials</h3>
+<span class="material-symbols-outlined text-primary text-sm">edit_note</span>
+</div>
+<div class="space-y-4">
+<div class="group cursor-pointer">
+<h4 class="text-lg font-bold leading-tight text-white group-hover:text-primary transition-colors">Why Heavy Armor is Becoming Obsolete</h4>
+<p class="text-xs text-gray-400 mt-1 font-sans uppercase">Cmdr. IronSide • 2h ago</p>
+<p class="text-sm text-[#999] mt-2 line-clamp-3 leading-relaxed font-serif">
+                                The recent skirmishes in Sector 7 have proven one thing: mobility beats plating. The new light tank divisions are outmaneuvering our heaviest...
+                            </p>
+</div>
+<div class="h-px bg-white/10 w-full"></div>
+<div class="group cursor-pointer">
+<h4 class="text-lg font-bold leading-tight text-white group-hover:text-primary transition-colors">Espionage: The Silent Killer</h4>
+<p class="text-xs text-gray-400 mt-1 font-sans uppercase">Agent Zero • 5h ago</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Community Updates / Classifieds Style -->
+<div class="p-4 bg-[#1a1c1f]">
+<div class="flex items-center gap-2 mb-4">
+<div class="h-px bg-white/20 flex-1"></div>
+<h3 class="text-center font-black uppercase text-xl tracking-widest text-[#555]">Frontline Wire</h3>
+<div class="h-px bg-white/20 flex-1"></div>
+</div>
+<div class="grid grid-cols-1 gap-2">
+<!-- Achievement Item -->
+<div class="bg-[#222429] p-3 border border-white/5 flex items-start gap-3 rounded-sm">
+<div class="bg-primary/20 p-2 rounded-full shrink-0 text-primary">
+<span class="material-symbols-outlined text-xl">military_tech</span>
+</div>
+<div>
+<p class="text-sm text-white"><strong class="text-primary font-bold">Cpt. Miller</strong> received the <em class="text-gray-300">Medal of Honor</em> for holding the line at Bastogne.</p>
+<span class="text-[10px] text-gray-600 font-sans uppercase mt-1 block">15 mins ago • Sector 3</span>
+</div>
+</div>
+<!-- Achievement Item -->
+<div class="bg-[#222429] p-3 border border-white/5 flex items-start gap-3 rounded-sm">
+<div class="bg-accent-red/20 p-2 rounded-full shrink-0 text-accent-red">
+<span class="material-symbols-outlined text-xl">flag</span>
+</div>
+<div>
+<p class="text-sm text-white"><strong class="text-white font-bold">Clan IronFist</strong> has declared war on <strong class="text-white">The Northern Alliance</strong>.</p>
+<span class="text-[10px] text-gray-600 font-sans uppercase mt-1 block">42 mins ago • Global</span>
+</div>
+</div>
+<!-- Achievement Item -->
+<div class="bg-[#222429] p-3 border border-white/5 flex items-start gap-3 rounded-sm">
+<div class="bg-blue-500/20 p-2 rounded-full shrink-0 text-blue-400">
+<span class="material-symbols-outlined text-xl">map</span>
+</div>
+<div>
+<p class="text-sm text-white">New contested zone: <strong class="text-white">Berlin Outskirts</strong> is now open for skirmishes.</p>
+<span class="text-[10px] text-gray-600 font-sans uppercase mt-1 block">1 hour ago • Intel</span>
+</div>
+</div>
+</div>
+<button class="w-full mt-4 py-3 border border-white/10 text-gray-400 text-xs font-bold uppercase tracking-widest hover:bg-white/5 transition-colors">
+                    Load More Teletypes
+                </button>
+</div>
+<div class="h-6"></div>
+</main>
+<!-- Bottom Navigation -->
+<nav class="absolute bottom-0 w-full bg-[#121212] border-t border-primary/30 py-1 px-2 z-20 flex justify-around items-end pb-safe">
+<button class="flex flex-col items-center gap-1 p-3 text-primary group">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform">newspaper</span>
+<span class="text-[9px] uppercase tracking-wider font-bold opacity-100 font-sans">News</span>
+</button>
+<button class="flex flex-col items-center gap-1 p-3 text-gray-500 hover:text-white transition-colors group">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform">map</span>
+<span class="text-[9px] uppercase tracking-wider font-bold opacity-70 font-sans">Map</span>
+</button>
+<button class="relative -top-5 bg-primary text-black rounded-full p-4 border-4 border-[#121212] shadow-hard-sm hover:translate-y-1 transition-transform">
+<span class="material-symbols-outlined text-2xl">swords</span>
+</button>
+<button class="flex flex-col items-center gap-1 p-3 text-gray-500 hover:text-white transition-colors group">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform">groups</span>
+<span class="text-[9px] uppercase tracking-wider font-bold opacity-70 font-sans">Allies</span>
+</button>
+<button class="flex flex-col items-center gap-1 p-3 text-gray-500 hover:text-white transition-colors group">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform">person</span>
+<span class="text-[9px] uppercase tracking-wider font-bold opacity-70 font-sans">Profile</span>
+</button>
+</nav>
+<!-- Safe area padding for bottom nav on newer iPhones -->
+<div class="h-6 bg-[#121212] absolute bottom-0 w-full -z-10"></div>
+</div>
+</body></html>

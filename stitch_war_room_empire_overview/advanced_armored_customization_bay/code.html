@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Advanced Armored Customization Bay</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0df233",
+                        "primary-dim": "#0a9922",
+                        "background-light": "#f1f4f1", // Fallback, mostly unused in this dark theme
+                        "background-dark": "#121613",
+                        "panel-dark": "#1E221F",
+                        "border-tactical": "#3b543f",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"],
+                        "mono": ["Space Grotesk", "monospace"], // Using Space Grotesk for mono feel due to its geometric nature
+                    },
+                    backgroundImage: {
+                        'grid-pattern': "linear-gradient(to right, #3b543f 1px, transparent 1px), linear-gradient(to bottom, #3b543f 1px, transparent 1px)",
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom scrollbar hiding */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        
+        /* CRT Glow Effect */
+        .glow-text {
+            text-shadow: 0 0 5px rgba(13, 242, 51, 0.5);
+        }
+        .glow-border {
+            box-shadow: 0 0 8px rgba(13, 242, 51, 0.4);
+        }
+        
+        /* Tactical Grid Background */
+        .tactical-grid {
+            background-size: 40px 40px;
+            opacity: 0.05;
+            mask-image: linear-gradient(to bottom, transparent, black 20%, black 80%, transparent);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-dark text-white font-display antialiased selection:bg-primary selection:text-black overflow-hidden h-screen w-full flex flex-col relative">
+<!-- Background Decoration -->
+<div class="absolute inset-0 tactical-grid bg-grid-pattern z-0 pointer-events-none"></div>
+<div class="absolute inset-0 bg-gradient-to-b from-background-dark/80 via-transparent to-background-dark/90 z-0 pointer-events-none"></div>
+<!-- Header HUD -->
+<header class="relative z-20 flex flex-col w-full bg-gradient-to-b from-background-dark to-transparent px-5 pt-6 pb-2">
+<div class="flex items-center justify-between mb-4">
+<button class="flex items-center justify-center size-10 rounded-full border border-white/10 bg-white/5 active:bg-primary/20 transition-colors text-white hover:text-primary hover:border-primary/50">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<div class="flex items-center gap-2">
+<div class="h-1.5 w-1.5 rounded-full bg-primary animate-pulse"></div>
+<h1 class="text-xs font-bold tracking-[0.2em] text-white/70 uppercase">Customization Bay</h1>
+</div>
+<button class="flex items-center justify-center size-10 rounded-full border border-white/10 bg-white/5 active:bg-primary/20 transition-colors text-white hover:text-primary hover:border-primary/50">
+<span class="material-symbols-outlined">settings</span>
+</button>
+</div>
+<!-- Stats Bar (Integrated HUD) -->
+<div class="flex w-full justify-between items-center border-t border-b border-white/10 py-2 bg-black/20 backdrop-blur-sm">
+<div class="flex flex-col items-center flex-1 border-r border-white/10">
+<span class="text-[10px] font-medium text-white/50 tracking-wider">ARMOR</span>
+<span class="text-primary font-bold text-sm glow-text">100<span class="text-[10px] ml-0.5 opacity-70">mm</span></span>
+</div>
+<div class="flex flex-col items-center flex-1 border-r border-white/10">
+<span class="text-[10px] font-medium text-white/50 tracking-wider">GUN</span>
+<span class="text-primary font-bold text-sm glow-text">88<span class="text-[10px] ml-0.5 opacity-70">mm</span></span>
+</div>
+<div class="flex flex-col items-center flex-1">
+<span class="text-[10px] font-medium text-white/50 tracking-wider">SPEED</span>
+<span class="text-primary font-bold text-sm glow-text">45<span class="text-[10px] ml-0.5 opacity-70">km/h</span></span>
+</div>
+</div>
+</header>
+<!-- Main Viewport (3D Model Area) -->
+<main class="relative flex-1 w-full flex flex-col justify-center items-center z-10 perspective-1000">
+<!-- Vehicle Name Floating Label -->
+<div class="absolute top-4 left-6 z-20 pointer-events-none">
+<h2 class="text-3xl font-bold uppercase tracking-tighter leading-none text-white opacity-90">Tiger I</h2>
+<div class="flex items-center gap-2 mt-1">
+<span class="bg-primary/20 text-primary text-[10px] font-bold px-1.5 py-0.5 rounded border border-primary/30">HEAVY TANK</span>
+<span class="text-white/40 text-xs tracking-widest">PzKpfw VI</span>
+</div>
+</div>
+<!-- Interactive Hotspots -->
+<div class="absolute top-[30%] right-[20%] z-30 group cursor-pointer">
+<div class="relative flex items-center justify-center size-6">
+<div class="absolute inset-0 bg-primary/20 rounded-full animate-ping"></div>
+<div class="relative bg-black border border-primary text-primary rounded-full size-6 flex items-center justify-center text-[10px] font-bold group-hover:bg-primary group-hover:text-black transition-colors">
+                    i
+                </div>
+</div>
+<div class="absolute left-8 top-0 w-32 bg-black/80 border-l-2 border-primary p-2 text-[10px] text-white/80 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none backdrop-blur-md">
+                8.8 cm KwK 36 L/56 main gun
+            </div>
+</div>
+<!-- The Tank Visual -->
+<div class="relative w-full h-[60vh] flex items-center justify-center overflow-visible">
+<!-- Simulated Spotlight/Rim light -->
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[80%] bg-gradient-radial from-primary/5 to-transparent blur-3xl opacity-30 pointer-events-none"></div>
+<img alt="3D render of a Tiger I tank in a dark hangar environment, viewed from a 3/4 front angle" class="w-full h-full object-contain drop-shadow-2xl brightness-90 contrast-125 saturate-50 mask-image-b" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCfIGMttcdbuDOkCW2CxKwmJYdULFtCUHkfRjqzOKmOKfIFaEn8_PvbKMC_M-CrG5E-XmczsKS_0utvh1x_0Y8XTz5VJcGTI2oOvGa-IMbobK74h80e5OJFwDgxewiKjrAm_DG8wQbstqISPvpYNyeoRzLsE6WPMWTXiJsnkHBv2gP2YJcrmtKqp7rrM0NjGkqI9ipcaBv0gUPtsORU3x0OhPIPPUl1SZEvR5aD0ozoSIY4s9dEuB3TOgY1rWRbh9_Y5KnBGyCMog8" style="mask-image: linear-gradient(to bottom, black 80%, transparent 100%);"/>
+</div>
+</main>
+<!-- Control Panel (Bottom Dock) -->
+<footer class="relative z-30 flex flex-col w-full bg-panel-dark rounded-t-3xl shadow-[0_-4px_20px_rgba(0,0,0,0.5)] border-t border-white/10">
+<!-- Decoration Handle -->
+<div class="w-full flex justify-center pt-2 pb-1">
+<div class="w-12 h-1 rounded-full bg-white/10"></div>
+</div>
+<!-- Tabs -->
+<div class="flex px-6 border-b border-black/40 shadow-[inset_0_-1px_0_rgba(255,255,255,0.05)]">
+<button class="flex-1 py-4 text-center relative group">
+<span class="text-primary text-sm font-bold tracking-widest uppercase glow-text">Camo</span>
+<div class="absolute bottom-0 left-0 w-full h-0.5 bg-primary glow-border"></div>
+</button>
+<button class="flex-1 py-4 text-center relative group opacity-50 hover:opacity-100 transition-opacity">
+<span class="text-white text-sm font-bold tracking-widest uppercase">Decal</span>
+<div class="absolute bottom-0 left-0 w-full h-0.5 bg-transparent group-hover:bg-white/20 transition-colors"></div>
+</button>
+<button class="flex-1 py-4 text-center relative group opacity-50 hover:opacity-100 transition-opacity">
+<span class="text-white text-sm font-bold tracking-widest uppercase">Badge</span>
+<div class="absolute bottom-0 left-0 w-full h-0.5 bg-transparent group-hover:bg-white/20 transition-colors"></div>
+</button>
+</div>
+<!-- Options Selector (Carousel) -->
+<div class="py-6 pl-6 overflow-hidden">
+<div class="flex overflow-x-auto no-scrollbar gap-4 pr-6 items-start">
+<!-- Option 1: Active -->
+<div class="flex flex-col gap-2 min-w-[100px] group cursor-pointer">
+<div class="relative w-[100px] h-[100px] rounded-xl overflow-hidden border-2 border-primary glow-border transition-all">
+<div class="absolute top-2 right-2 z-10 bg-primary text-black rounded-full size-5 flex items-center justify-center shadow-lg">
+<span class="material-symbols-outlined text-[14px] font-bold">check</span>
+</div>
+<div class="w-full h-full bg-cover bg-center transition-transform duration-500 group-hover:scale-110" data-alt="Dunkelgelb desert yellow camouflage pattern texture" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDFxt4AC6hZYlI8icpFAH9Kt40tjpNFpVAoqttPfrp9xMXig-KNQ6k2mmOhZgQHhEJB-phksIDISz4kP_jYUPKgkYt1yPxtC2rxLeoYStxLCsgmFxKZ1Q7mipWUekqf5NbHw9nV3E77ED9_dzWo1G8b2O0Tc9jP3Tp2VX6IHL7yCxD0THzBXD_ILswcz1Rt8P7Hxl5NlfeXnIKhI_1S2Q_YvPWVvuo6BHbhQg4AOTKlSYSp3VX7P1E_M3GIR4J-Z8JY0ocknxxvPos');"></div>
+</div>
+<span class="text-primary text-xs font-bold text-center tracking-wide uppercase">Dunkelgelb</span>
+</div>
+<!-- Option 2 -->
+<div class="flex flex-col gap-2 min-w-[100px] group cursor-pointer opacity-70 hover:opacity-100 transition-opacity">
+<div class="relative w-[100px] h-[100px] rounded-xl overflow-hidden border border-white/20 group-hover:border-white/50 transition-all bg-black">
+<div class="w-full h-full bg-cover bg-center transition-transform duration-500 group-hover:scale-110" data-alt="Forest ambush camouflage pattern texture with greens and browns" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCTKIdfCSilbaLEK94rP1LWIhQMGQH5lT0HBBL3rMMnstaDXU0-UV2mYu2GMvOLvkOBcv-Kdps8Ee5yh8EjZCFMSzu-PyhzcVbBQ5ozJBdn-mwyQxgJw-5vMXKktXeK8rHw2OXxOYEiAy68rLmy8AAyWnevJb6pF4fYatQjKQFTCzePc0mhscYMFxQvwoROtV7GsdLargeWOdhX-x4PB3y3k-PV1J_XHl0UC14uqu9cadPEi7fG-u0XlArohIBbFVkqw0gLIhXFAX0');"></div>
+</div>
+<span class="text-white text-xs font-medium text-center tracking-wide uppercase">Ambush</span>
+</div>
+<!-- Option 3 -->
+<div class="flex flex-col gap-2 min-w-[100px] group cursor-pointer opacity-70 hover:opacity-100 transition-opacity">
+<div class="relative w-[100px] h-[100px] rounded-xl overflow-hidden border border-white/20 group-hover:border-white/50 transition-all bg-black">
+<div class="w-full h-full bg-cover bg-center transition-transform duration-500 group-hover:scale-110" data-alt="Winter white distressed camouflage pattern texture" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDY7BF1I6gC6FUemNnni0TA_coGA9AE5HxbilxsY-j6P2pYbNvOiF5Ury3KURmXQTI-RNsH2g8oZ8WrxcWMbJxSA7Re1hCwVkbDHKGIA0bbF2F8Bs4tjRRPLrsAkK4vqKsavQHknanGtppkL2ucP2M8MDYMtT592OkS0S2AkfZdorkZf67QbWGyWpXYBCxe0DMyO-zZteQEOmu2KB3RvV4vV1xCefvkC1peE3XHpqFWClVWEXpxPEeteHJz1HxIEF3u9paafRN_tdA');"></div>
+</div>
+<span class="text-white text-xs font-medium text-center tracking-wide uppercase">Winter</span>
+</div>
+<!-- Option 4 -->
+<div class="flex flex-col gap-2 min-w-[100px] group cursor-pointer opacity-70 hover:opacity-100 transition-opacity">
+<div class="relative w-[100px] h-[100px] rounded-xl overflow-hidden border border-white/20 group-hover:border-white/50 transition-all bg-black">
+<div class="w-full h-full bg-cover bg-center transition-transform duration-500 group-hover:scale-110" data-alt="Urban grey jagged camouflage pattern texture" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCHkyDNC16Er9qoft32_BkctScmjlpDZKxQG-DcaOWEjyMNgnjg9MZpeXILjVoZwH31OStd1ZRtFifJ_xRdU2b1qJr0OndYasOEz-cXp97HbFFo8zk9I1d-doTbpyP06iIU4lCDviGL50yZQRNVPSP95Av2W5hjt-qlsV6qx-y_H3h5qvTgU0XlojHpjNls7QUbNq_2PvPcam8TN2K3lYNJ33ftcKfQMPdPB9w9Pq21wbAbBiHFKvWoAEN0NjtHwJtwIZENHnEbUj4');"></div>
+</div>
+<span class="text-white text-xs font-medium text-center tracking-wide uppercase">Urban</span>
+</div>
+</div>
+</div>
+<!-- Action Button -->
+<div class="px-6 pb-8 pt-2">
+<button class="relative w-full overflow-hidden group bg-primary/10 hover:bg-primary/20 border border-primary/50 text-primary font-bold uppercase tracking-[0.15em] py-4 rounded transition-all duration-300 shadow-[0_0_15px_rgba(13,242,51,0.1)] hover:shadow-[0_0_25px_rgba(13,242,51,0.3)]">
+<!-- Glitch/Tech Effect Overlay -->
+<span class="absolute top-0 left-0 w-1 h-full bg-primary/50 group-hover:w-full transition-all duration-500 opacity-20"></span>
+<span class="relative flex items-center justify-center gap-3">
+<span class="material-symbols-outlined text-lg">rocket_launch</span>
+                    Initiate Battle Simulation
+                </span>
+<!-- Corner accents -->
+<span class="absolute top-0 left-0 w-2 h-2 border-t border-l border-primary"></span>
+<span class="absolute top-0 right-0 w-2 h-2 border-t border-r border-primary"></span>
+<span class="absolute bottom-0 left-0 w-2 h-2 border-b border-l border-primary"></span>
+<span class="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-primary"></span>
+</button>
+</div>
+</footer>
+</body></html>

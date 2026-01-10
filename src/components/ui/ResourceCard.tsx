@@ -19,11 +19,18 @@ export function ResourceCard({
     onClick,
     compact = false,
 }: ResourceCardProps) {
+    // Helper for realistic resource formatting
+    const formatResource = (val: number) => {
+        if (Math.abs(val) >= 1000000) return `${(val / 1000000).toFixed(1)}m`
+        if (Math.abs(val) >= 1000) return `${(val / 1000).toFixed(1)}k`
+        return val.toString()
+    }
+
     const icon = RESOURCE_ICONS[type]
     const name = RESOURCE_NAMES[type]
-    const formattedAmount = amount.toLocaleString('es-ES', { maximumFractionDigits: 0 })
+    const formattedAmount = formatResource(amount)
     const formattedRate = rate !== undefined
-        ? (rate >= 0 ? '+' : '') + rate.toFixed(1) + '/h'
+        ? (rate >= 0 ? '+' : '') + formatResource(rate) + '/h'
         : null
 
     if (compact) {
@@ -31,14 +38,14 @@ export function ResourceCard({
             <div
                 className={`
           flex items-center gap-1.5 px-2 py-1 rounded-lg
-          bg-zinc-800/60 border border-zinc-700/50
-          ${isLow ? 'border-red-500/50 bg-red-900/20' : ''}
-          ${onClick ? 'cursor-pointer hover:bg-zinc-700/60 transition-colors' : ''}
+          bg-white/5 border border-white/10
+          ${isLow ? 'border-alert-red/50 bg-alert-red/10' : ''}
+          ${onClick ? 'cursor-pointer hover:bg-white/10 transition-colors' : ''}
         `}
                 onClick={onClick}
             >
-                <span className="text-lg">{icon}</span>
-                <span className={`font-semibold ${isLow ? 'text-red-400' : 'text-zinc-100'}`}>
+                <span className="text-lg opacity-80">{icon}</span>
+                <span className={`font-mono font-bold text-sm ${isLow ? 'text-alert-red' : 'text-zinc-100'}`}>
                     {formattedAmount}
                 </span>
             </div>
@@ -49,28 +56,26 @@ export function ResourceCard({
         <div
             className={`
         relative flex flex-col p-3 rounded-xl
-        bg-gradient-to-br from-zinc-800/80 to-zinc-900/80
-        border border-zinc-700/50
-        backdrop-blur-sm
-        ${isLow ? 'border-red-500/50 ring-1 ring-red-500/30' : ''}
-        ${onClick ? 'cursor-pointer hover:border-amber-500/50 hover:from-zinc-700/80 transition-all' : ''}
+        glass-panel
+        ${isLow ? 'border-alert-red/50 ring-1 ring-alert-red/30' : ''}
+        ${onClick ? 'cursor-pointer hover:border-primary/50 hover:bg-white/5 transition-all' : ''}
       `}
             onClick={onClick}
         >
             {/* Icon and Name */}
             <div className="flex items-center gap-2 mb-2">
                 <span className="text-2xl">{icon}</span>
-                <span className="text-sm text-zinc-400 font-medium">{name}</span>
+                <span className="text-sm text-zinc-400 font-bold uppercase tracking-wider">{name}</span>
             </div>
 
             {/* Amount */}
-            <div className={`text-xl font-bold ${isLow ? 'text-red-400' : 'text-zinc-100'}`}>
+            <div className={`text-xl font-mono font-bold ${isLow ? 'text-alert-red' : 'text-white'}`}>
                 {formattedAmount}
             </div>
 
             {/* Rate */}
             {formattedRate && (
-                <div className={`text-sm ${rate && rate >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                <div className={`text-sm font-mono ${rate && rate >= 0 ? 'text-green-400' : 'text-alert-red'}`}>
                     {formattedRate}
                 </div>
             )}
@@ -78,7 +83,7 @@ export function ResourceCard({
             {/* Low warning indicator */}
             {isLow && (
                 <div className="absolute top-2 right-2">
-                    <span className="text-red-400 text-xs animate-pulse">⚠️</span>
+                    <span className="text-alert-red text-xs animate-pulse">⚠️</span>
                 </div>
             )}
         </div>
@@ -93,18 +98,18 @@ interface ResourceBarProps {
 }
 
 export function ResourceBar({ resources, rates, lowThresholds }: ResourceBarProps) {
-    const defaultThresholds = { gold: 100, iron: 50, oil: 25, food: 50 }
+    const defaultThresholds: Partial<Resources> = { gold: 100, steel: 50, oil: 25, food: 50 }
     const thresholds = { ...defaultThresholds, ...lowThresholds }
 
     return (
-        <div className="flex items-center gap-3 px-4 py-2 bg-zinc-900/90 border-b border-zinc-800 backdrop-blur-md">
-            {(Object.keys(resources) as Array<keyof Resources>).map((type) => (
+        <div className="flex items-center gap-3 px-4 py-2">
+            {(Object.keys(resources) as Array<keyof Resources>).filter(type => resources[type] !== undefined).map((type) => (
                 <ResourceCard
                     key={type}
                     type={type}
-                    amount={resources[type]}
+                    amount={resources[type] ?? 0}
                     rate={rates?.[type]}
-                    isLow={resources[type] < thresholds[type]}
+                    isLow={(resources[type] ?? 0) < (thresholds[type] ?? 100)}
                     compact
                 />
             ))}
@@ -121,15 +126,18 @@ interface ResourcePanelProps {
 export function ResourcePanel({ resources, rates }: ResourcePanelProps) {
     return (
         <div className="grid grid-cols-2 gap-3 p-4">
-            {(Object.keys(resources) as Array<keyof Resources>).map((type) => (
-                <ResourceCard
-                    key={type}
-                    type={type}
-                    amount={resources[type]}
-                    rate={rates?.[type]}
-                    isLow={resources[type] < 100}
-                />
-            ))}
+            {(Object.keys(resources) as Array<keyof Resources>).filter(type => resources[type] !== undefined).map((type) => {
+                const amt = resources[type] as number
+                return (
+                    <ResourceCard
+                        key={type}
+                        type={type}
+                        amount={amt}
+                        rate={rates?.[type]}
+                        isLow={amt < 100}
+                    />
+                )
+            })}
         </div>
     )
 }

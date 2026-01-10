@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Base Infrastructure Management</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Noto+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#13656c",
+                        "primary-light": "#1d8f98",
+                        "accent-gold": "#FFC900",
+                        "background-light": "#f9fafb",
+                        "background-dark": "#0b0d0f",
+                        "panel-dark": "#151a1c",
+                        "panel-border": "#2a3637",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"],
+                        "body": ["Noto Sans", "sans-serif"],
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px"},
+                    backgroundImage: {
+                        'grid-pattern': "linear-gradient(to right, #2a3637 1px, transparent 1px), linear-gradient(to bottom, #2a3637 1px, transparent 1px)",
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .scaffold-anim {
+            background: repeating-linear-gradient(
+                45deg,
+                rgba(255, 201, 0, 0.1),
+                rgba(255, 201, 0, 0.1) 10px,
+                rgba(255, 201, 0, 0.2) 10px,
+                rgba(255, 201, 0, 0.2) 20px
+            );
+            animation: move-stripes 2s linear infinite;
+        }
+        @keyframes move-stripes {
+            0% { background-position: 0 0; }
+            100% { background-position: 40px 40px; }
+        }
+        .breathing-glow {
+            animation: breathe 3s ease-in-out infinite;
+        }
+        @keyframes breathe {
+            0%, 100% { box-shadow: 0 0 5px rgba(19, 101, 108, 0.2); }
+            50% { box-shadow: 0 0 20px rgba(19, 101, 108, 0.6); }
+        }
+        @keyframes slide-in-up {
+            0% { transform: translateY(20px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+        .animate-slide-in-up {
+            animation: slide-in-up 0.5s ease-out forwards;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-800 dark:text-white font-display h-screen flex flex-col overflow-hidden">
+<!-- Top Navigation & Stats -->
+<header class="flex-none bg-panel-dark border-b border-panel-border z-20">
+<!-- Player Level & Name -->
+<div class="flex items-center justify-between p-4 pb-2">
+<div class="flex items-center gap-3">
+<div class="relative">
+<div class="size-10 rounded-full bg-cover bg-center border-2 border-primary" data-alt="Commander avatar profile picture" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBtsTf8TntqvdHPFnrL33Q6cX2TzCjQ8LxWs5tHAp68rCurj6OX5S9TJpmuRAJgmmSjR0LVq-5qN1KHMmDpY6gGEV0_CH42QSo1K86UC2q976pg-Vfn1vExwAZcUXeey1SP88kktm0054hY7GcLx9F5Cuqdi9T6EF1dcigEtbvmeLVHwdRk2vdK9fjN6za-qnZDVf7hEsA7w7SKmIvwwg3ms0Y1HAon3kflkzZ41yGcS0fxt7qsGKvWEmLTCcgX1k3pvO9QDjfNBm0");'></div>
+<div class="absolute -bottom-1 -right-1 bg-background-dark text-[10px] font-bold px-1.5 py-0.5 rounded border border-panel-border text-primary-light">LV.12</div>
+</div>
+<div>
+<h2 class="text-white text-base font-bold leading-none tracking-wide uppercase">Base Command</h2>
+<p class="text-slate-400 text-xs font-medium tracking-wider mt-0.5">SECTOR 7-ALPHA</p>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="size-9 rounded-lg bg-panel-border/50 flex items-center justify-center text-slate-400 hover:text-white hover:bg-panel-border transition-colors">
+<span class="material-symbols-outlined text-xl">settings</span>
+</button>
+</div>
+</div>
+<!-- Resources Ticker -->
+<div class="px-4 pb-3">
+<div class="flex gap-2 w-full overflow-x-auto no-scrollbar">
+<!-- Steel -->
+<div class="flex-1 min-w-[100px] bg-[#1a2022] border border-panel-border rounded flex items-center p-2 gap-2 shadow-inner shadow-black/20">
+<span class="material-symbols-outlined text-slate-400 text-lg">construction</span>
+<div class="flex flex-col">
+<span class="text-[10px] text-slate-500 font-bold uppercase tracking-wider leading-none">Steel</span>
+<span class="text-sm font-bold text-white leading-none mt-1">4.2k</span>
+</div>
+</div>
+<!-- Oil -->
+<div class="flex-1 min-w-[100px] bg-[#1a2022] border border-panel-border rounded flex items-center p-2 gap-2 shadow-inner shadow-black/20">
+<span class="material-symbols-outlined text-slate-400 text-lg">oil_barrel</span>
+<div class="flex flex-col">
+<span class="text-[10px] text-slate-500 font-bold uppercase tracking-wider leading-none">Oil</span>
+<span class="text-sm font-bold text-white leading-none mt-1">1.8k</span>
+</div>
+</div>
+<!-- Black Gold -->
+<div class="flex-1 min-w-[100px] bg-[#1a2022] border border-panel-border rounded flex items-center p-2 gap-2 shadow-inner shadow-black/20 relative overflow-hidden group">
+<div class="absolute inset-0 bg-accent-gold/5 group-hover:bg-accent-gold/10 transition-colors"></div>
+<span class="material-symbols-outlined text-accent-gold text-lg">diamond</span>
+<div class="flex flex-col relative z-10">
+<span class="text-[10px] text-accent-gold/80 font-bold uppercase tracking-wider leading-none">Blk Gold</span>
+<span class="text-sm font-bold text-accent-gold leading-none mt-1">250</span>
+</div>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Viewport (3D Base Context) -->
+<main class="flex-grow relative w-full overflow-hidden bg-background-dark">
+<!-- Background Image -->
+<div class="absolute inset-0 z-0 opacity-60">
+<div class="w-full h-full bg-cover bg-center" data-alt="Isometric view of a futuristic military base at night with blue ambient lighting" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDdkRe0X-G8iYQqmi-sTHJyVyE6pkMn2m3pmOv19byHXMNDdDMJb6HVvDTBoOttlbcRa5S49T8YnbMO30uhnxYhomVw1ele8KXdil3JThBWhaP7GvAcuklQ5hO038FQrVrT1UC3xR3UBXv_k6WBPR9py-2U78bMAwHkPf0Pri4GvZXW5s0-tufkVMDl7NWRBS5oPIrkzRirguNc6dvFYQ98r-5kpbY1vFIuHehNyLLr-3cjhrKTm7vy6qZMVQO1SnsSHCQl4hULZjk");'></div>
+<!-- Vignette & Grid Overlay -->
+<div class="absolute inset-0 bg-gradient-to-t from-background-dark via-background-dark/20 to-background-dark/80"></div>
+<div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCI+CjxwYXRoIGQ9Ik0wIDBoNDB2NDBIMHoiIGZpbGw9Im5vbmUiLz4KPHBhdGggZD0iTTAgNDBoNDBNNDAgMHY0MCIgc3Ryb2tlPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMDUpIiBzdHJva2Utd2lkdGg9IjEiLz4KPC9zdmc+')] opacity-20 pointer-events-none"></div>
+</div>
+<!-- Construction Zone Interaction -->
+<div class="absolute inset-0 z-10 flex flex-col items-center justify-center -mt-20">
+<!-- Target Reticle / Construction Site -->
+<div class="relative w-64 h-64 md:w-80 md:h-80 group cursor-pointer">
+<!-- Floating Indicators -->
+<div class="absolute -top-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 animate-bounce duration-[3000ms]">
+<span class="material-symbols-outlined text-accent-gold text-3xl drop-shadow-[0_0_10px_rgba(255,201,0,0.5)]">engineering</span>
+<div class="bg-black/80 backdrop-blur border border-accent-gold/30 px-2 py-1 rounded text-[10px] text-accent-gold font-bold uppercase tracking-widest shadow-lg">Construction Zone</div>
+</div>
+<!-- Central Building Image (Factory) -->
+<div class="absolute inset-4 rounded-xl overflow-hidden shadow-2xl border border-primary/30 bg-black">
+<div class="w-full h-full bg-cover bg-center opacity-80" data-alt="Detailed industrial steel factory building structure" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDG1VKZGdIYlRX7OoRtaIGypR8lNp1YPU8pzx9uLJvLJXwi7NusCPjx6OI7MUKrdsznZ5_gYopz5cFJ2qNZLLpmtH84pXy-gCgdfYvI-yUvxTcv_wvCr5Yxb9UIKhUxkjJFJ5ckmNo6nOkyqERiBvIizCSLwPWpVwtF6qsjd-Fijv3YGmGdLr8dO3r_LFIThyia6zFh1ZNS0UWbVbpkgenQ8inwGKY_YVuOh6DbM29fn2pZjcSMcMwlaY9YjPcCRQ7Vymq5b_ZFQ2U");'></div>
+<!-- Scaffold Overlay -->
+<div class="absolute inset-0 scaffold-anim border-2 border-accent-gold/20 z-10 pointer-events-none"></div>
+</div>
+<!-- Holographic Selection Ring -->
+<div class="absolute inset-0 border border-primary/40 rounded-2xl scale-110 opacity-50"></div>
+<div class="absolute -inset-1 border-t border-b border-primary/60 rounded-2xl scale-125 opacity-30"></div>
+<!-- Level Indicator on Building -->
+<div class="absolute bottom-6 right-6 z-20 bg-primary text-white text-xs font-bold px-2 py-1 rounded shadow-lg border border-white/10">
+                    LV. 4
+                </div>
+</div>
+</div>
+<!-- Chat Toast (Floating) -->
+<div class="absolute bottom-4 left-4 right-4 z-20">
+<div class="bg-panel-dark/90 backdrop-blur-md border-l-4 border-primary rounded-r-lg shadow-lg p-3 flex items-start gap-3 animate-slide-in-up max-w-sm">
+<div class="size-10 rounded bg-slate-700 bg-cover bg-center shrink-0 border border-slate-600" data-alt="Avatar of Commander Viper" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDFeWWfbvGlHE_cmKiLK5FuHPO5y0jLBm7_WK5qEDYNHc_MbxkZbwq7ynz2uBrdaVn8FCfCtdYHAt1ZKZxGOmbAtVGOByZQETXeXB6gnzTW-T3xXwW94EltS1WQOpwQSFxERI0QzCN4gWrVS0an-rHgnDJFeLgTcRwkQGdPpzQoWlam9rq_ooJeyBp7X_l1-izJ5GGyECGgvMUsRq-YDSa3rTZ37yTk1bvLItoUC46ZoQo1CKwy1NDDlNnqKNetHd9-9W0SSctYxlY");'></div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-baseline mb-0.5">
+<span class="text-primary-light text-xs font-bold uppercase tracking-wide">Cmdr. Viper</span>
+<span class="text-[10px] text-slate-500">Just now</span>
+</div>
+<p class="text-white text-sm leading-tight truncate">I'm sending 500 <span class="text-slate-300 font-bold">Iron</span> to help your build.</p>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Control Panel & Nav -->
+<footer class="flex-none z-30 bg-panel-dark border-t border-panel-border shadow-[0_-5px_20px_rgba(0,0,0,0.5)]">
+<!-- Active Task Panel -->
+<div class="relative -mt-6 mx-4 bg-[#1d2526] rounded-t-lg border border-panel-border border-b-0 shadow-xl p-4 pb-2">
+<!-- Decorative Top Edge -->
+<div class="absolute top-0 left-1/2 -translate-x-1/2 -mt-[1px] w-1/3 h-[2px] bg-primary shadow-[0_0_10px_rgba(19,101,108,0.8)]"></div>
+<!-- Header: Title & Lvl -->
+<div class="flex justify-between items-start mb-3">
+<div>
+<h3 class="text-white text-lg font-bold leading-tight">Steel Factory Upgrade</h3>
+<p class="text-primary-light text-xs font-medium mt-1">Sector 4 • Lv. 4 <span class="text-slate-500 mx-1">→</span> <span class="text-white">Lv. 5</span></p>
+</div>
+<div class="text-right">
+<p class="text-white text-xl font-mono font-bold tracking-tight">02:15:00</p>
+<p class="text-slate-500 text-[10px] uppercase tracking-wider">Time Remaining</p>
+</div>
+</div>
+<!-- Progress Bar -->
+<div class="mb-4">
+<div class="flex justify-between text-xs mb-1.5">
+<span class="text-slate-400">Construction Progress</span>
+<span class="text-primary-light font-bold">65%</span>
+</div>
+<div class="h-2 w-full bg-slate-800 rounded-full overflow-hidden border border-slate-700">
+<div class="h-full bg-primary relative overflow-hidden" style="width: 65%">
+<div class="absolute inset-0 bg-white/20 animate-[pulse_2s_cubic-bezier(0.4,0,0.6,1)_infinite]"></div>
+</div>
+</div>
+</div>
+<!-- Action Buttons -->
+<div class="flex gap-3">
+<button class="flex-1 bg-slate-800 hover:bg-slate-700 border border-slate-600 text-slate-300 py-3 rounded font-bold text-sm uppercase tracking-wide transition-colors">
+                    Ask Alliance
+                </button>
+<button class="flex-[2] bg-primary hover:bg-primary-light text-white py-3 rounded font-bold text-sm uppercase tracking-wide transition-all shadow-[0_0_15px_rgba(19,101,108,0.3)] hover:shadow-[0_0_20px_rgba(19,101,108,0.5)] breathing-glow flex items-center justify-center gap-2 group">
+<span>Speed Up</span>
+<div class="bg-black/20 rounded px-1.5 py-0.5 flex items-center gap-1 group-hover:bg-black/10">
+<span class="material-symbols-outlined text-accent-gold text-sm">diamond</span>
+<span class="text-accent-gold text-xs">50</span>
+</div>
+</button>
+</div>
+</div>
+<!-- Tab Bar Navigation -->
+<nav class="flex justify-around items-center pt-2 pb-6 px-2 bg-panel-dark">
+<a class="flex flex-col items-center gap-1 p-2 group w-16" href="#">
+<div class="relative">
+<span class="material-symbols-outlined text-primary text-2xl group-hover:drop-shadow-[0_0_5px_rgba(19,101,108,0.8)] transition-all">home_work</span>
+<div class="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 bg-primary rounded-full"></div>
+</div>
+<span class="text-[10px] font-bold text-white uppercase tracking-wider">Base</span>
+</a>
+<a class="flex flex-col items-center gap-1 p-2 group w-16 text-slate-500 hover:text-slate-300 transition-colors" href="#">
+<span class="material-symbols-outlined text-2xl">map</span>
+<span class="text-[10px] font-bold uppercase tracking-wider">Map</span>
+</a>
+<!-- Big Central Menu Button (Optional, common in strategy games) -->
+<div class="relative -top-6">
+<div class="size-14 bg-gradient-to-b from-slate-700 to-slate-800 rounded-full border-4 border-panel-dark flex items-center justify-center shadow-lg cursor-pointer hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-white text-3xl">swords</span>
+</div>
+</div>
+<a class="flex flex-col items-center gap-1 p-2 group w-16 text-slate-500 hover:text-slate-300 transition-colors" href="#">
+<span class="material-symbols-outlined text-2xl">groups</span>
+<span class="text-[10px] font-bold uppercase tracking-wider">Alliance</span>
+</a>
+<a class="flex flex-col items-center gap-1 p-2 group w-16 text-slate-500 hover:text-slate-300 transition-colors" href="#">
+<span class="material-symbols-outlined text-2xl">inventory_2</span>
+<span class="text-[10px] font-bold uppercase tracking-wider">Items</span>
+</a>
+</nav>
+</footer>
+</body></html>

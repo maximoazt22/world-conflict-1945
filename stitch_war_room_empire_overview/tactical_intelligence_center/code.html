@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Tactical Intelligence Center</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&amp;family=Noto+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0095c7",
+                        "danger": "#ef4444",
+                        "success": "#10b981",
+                        "background-light": "#f5f8f8",
+                        "background-dark": "#0f1e23",
+                        "surface-dark": "#16262c",
+                        "border-dark": "#2a3d45",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"],
+                        "body": ["Noto Sans", "sans-serif"],
+                        "mono": ["monospace"]
+                    },
+                    backgroundImage: {
+                        'grid-pattern': "linear-gradient(to right, #1a2c33 1px, transparent 1px), linear-gradient(to bottom, #1a2c33 1px, transparent 1px)",
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        /* CRT Scanline Effect */
+        .scanlines {
+            background: linear-gradient(
+                to bottom,
+                rgba(255,255,255,0),
+                rgba(255,255,255,0) 50%,
+                rgba(0,0,0,0.2) 50%,
+                rgba(0,0,0,0.2)
+            );
+            background-size: 100% 4px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            z-index: 50;
+            opacity: 0.6;
+        }
+
+        /* Radar Sweep Animation */
+        @keyframes radar-spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .radar-sweep {
+            transform-origin: center;
+            animation: radar-spin 4s linear infinite;
+        }
+        
+        @keyframes pulse-red {
+            0% { opacity: 0.3; }
+            50% { opacity: 1; }
+            100% { opacity: 0.3; }
+        }
+        .animate-pulse-red {
+            animation: pulse-red 2s infinite;
+        }
+
+        /* Scrollbar hiding for cleaner mobile look */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white font-display overflow-x-hidden pb-24 selection:bg-primary selection:text-white">
+<!-- Scanline Overlay -->
+<div class="scanlines"></div>
+<!-- Header -->
+<header class="sticky top-0 z-40 border-b border-border-dark bg-background-dark/95 backdrop-blur-sm">
+<div class="flex items-center p-4 justify-between h-16">
+<div class="text-primary flex size-12 shrink-0 items-center justify-center rounded-full bg-primary/10">
+<span class="material-symbols-outlined text-[24px]">lock</span>
+</div>
+<div class="flex flex-col items-center flex-1 px-4">
+<h2 class="text-white text-sm font-bold tracking-[0.2em] leading-tight text-center uppercase text-primary">Top Secret // Eyes Only</h2>
+<p class="text-xs text-slate-400 font-mono mt-0.5">INTEL REPORT #45-A</p>
+</div>
+<div class="flex w-12 flex-col items-end justify-center">
+<p class="text-slate-400 text-xs font-bold leading-normal tracking-wide shrink-0">1945</p>
+<p class="text-slate-400 text-xs font-bold leading-normal tracking-wide shrink-0">10.24</p>
+</div>
+</div>
+<!-- Progress Bar / Loading Line -->
+<div class="h-[1px] w-full bg-border-dark relative overflow-hidden">
+<div class="absolute inset-y-0 left-0 bg-primary w-1/3 animate-[loading_2s_ease-in-out_infinite]" style="animation: loading 3s linear infinite;"></div>
+</div>
+<style>
+            @keyframes loading {
+                0% { left: -33%; }
+                100% { left: 100%; }
+            }
+        </style>
+</header>
+<!-- Main Content -->
+<main class="flex flex-col gap-6 p-4">
+<!-- Regional Threat Level (Radar) -->
+<section>
+<div class="flex justify-between items-end mb-3 px-1">
+<h3 class="text-white tracking-widest text-sm font-bold uppercase flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-sm">radar</span>
+                    Regional Threat
+                </h3>
+<span class="text-danger font-bold animate-pulse-red text-sm tracking-widest border border-danger/30 px-2 py-0.5 rounded bg-danger/10">CRITICAL</span>
+</div>
+<div class="flex flex-col rounded-lg border border-border-dark bg-surface-dark p-1 relative overflow-hidden">
+<div class="bg-grid-pattern absolute inset-0 opacity-20 pointer-events-none" style="background-size: 20px 20px;"></div>
+<div class="flex flex-row items-stretch">
+<!-- Radar Visual -->
+<div class="relative w-[160px] h-[160px] shrink-0 border-r border-border-dark flex items-center justify-center bg-black/20">
+<svg class="w-full h-full p-2" viewbox="0 0 200 200">
+<!-- Grid Circles -->
+<circle cx="100" cy="100" fill="none" r="90" stroke="#2a3d45" stroke-width="1"></circle>
+<circle cx="100" cy="100" fill="none" r="60" stroke="#2a3d45" stroke-width="1"></circle>
+<circle cx="100" cy="100" fill="none" r="30" stroke="#2a3d45" stroke-width="1"></circle>
+<!-- Crosshairs -->
+<line stroke="#2a3d45" stroke-width="1" x1="10" x2="190" y1="100" y2="100"></line>
+<line stroke="#2a3d45" stroke-width="1" x1="100" x2="100" y1="10" y2="190"></line>
+<!-- Blips -->
+<circle class="animate-pulse-red" cx="140" cy="60" fill="#ef4444" r="3"></circle>
+<circle class="animate-pulse-red" cx="135" cy="140" fill="#ef4444" r="2" style="animation-delay: 0.5s"></circle>
+<circle class="animate-pulse" cx="60" cy="80" fill="#fbbf24" r="2" style="animation-delay: 1s"></circle>
+<!-- Sweep -->
+<g class="radar-sweep">
+<path d="M100 100 L100 10 A90 90 0 0 1 190 100 z" fill="url(#radarGradient)" opacity="0.4"></path>
+<line stroke="#0095c7" stroke-width="1.5" x1="100" x2="100" y1="100" y2="10"></line>
+</g>
+<defs>
+<lineargradient id="radarGradient" x1="0%" x2="100%" y1="0%" y2="0%">
+<stop offset="0%" stop-color="#0095c7" stop-opacity="0"></stop>
+<stop offset="100%" stop-color="#0095c7" stop-opacity="0.5"></stop>
+</lineargradient>
+</defs>
+</svg>
+<!-- Coordinates Overlay -->
+<div class="absolute top-1 left-2 text-[8px] font-mono text-primary/60">N 52° 31'</div>
+<div class="absolute bottom-1 right-2 text-[8px] font-mono text-primary/60">E 13° 23'</div>
+</div>
+<!-- Stats -->
+<div class="flex-1 p-4 flex flex-col justify-center gap-4">
+<div>
+<p class="text-slate-400 text-xs uppercase tracking-wider mb-1">Status</p>
+<p class="text-xl font-bold text-white tracking-tight">DEFCON 2</p>
+</div>
+<div>
+<p class="text-slate-400 text-xs uppercase tracking-wider mb-1">Active Threads</p>
+<div class="flex items-baseline gap-2">
+<span class="text-2xl font-mono text-danger font-bold">04</span>
+<span class="text-xs text-danger/70 uppercase">High Priority</span>
+</div>
+</div>
+<div class="flex gap-2 mt-1">
+<div class="h-1 flex-1 bg-border-dark rounded-full overflow-hidden">
+<div class="h-full bg-danger w-[75%]"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Detected Enemy Movements -->
+<section>
+<h3 class="text-white tracking-widest text-sm font-bold uppercase flex items-center gap-2 mb-3 px-1">
+<span class="material-symbols-outlined text-primary text-sm">map</span>
+                Detected Enemy Movements
+            </h3>
+<div class="grid grid-cols-[repeat(auto-fit,minmax(158px,1fr))] gap-3">
+<!-- Card 1 -->
+<div class="relative group overflow-hidden rounded-lg border border-border-dark bg-surface-dark aspect-video" data-location="Normandy Coast" style="https://lh3.googleusercontent.com/aida-public/AB6AXuCLniKQs_-mWEYtBPaHbcy3x7ZrO6hWajV4Z3K9qFNG9Exsfxhh-5EblOG_dcZp_rfKCihScPiLlA8hzz2KrSvJ1oOp76-Q2VJOEmn-P2XXibnI5h3VLYtooqL2QIg2KQma3xfDv3JEhn8sgh_LZdtXXhCmLAspvTPD6KPgcfwuKLwpzTonJ4VmzJ33HoIjnnGePIDW5W7S-8MtP7_wNtAq8HEI3GgUc5Q8btQr4gUeqHWRvrM0bdGRSKyGSp9hNhjDFrbjHfFB_Ew">
+<div class="absolute inset-0 bg-cover bg-center opacity-60 mix-blend-luminosity group-hover:mix-blend-normal transition-all duration-500" data-alt="Abstract aerial map of coastline with grid overlay" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBTl9b2F3El_vmRA_erUwkzJLOeMopPh1e_n0WsCuK_95Flg8PzzYSBEvWP5P00hme4TPpGA9ELu7yM687oZmayEitkvX3dSOtmubEnW_tdWs2svleZduID6xeR7CqR6fD3rzkCL8P2u7HLR2yyq4prs7FIWuCqBOHVf0HgIYS5TEg4eEVlHywBNwXqIGPB1Q6yJ_a96RTMHA51VcW482OCEL9hzl9NjwMfTbaLQ6EWWbBXnXPgcmTPnNScnqXQsIJedOwsftmppHU");'>
+</div>
+<!-- Fog of War Overlay -->
+<div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
+<div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCI+PHBhdGggZD0iTTEgMWgydjJIMUMxeiIgZmlsbD0iIzAwOTVjNyIgZmlsbC1vcGFjaXR5PSIwLjEiLz48L3N2Zz4=')] opacity-30"></div>
+<div class="absolute bottom-0 left-0 right-0 p-3 flex flex-col gap-1">
+<div class="flex items-center gap-1">
+<div class="w-2 h-2 rounded-full bg-danger animate-pulse"></div>
+<span class="text-[10px] text-danger font-mono uppercase tracking-wider">Alert</span>
+</div>
+<p class="text-white text-sm font-bold leading-tight w-4/5 line-clamp-2">Sector 4: Heavy Armor</p>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="relative group overflow-hidden rounded-lg border border-border-dark bg-surface-dark aspect-video" data-location="Baltic Sea" style="https://lh3.googleusercontent.com/aida-public/AB6AXuC-MAiWWCiadIMPh8vG4nxPUpiaF9mvIe5cLpb5-vbJb9k9QyGByOgXa8wWX5hvAz8J8bK9MdqBRWOk2uukiE6hO8x1KpSic9Q4UUp8kARmzxyJDC4t8nKOCfJcKYi0eb7JlUc2oZkC33C0YWtslvAAKM7O9jbuScKZ4XbFK3ciUJEeJBEia-izBZCzYRk8mR_UGAeR0xfNKIBqjBLs3EPTBjTW4c2tmr0JHxeNHQAoXZe_J8PElrSWYN1TkSbHeklvnd5SZfCuIhQ">
+<div class="absolute inset-0 bg-cover bg-center opacity-60 mix-blend-luminosity group-hover:mix-blend-normal transition-all duration-500" data-alt="Abstract aerial map of ocean with naval markers" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCn975GSgx-GSHYwB-TxYc7fxBRxjNcXjR11FZNDSaaDHxLHx7XkvLT7Odfaufj64m3fs-vuNYjwDM3XR3iC8PFLlIPEs-kWgiphl5hF3ydm0zsTd25zpIcZ07Jf10yb9vwHN0FZt9yv5uLqlBjfdg0RPrRSfKd3coS7QuLhNjuvVYl_1yZoMk7rKONDP568tmhhc2vrMUbdrUoX64F9mhcyOyX0KL5W-om2M9AS9oENzRjAvzIxgfpxFMJVmcQtc8Q8cYOR7msl8c");'>
+</div>
+<!-- Fog of War Overlay -->
+<div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
+<div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCI+PHBhdGggZD0iTTEgMWgydjJIMUMxeiIgZmlsbD0iIzAwOTVjNyIgZmlsbC1vcGFjaXR5PSIwLjEiLz48L3N2Zz4=')] opacity-30"></div>
+<div class="absolute bottom-0 left-0 right-0 p-3 flex flex-col gap-1">
+<div class="flex items-center gap-1">
+<div class="w-2 h-2 rounded-full bg-primary/60"></div>
+<span class="text-[10px] text-primary/80 font-mono uppercase tracking-wider">Patrol</span>
+</div>
+<p class="text-white text-sm font-bold leading-tight w-4/5 line-clamp-2">Sector 7: Naval Blockade</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Spy Placement & Intercepts (Split for tablet, stacked for mobile) -->
+<div class="flex flex-col md:flex-row gap-6">
+<!-- Spy Status -->
+<section class="flex-1">
+<h3 class="text-white tracking-widest text-sm font-bold uppercase flex items-center gap-2 mb-3 px-1">
+<span class="material-symbols-outlined text-primary text-sm">person_search</span>
+                    Spy Placement
+                </h3>
+<div class="bg-surface-dark border border-border-dark rounded-lg overflow-hidden">
+<div class="overflow-x-auto">
+<table class="w-full text-left text-sm whitespace-nowrap">
+<thead class="bg-black/20 border-b border-border-dark text-slate-400 font-mono text-xs uppercase">
+<tr>
+<th class="px-4 py-3 font-medium">Codename</th>
+<th class="px-4 py-3 font-medium">Location</th>
+<th class="px-4 py-3 font-medium text-right">Status</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-border-dark">
+<tr class="group hover:bg-white/5 transition-colors">
+<td class="px-4 py-3 font-bold text-white group-hover:text-primary transition-colors">Agent K</td>
+<td class="px-4 py-3 text-slate-400">Berlin, DE</td>
+<td class="px-4 py-3 text-right">
+<span class="inline-flex items-center gap-1.5 px-2 py-1 rounded bg-success/10 text-success text-[10px] font-bold uppercase tracking-wider border border-success/20">
+<span class="w-1.5 h-1.5 rounded-full bg-success"></span> Active
+                                        </span>
+</td>
+</tr>
+<tr class="group hover:bg-white/5 transition-colors">
+<td class="px-4 py-3 font-bold text-white group-hover:text-primary transition-colors">Agent V</td>
+<td class="px-4 py-3 text-slate-400">Paris, FR</td>
+<td class="px-4 py-3 text-right">
+<span class="inline-flex items-center gap-1.5 px-2 py-1 rounded bg-slate-700/30 text-slate-400 text-[10px] font-bold uppercase tracking-wider border border-slate-600/30">
+<span class="w-1.5 h-1.5 rounded-full bg-slate-500"></span> Silent
+                                        </span>
+</td>
+</tr>
+<tr class="group hover:bg-white/5 transition-colors">
+<td class="px-4 py-3 font-bold text-white group-hover:text-primary transition-colors">Agent R</td>
+<td class="px-4 py-3 text-slate-400">Vienna, AT</td>
+<td class="px-4 py-3 text-right">
+<span class="inline-flex items-center gap-1.5 px-2 py-1 rounded bg-danger/10 text-danger text-[10px] font-bold uppercase tracking-wider border border-danger/20 animate-pulse">
+<span class="material-symbols-outlined text-[10px]">warning</span> Compromised
+                                        </span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<!-- Intercepted Comms -->
+<section class="flex-1">
+<div class="flex justify-between items-center mb-3 px-1">
+<h3 class="text-white tracking-widest text-sm font-bold uppercase flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-sm">radio</span>
+                        Intercepts
+                    </h3>
+<span class="flex items-center gap-1 text-[10px] text-primary font-mono uppercase animate-pulse">
+<span class="w-1.5 h-1.5 bg-primary rounded-full"></span> Live Feed
+                    </span>
+</div>
+<div class="bg-black/40 border border-border-dark rounded-lg p-4 font-mono text-xs h-[200px] overflow-y-auto no-scrollbar flex flex-col gap-3 shadow-inner relative">
+<!-- Overlay shadow for depth -->
+<div class="absolute inset-0 pointer-events-none shadow-[inset_0_0_20px_rgba(0,0,0,0.8)]"></div>
+<!-- Item 1 -->
+<div class="flex gap-3 text-slate-300 border-b border-border-dark/50 pb-2 relative z-10">
+<div class="text-primary/60 w-12 shrink-0">0800Z</div>
+<div class="flex-1">
+<span class="text-primary font-bold mr-2">[U-87]</span>
+<span class="opacity-80">Supplies routed to Berlin via secondary rail lines. Awaiting confirmation.</span>
+</div>
+</div>
+<!-- Item 2 -->
+<div class="flex gap-3 text-slate-300 border-b border-border-dark/50 pb-2 relative z-10">
+<div class="text-primary/60 w-12 shrink-0">0815Z</div>
+<div class="flex-1">
+<span class="text-primary font-bold mr-2">[CMD]</span>
+<span class="opacity-80">Submarine activity noted in sector 7. Deploy countermeasures.</span>
+</div>
+</div>
+<!-- Item 3 -->
+<div class="flex gap-3 text-slate-300 pb-2 relative z-10 opacity-50">
+<div class="text-primary/60 w-12 shrink-0">0745Z</div>
+<div class="flex-1">
+<span class="text-primary font-bold mr-2">[UNK]</span>
+<span class="opacity-80">--. . -. . .-. .- .-.. / .- .-.. . .-. -</span>
+</div>
+</div>
+</div>
+</section>
+</div>
+</main>
+<!-- Bottom Navigation -->
+<nav class="fixed bottom-0 left-0 right-0 bg-background-dark border-t border-border-dark pb-safe-area z-50">
+<div class="flex items-center justify-around h-16 max-w-lg mx-auto">
+<button class="flex flex-col items-center gap-1 text-primary group">
+<div class="bg-primary/20 p-1.5 rounded-full group-hover:bg-primary/30 transition-colors">
+<span class="material-symbols-outlined text-[20px] group-hover:scale-110 transition-transform">dashboard</span>
+</div>
+<span class="text-[10px] font-bold uppercase tracking-wider opacity-100">Intel</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-slate-500 hover:text-white transition-colors group">
+<div class="p-1.5 rounded-full group-hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined text-[20px] group-hover:scale-110 transition-transform">map</span>
+</div>
+<span class="text-[10px] font-bold uppercase tracking-wider opacity-70 group-hover:opacity-100">Map</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-slate-500 hover:text-white transition-colors group">
+<div class="p-1.5 rounded-full group-hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined text-[20px] group-hover:scale-110 transition-transform">chat</span>
+</div>
+<span class="text-[10px] font-bold uppercase tracking-wider opacity-70 group-hover:opacity-100">Comms</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-slate-500 hover:text-white transition-colors group">
+<div class="p-1.5 rounded-full group-hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined text-[20px] group-hover:scale-110 transition-transform">settings_accessibility</span>
+</div>
+<span class="text-[10px] font-bold uppercase tracking-wider opacity-70 group-hover:opacity-100">Ops</span>
+</button>
+</div>
+</nav>
+</body></html>

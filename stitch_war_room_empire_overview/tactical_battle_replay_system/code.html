@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Tactical Battle Replay System</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#00d4ff",
+                        "primary-dim": "#008ba3",
+                        "background-light": "#f1f2f4",
+                        "background-dark": "#111317",
+                        "panel-dark": "#1b2024",
+                        "panel-border": "#2f353a",
+                        "alert": "#ff3d00",
+                        "warning": "#ffd93d",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"]
+                    },
+                    backgroundImage: {
+                        'scanlines': 'linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.2))',
+                        'grid-pattern': 'linear-gradient(to right, #2f353a 1px, transparent 1px), linear-gradient(to bottom, #2f353a 1px, transparent 1px)',
+                    },
+                    backgroundSize: {
+                        'scanlines': '100% 4px',
+                        'grid-pattern': '40px 40px',
+                    },
+                    boxShadow: {
+                        'glow': '0 0 10px rgba(0, 212, 255, 0.3)',
+                        'glow-alert': '0 0 10px rgba(255, 61, 0, 0.3)',
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        /* Custom scrollbar hiding */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        /* CRT Flicker Animation */
+        @keyframes flicker {
+            0% { opacity: 0.97; }
+            5% { opacity: 0.99; }
+            10% { opacity: 0.94; }
+            15% { opacity: 0.98; }
+            20% { opacity: 0.95; }
+            50% { opacity: 0.99; }
+            55% { opacity: 0.93; }
+            60% { opacity: 0.98; }
+            100% { opacity: 0.96; }
+        }
+        .crt-flicker {
+            animation: flicker 0.15s infinite;
+            pointer-events: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-dark text-white font-display overflow-hidden h-screen w-full select-none">
+<!-- Main Wrapper -->
+<div class="relative w-full h-full flex flex-col">
+<!-- Background Map Layer -->
+<div class="absolute inset-0 z-0 bg-[#0f1115]">
+<!-- Map Image -->
+<div class="absolute inset-0 bg-cover bg-center opacity-60 grayscale-[0.3] contrast-[1.2]" data-alt="Top-down satellite view of a dark textured terrain with forests and roads" data-location="Normandy Sector 4" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBR9oeEZxw-BtdQLyUds3CgUTxuFzJrxNA8Vs0QMggJU2sMZzb07EggRtzjmwexT9sX1Qr-9Ckfqp0Hu-0yFnYAx3SwSSfABlLZyi1fpZRo6l5HjeGBra9_vr5UZzAtmQW-XhjZb9OKJfrCbnu7LW8PIp6jjEZ0SzOhOMP__4eHnrMiozjAyyqXHMeO5azuDeSbaXgjefKIngIsh3IXkhCfAdV4cNweuSsQSL5xiez5falY1xyjLjsvI2Di_g0v7BpFZ34-PMZajpk');">
+</div>
+<!-- Grid Overlay -->
+<div class="absolute inset-0 bg-grid-pattern opacity-20 pointer-events-none"></div>
+<!-- Heatmap Visualization Layer -->
+<div class="absolute top-[30%] left-[20%] w-64 h-64 rounded-full bg-alert blur-[80px] opacity-40 mix-blend-screen animate-pulse"></div>
+<div class="absolute top-[45%] right-[15%] w-48 h-48 rounded-full bg-warning blur-[60px] opacity-30 mix-blend-screen"></div>
+<!-- Vignette -->
+<div class="absolute inset-0 bg-gradient-to-b from-black/80 via-transparent to-black/90 pointer-events-none"></div>
+</div>
+<!-- Scanline & CRT Effect Layer -->
+<div class="absolute inset-0 z-50 pointer-events-none bg-scanlines opacity-10"></div>
+<div class="absolute inset-0 z-50 pointer-events-none crt-flicker bg-black/5 mix-blend-overlay"></div>
+<!-- UI Content Layer -->
+<div class="relative z-10 flex flex-col justify-between h-full pt-safe-top pb-safe-bottom">
+<!-- Top Section: Header & Filters -->
+<div class="flex flex-col w-full bg-gradient-to-b from-[#111317] to-transparent pb-8">
+<!-- Header -->
+<div class="flex items-center justify-between p-4 border-b border-white/5 bg-[#111317]/80 backdrop-blur-md">
+<button class="flex items-center justify-center size-10 rounded border border-white/10 bg-white/5 hover:bg-white/10 active:scale-95 transition-all">
+<span class="material-symbols-outlined text-white/70">arrow_back</span>
+</button>
+<div class="flex flex-col items-center">
+<h1 class="text-sm font-bold tracking-[0.15em] text-white/90 uppercase text-shadow-sm">Operation Overlord</h1>
+<p class="text-xs text-primary font-mono tracking-widest mt-0.5">SECTOR 4 // REPLAY</p>
+</div>
+<button class="flex items-center justify-center h-10 px-3 rounded border border-white/10 bg-white/5 hover:bg-alert/20 hover:border-alert/50 transition-all group">
+<span class="text-xs font-bold text-white/70 group-hover:text-alert transition-colors">EXIT</span>
+</button>
+</div>
+<!-- HUD Toggles -->
+<div class="flex gap-3 px-4 py-3 overflow-x-auto no-scrollbar mask-linear-fade">
+<button class="flex shrink-0 items-center gap-2 h-8 px-3 rounded-sm bg-primary/20 border border-primary/40 text-primary shadow-glow transition-all active:scale-95">
+<span class="material-symbols-outlined text-[16px]">visibility</span>
+<span class="text-xs font-bold uppercase tracking-wide">Data: ON</span>
+</button>
+<button class="flex shrink-0 items-center gap-2 h-8 px-3 rounded-sm bg-panel-dark border border-white/10 text-white/60 hover:text-white transition-all active:scale-95">
+<span class="material-symbols-outlined text-[16px]">layers</span>
+<span class="text-xs font-bold uppercase tracking-wide">Heatmap: CASUALTIES</span>
+</button>
+<button class="flex shrink-0 items-center gap-2 h-8 px-3 rounded-sm bg-panel-dark border border-white/10 text-white/60 hover:text-white transition-all active:scale-95">
+<span class="material-symbols-outlined text-[16px]">speed</span>
+<span class="text-xs font-bold uppercase tracking-wide">Speed: 1x</span>
+</button>
+</div>
+</div>
+<!-- Middle Section: Floating Unit Stats (Contextual) -->
+<div class="flex-1 relative pointer-events-none">
+<!-- Tactical Marker on Map (Simulated) -->
+<div class="absolute top-[32%] left-[45%] flex flex-col items-center pointer-events-auto cursor-pointer group">
+<div class="size-4 bg-primary rounded-full shadow-glow animate-pulse"></div>
+<div class="h-8 w-0.5 bg-gradient-to-b from-primary to-transparent"></div>
+<!-- Unit Card -->
+<div class="absolute top-6 left-4 min-w-[240px] bg-panel-dark/90 backdrop-blur-md border border-white/10 border-l-2 border-l-primary rounded-r-sm p-3 shadow-xl transform transition-transform group-hover:scale-105">
+<div class="flex justify-between items-start mb-2">
+<div>
+<h3 class="text-white font-bold text-lg leading-none">101st Airborne</h3>
+<p class="text-xs text-white/50 uppercase tracking-wider font-mono mt-1">Infantry Div. • Grid 44-A</p>
+</div>
+<span class="px-1.5 py-0.5 bg-alert/20 border border-alert/30 text-alert text-[10px] font-bold rounded-sm uppercase">Engaged</span>
+</div>
+<div class="space-y-2">
+<!-- Stat 1 -->
+<div class="flex items-center justify-between text-xs">
+<span class="text-white/60 font-medium">Morale</span>
+<span class="text-primary font-mono">82%</span>
+</div>
+<div class="h-1 w-full bg-white/10 rounded-full overflow-hidden">
+<div class="h-full bg-primary w-[82%] shadow-[0_0_5px_rgba(0,212,255,0.5)]"></div>
+</div>
+<!-- Stat 2 -->
+<div class="flex items-center justify-between text-xs mt-1">
+<span class="text-white/60 font-medium">Casualties</span>
+<span class="text-alert font-mono">12%</span>
+</div>
+<div class="h-1 w-full bg-white/10 rounded-full overflow-hidden">
+<div class="h-full bg-alert w-[12%] shadow-[0_0_5px_rgba(255,61,0,0.5)]"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Section: VCR Deck -->
+<div class="p-4 pb-8">
+<div class="relative bg-panel-dark/95 backdrop-blur-xl border border-white/10 rounded-lg shadow-2xl overflow-hidden group/deck">
+<!-- Top bezel decoration -->
+<div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-white/5 via-white/20 to-white/5"></div>
+<div class="p-4 flex flex-col gap-4">
+<!-- Info Row -->
+<div class="flex items-center justify-between border-b border-white/5 pb-3">
+<div class="flex items-center gap-3">
+<div class="size-2 bg-primary rounded-full animate-pulse shadow-glow"></div>
+<span class="text-xs font-mono text-primary tracking-widest uppercase">Playing_Replay_04.dat</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-white/30 text-[18px]">satellite_alt</span>
+<span class="text-[10px] font-bold text-white/30">SAT-LINK ACTIVE</span>
+</div>
+</div>
+<!-- Timeline -->
+<div class="flex flex-col gap-2">
+<div class="flex justify-between items-end text-xs font-mono text-white/50 tracking-wide">
+<span class="text-primary font-bold text-sm">06:30:00</span>
+<span>24:00:00</span>
+</div>
+<!-- Scrubber -->
+<div class="relative h-6 flex items-center group cursor-pointer">
+<!-- Track -->
+<div class="absolute w-full h-1.5 bg-[#000] rounded-sm overflow-hidden border border-white/10">
+<!-- Progress -->
+<div class="h-full bg-primary w-[27%] relative">
+<div class="absolute right-0 top-0 bottom-0 w-2 bg-white/50 blur-[2px]"></div>
+</div>
+<!-- Casualty markers (red dots on timeline) -->
+<div class="absolute top-0 bottom-0 left-[45%] w-0.5 bg-alert/60"></div>
+<div class="absolute top-0 bottom-0 left-[72%] w-0.5 bg-alert/60"></div>
+</div>
+<!-- Thumb (Physical looking) -->
+<div class="absolute left-[27%] -ml-1 size-4 bg-gray-200 rounded-sm shadow-[0_2px_4px_rgba(0,0,0,0.5)] border border-white z-10 hover:scale-125 transition-transform"></div>
+</div>
+</div>
+<!-- Controls -->
+<div class="flex items-center justify-between pt-1">
+<!-- Playback Speed -->
+<div class="flex gap-1">
+<button class="size-8 flex items-center justify-center rounded bg-white/5 hover:bg-white/10 text-white/50 text-[10px] font-bold border border-transparent hover:border-white/20 transition-all">1x</button>
+<button class="size-8 flex items-center justify-center rounded bg-transparent hover:bg-white/5 text-white/30 text-[10px] font-bold border border-transparent hover:border-white/10 transition-all">2x</button>
+<button class="size-8 flex items-center justify-center rounded bg-transparent hover:bg-white/5 text-white/30 text-[10px] font-bold border border-transparent hover:border-white/10 transition-all">4x</button>
+</div>
+<!-- Transport Controls -->
+<div class="flex items-center gap-3">
+<button class="size-10 flex items-center justify-center rounded-full bg-[#15181c] border border-white/10 text-white/70 shadow-lg active:translate-y-0.5 active:shadow-none transition-all hover:text-white group">
+<span class="material-symbols-outlined text-[24px] group-hover:-translate-x-0.5 transition-transform">fast_rewind</span>
+</button>
+<button class="size-14 flex items-center justify-center rounded-full bg-primary text-black shadow-[0_0_20px_rgba(0,212,255,0.4)] active:scale-95 transition-all hover:bg-[#33ddff]">
+<span class="material-symbols-outlined text-[32px] fill-current">pause</span>
+</button>
+<button class="size-10 flex items-center justify-center rounded-full bg-[#15181c] border border-white/10 text-white/70 shadow-lg active:translate-y-0.5 active:shadow-none transition-all hover:text-white group">
+<span class="material-symbols-outlined text-[24px] group-hover:translate-x-0.5 transition-transform">fast_forward</span>
+</button>
+</div>
+<!-- Spacer for balance -->
+<div class="w-[100px] hidden sm:block"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body></html>

@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Logistics &amp; Resource Market Hub</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#36e261", // Tactical Green
+              "secondary": "#FFB300", // Alert Amber
+              "danger": "#fa5238", // Critical Red
+              "background-light": "#f0f2f4",
+              "background-dark": "#1a1b1f",
+              "surface": "#222428",
+              "surface-highlight": "#2c2e33",
+              "border-subtle": "#282a2e"
+            },
+            fontFamily: {
+              "display": ["Space Grotesk", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "9999px"},
+            backgroundImage: {
+              'grid-pattern': "linear-gradient(to right, #282a2e 1px, transparent 1px), linear-gradient(to bottom, #282a2e 1px, transparent 1px)",
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        /* Custom Scrollbar for the Ticker */
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        
+        /* CRT Scanline effect overlay (subtle) */
+        .scanlines::before {
+            content: " ";
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+            z-index: 50;
+            background-size: 100% 2px, 3px 100%;
+            pointer-events: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-dark text-white font-display antialiased overflow-x-hidden pb-24 selection:bg-primary selection:text-black">
+<!-- Header Section -->
+<header class="sticky top-0 z-40 bg-background-dark/95 backdrop-blur border-b border-border-subtle">
+<div class="flex items-center justify-between px-4 py-3">
+<div class="flex items-center gap-3">
+<div class="bg-primary/20 p-2 rounded text-primary">
+<span class="material-symbols-outlined text-[20px]">satellite_alt</span>
+</div>
+<div>
+<h1 class="text-sm font-bold tracking-widest uppercase leading-none text-white">Global Exchange</h1>
+<div class="flex items-center gap-1.5 mt-1">
+<span class="relative flex h-2 w-2">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+</span>
+<span class="text-[10px] text-primary/80 font-medium tracking-wider">UPLINK STABLE</span>
+</div>
+</div>
+</div>
+<button class="flex items-center justify-center h-10 w-10 text-gray-400 hover:text-white border border-transparent hover:border-border-subtle rounded transition-colors">
+<span class="material-symbols-outlined">tune</span>
+</button>
+</div>
+<!-- Scrolling Ticker -->
+<div class="w-full bg-[#111] border-b border-border-subtle overflow-x-auto hide-scrollbar py-2">
+<div class="flex px-4 gap-6 min-w-max">
+<div class="flex items-center gap-2 text-xs">
+<span class="text-gray-400">GOLD</span>
+<span class="text-primary font-bold">+2.4%</span>
+<span class="material-symbols-outlined text-[14px] text-primary">trending_up</span>
+</div>
+<div class="w-[1px] h-4 bg-white/10"></div>
+<div class="flex items-center gap-2 text-xs">
+<span class="text-gray-400">IRON</span>
+<span class="text-danger font-bold">-1.1%</span>
+<span class="material-symbols-outlined text-[14px] text-danger">trending_down</span>
+</div>
+<div class="w-[1px] h-4 bg-white/10"></div>
+<div class="flex items-center gap-2 text-xs">
+<span class="text-gray-400">OIL</span>
+<span class="text-primary font-bold">+0.5%</span>
+<span class="material-symbols-outlined text-[14px] text-primary">trending_up</span>
+</div>
+<div class="w-[1px] h-4 bg-white/10"></div>
+<div class="flex items-center gap-2 text-xs">
+<span class="text-gray-400">RATIONS</span>
+<span class="text-primary font-bold">+3.8%</span>
+<span class="material-symbols-outlined text-[14px] text-primary">trending_up</span>
+</div>
+<div class="w-[1px] h-4 bg-white/10"></div>
+<div class="flex items-center gap-2 text-xs">
+<span class="text-gray-400">URANIUM</span>
+<span class="text-white font-bold">0.0%</span>
+<span class="material-symbols-outlined text-[14px] text-gray-500">trending_flat</span>
+</div>
+</div>
+</div>
+</header>
+<main class="relative z-10">
+<!-- Stockpile Section -->
+<section class="mt-4 px-4">
+<h3 class="text-xs font-bold text-gray-500 tracking-[0.15em] mb-3 flex items-center gap-2">
+<span class="material-symbols-outlined text-[14px]">inventory_2</span>
+                STOCKPILE STATUS
+            </h3>
+<div class="grid grid-cols-2 gap-3">
+<!-- Gold -->
+<div class="bg-surface border border-border-subtle p-3 rounded flex flex-col gap-2 relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-2 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-4xl">savings</span>
+</div>
+<div class="flex items-center justify-between">
+<span class="text-xs text-gray-400 uppercase tracking-wider">Gold Reserves</span>
+<span class="h-2 w-2 rounded-full bg-primary/50"></span>
+</div>
+<div class="mt-1">
+<p class="text-xl font-bold text-white tracking-tight">1.2M</p>
+<p class="text-[10px] text-gray-500">CAPACITY: 2M</p>
+</div>
+<div class="w-full bg-gray-800 h-1 rounded-full mt-1 overflow-hidden">
+<div class="bg-primary h-full w-[60%]"></div>
+</div>
+</div>
+<!-- Iron -->
+<div class="bg-surface border border-border-subtle p-3 rounded flex flex-col gap-2 relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-2 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-4xl">construction</span>
+</div>
+<div class="flex items-center justify-between">
+<span class="text-xs text-gray-400 uppercase tracking-wider">Iron Ore</span>
+<span class="h-2 w-2 rounded-full bg-secondary"></span>
+</div>
+<div class="mt-1">
+<p class="text-xl font-bold text-white tracking-tight">850K</p>
+<p class="text-[10px] text-gray-500">CAPACITY: 1M</p>
+</div>
+<div class="w-full bg-gray-800 h-1 rounded-full mt-1 overflow-hidden">
+<div class="bg-secondary h-full w-[85%]"></div>
+</div>
+</div>
+<!-- Oil -->
+<div class="bg-surface border border-border-subtle p-3 rounded flex flex-col gap-2 relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-2 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-4xl">oil_barrel</span>
+</div>
+<div class="flex items-center justify-between">
+<span class="text-xs text-gray-400 uppercase tracking-wider">Crude Oil</span>
+<span class="h-2 w-2 rounded-full bg-danger animate-pulse"></span>
+</div>
+<div class="mt-1">
+<p class="text-xl font-bold text-white tracking-tight">420K</p>
+<p class="text-[10px] text-danger">CRITICAL LEVEL</p>
+</div>
+<div class="w-full bg-gray-800 h-1 rounded-full mt-1 overflow-hidden">
+<div class="bg-danger h-full w-[84%]"></div>
+</div>
+</div>
+<!-- Rations -->
+<div class="bg-surface border border-border-subtle p-3 rounded flex flex-col gap-2 relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-2 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-4xl">bakery_dining</span>
+</div>
+<div class="flex items-center justify-between">
+<span class="text-xs text-gray-400 uppercase tracking-wider">Rations</span>
+<span class="h-2 w-2 rounded-full bg-primary/50"></span>
+</div>
+<div class="mt-1">
+<p class="text-xl font-bold text-white tracking-tight">2.1M</p>
+<p class="text-[10px] text-gray-500">CAPACITY: 3M</p>
+</div>
+<div class="w-full bg-gray-800 h-1 rounded-full mt-1 overflow-hidden">
+<div class="bg-primary h-full w-[70%]"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- Market Trends Chart -->
+<section class="mt-6 px-4">
+<h3 class="text-xs font-bold text-gray-500 tracking-[0.15em] mb-3 flex items-center gap-2">
+<span class="material-symbols-outlined text-[14px]">analytics</span>
+                MARKET TRENDS
+            </h3>
+<div class="bg-surface border border-border-subtle rounded-lg overflow-hidden">
+<!-- Tabs -->
+<div class="flex border-b border-border-subtle bg-background-dark/50">
+<button class="flex-1 py-3 text-sm font-bold text-primary border-b-2 border-primary bg-primary/5">GOLD</button>
+<button class="flex-1 py-3 text-sm font-medium text-gray-500 hover:text-white transition-colors">IRON</button>
+<button class="flex-1 py-3 text-sm font-medium text-gray-500 hover:text-white transition-colors">OIL</button>
+<button class="flex-1 py-3 text-sm font-medium text-gray-500 hover:text-white transition-colors">FOOD</button>
+</div>
+<div class="p-4 relative min-h-[220px]">
+<!-- Chart Header info -->
+<div class="flex justify-between items-end mb-4">
+<div>
+<span class="text-xs text-gray-400">Current Price</span>
+<div class="flex items-baseline gap-2">
+<span class="text-3xl font-bold text-white tracking-tighter">$1,842.50</span>
+<span class="text-xs font-medium text-primary bg-primary/10 px-1 py-0.5 rounded">+2.4%</span>
+</div>
+</div>
+<div class="flex gap-1">
+<button class="px-2 py-1 text-[10px] font-bold bg-white/10 text-white rounded hover:bg-white/20">1H</button>
+<button class="px-2 py-1 text-[10px] font-bold bg-primary text-black rounded">1D</button>
+<button class="px-2 py-1 text-[10px] font-bold bg-white/10 text-white rounded hover:bg-white/20">1W</button>
+</div>
+</div>
+<!-- Chart Visual Representation (CSS + SVG) -->
+<div class="relative h-32 w-full bg-grid-pattern bg-[length:20px_20px] border border-white/5 rounded-sm">
+<!-- Gradient Fill under line -->
+<div class="absolute inset-0 bg-gradient-to-t from-primary/10 to-transparent clip-path-chart"></div>
+<!-- The Line -->
+<svg class="absolute inset-0 w-full h-full overflow-visible" preserveaspectratio="none" viewbox="0 0 100 100">
+<defs>
+<lineargradient id="lineGradient" x1="0%" x2="100%" y1="0%" y2="0%">
+<stop offset="0%" style="stop-color:#36e261;stop-opacity:1"></stop>
+<stop offset="100%" style="stop-color:#36e261;stop-opacity:1"></stop>
+</lineargradient>
+</defs>
+<path d="M0,80 C10,75 20,85 30,70 C40,55 50,60 60,40 C70,20 80,30 90,15 L100,5" fill="none" stroke="url(#lineGradient)" stroke-width="2" vector-effect="non-scaling-stroke"></path>
+<!-- Active Point -->
+<circle class="animate-pulse" cx="100" cy="5" fill="#36e261" r="3"></circle>
+<line opacity="0.5" stroke="#36e261" stroke-dasharray="2,2" stroke-width="1" x1="100" x2="100" y1="5" y2="100"></line>
+</svg>
+</div>
+<div class="flex justify-between mt-2 text-[10px] text-gray-500 font-mono">
+<span>08:00</span>
+<span>10:00</span>
+<span>12:00</span>
+<span>14:00</span>
+<span>NOW</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Order Book Section -->
+<section class="mt-6 px-4 mb-4">
+<div class="flex items-center justify-between mb-3">
+<h3 class="text-xs font-bold text-gray-500 tracking-[0.15em] flex items-center gap-2">
+<span class="material-symbols-outlined text-[14px]">swap_vert</span>
+                    ORDER BOOK
+                </h3>
+<span class="text-[10px] text-primary bg-primary/10 px-2 py-0.5 rounded border border-primary/20">LIVE FEED</span>
+</div>
+<div class="grid grid-cols-2 gap-1 bg-surface p-1 rounded border border-border-subtle">
+<!-- Buy Orders -->
+<div class="flex flex-col gap-px">
+<div class="flex justify-between px-2 py-1 text-[10px] text-gray-400 font-bold border-b border-white/5">
+<span>BID VOL</span>
+<span>PRICE</span>
+</div>
+<!-- Row 1 -->
+<div class="relative flex justify-between px-2 py-1.5 text-xs group hover:bg-white/5 cursor-pointer">
+<div class="absolute inset-y-0 left-0 bg-primary/10 w-[80%]"></div>
+<span class="relative z-10 text-white font-mono">45.2K</span>
+<span class="relative z-10 text-primary font-bold">1,842.00</span>
+</div>
+<!-- Row 2 -->
+<div class="relative flex justify-between px-2 py-1.5 text-xs group hover:bg-white/5 cursor-pointer">
+<div class="absolute inset-y-0 left-0 bg-primary/10 w-[60%]"></div>
+<span class="relative z-10 text-white font-mono">32.1K</span>
+<span class="relative z-10 text-primary font-bold">1,841.50</span>
+</div>
+<!-- Row 3 -->
+<div class="relative flex justify-between px-2 py-1.5 text-xs group hover:bg-white/5 cursor-pointer">
+<div class="absolute inset-y-0 left-0 bg-primary/10 w-[30%]"></div>
+<span class="relative z-10 text-white font-mono">12.5K</span>
+<span class="relative z-10 text-primary font-bold">1,840.25</span>
+</div>
+</div>
+<!-- Sell Orders -->
+<div class="flex flex-col gap-px border-l border-white/5">
+<div class="flex justify-between px-2 py-1 text-[10px] text-gray-400 font-bold border-b border-white/5">
+<span>PRICE</span>
+<span>ASK VOL</span>
+</div>
+<!-- Row 1 -->
+<div class="relative flex justify-between px-2 py-1.5 text-xs group hover:bg-white/5 cursor-pointer">
+<div class="absolute inset-y-0 right-0 bg-secondary/10 w-[40%]"></div>
+<span class="relative z-10 text-secondary font-bold">1,843.00</span>
+<span class="relative z-10 text-white font-mono">18.2K</span>
+</div>
+<!-- Row 2 -->
+<div class="relative flex justify-between px-2 py-1.5 text-xs group hover:bg-white/5 cursor-pointer">
+<div class="absolute inset-y-0 right-0 bg-secondary/10 w-[75%]"></div>
+<span class="relative z-10 text-secondary font-bold">1,843.50</span>
+<span class="relative z-10 text-white font-mono">38.9K</span>
+</div>
+<!-- Row 3 -->
+<div class="relative flex justify-between px-2 py-1.5 text-xs group hover:bg-white/5 cursor-pointer">
+<div class="absolute inset-y-0 right-0 bg-secondary/10 w-[55%]"></div>
+<span class="relative z-10 text-secondary font-bold">1,844.00</span>
+<span class="relative z-10 text-white font-mono">22.4K</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Logistics Network -->
+<section class="mt-6 px-4 pb-4">
+<h3 class="text-xs font-bold text-gray-500 tracking-[0.15em] mb-3 flex items-center gap-2">
+<span class="material-symbols-outlined text-[14px]">local_shipping</span>
+                LOGISTICS NETWORK
+            </h3>
+<div class="flex flex-col gap-2">
+<!-- Ally 1 -->
+<div class="bg-surface border border-border-subtle p-3 rounded flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="h-10 w-10 bg-gradient-to-br from-gray-700 to-black rounded flex items-center justify-center border border-white/10">
+<span class="text-xs font-bold text-white">GEN</span>
+</div>
+<div>
+<p class="text-sm font-bold text-white">Gen. Patton</p>
+<p class="text-[10px] text-primary flex items-center gap-1">
+<span class="block h-1.5 w-1.5 rounded-full bg-primary"></span>
+                                ONLINE
+                            </p>
+</div>
+</div>
+<button class="bg-white/5 hover:bg-white/10 text-white text-xs font-bold py-2 px-3 rounded border border-white/10 flex items-center gap-2 transition-colors">
+                        TRANSFER
+                        <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+</button>
+</div>
+<!-- Ally 2 -->
+<div class="bg-surface border border-border-subtle p-3 rounded flex items-center justify-between opacity-75">
+<div class="flex items-center gap-3">
+<div class="h-10 w-10 bg-gradient-to-br from-gray-700 to-black rounded flex items-center justify-center border border-white/10">
+<span class="text-xs font-bold text-white">CDR</span>
+</div>
+<div>
+<p class="text-sm font-bold text-white">Cmdr. Shepard</p>
+<p class="text-[10px] text-gray-500 flex items-center gap-1">
+<span class="block h-1.5 w-1.5 rounded-full bg-gray-500"></span>
+                                AWAY
+                            </p>
+</div>
+</div>
+<button class="bg-white/5 text-gray-400 text-xs font-bold py-2 px-3 rounded border border-white/10 flex items-center gap-2">
+                        TRANSFER
+                        <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</section>
+</main>
+<!-- Sticky Action Footer -->
+<div class="fixed bottom-0 left-0 w-full bg-background-dark/95 backdrop-blur-md border-t border-border-subtle p-4 z-50">
+<div class="grid grid-cols-2 gap-4">
+<button class="flex flex-col items-center justify-center gap-0.5 bg-primary hover:bg-green-400 text-black rounded py-3 transition-colors group relative overflow-hidden">
+<span class="text-sm font-bold tracking-widest uppercase z-10">Buy Gold</span>
+<span class="text-[10px] font-mono font-medium opacity-80 z-10">@ 1,842.50</span>
+<!-- shine effect -->
+<div class="absolute inset-0 translate-x-[-100%] group-hover:translate-x-[100%] bg-gradient-to-r from-transparent via-white/30 to-transparent transition-transform duration-500 skew-x-12"></div>
+</button>
+<button class="flex flex-col items-center justify-center gap-0.5 bg-surface hover:bg-secondary/10 text-secondary border border-secondary/30 rounded py-3 transition-colors group">
+<span class="text-sm font-bold tracking-widest uppercase">Sell Gold</span>
+<span class="text-[10px] font-mono font-medium opacity-80">Market Price</span>
+</button>
+</div>
+</div>
+<!-- CRT Overlay Div -->
+<div class="fixed inset-0 pointer-events-none scanlines z-[60]"></div>
+</body></html>

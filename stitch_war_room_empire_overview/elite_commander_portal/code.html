@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Elite Commander Selection Portal</title>
+<!-- Load Tailwind CSS v3 with plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts: Inter -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind Configuration for Custom Colors and Fonts -->
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Roboto', 'system-ui', 'sans-serif'],
+          },
+          colors: {
+            'dark-bg': '#0f1014',
+            'card-bg': '#1a1d23',
+            'card-border': '#2a2e35',
+            'gold-accent': '#FFD700',
+            'text-grey': '#9ca3af',
+          }
+        }
+      }
+    }
+  </script>
+<!-- Custom CSS for specific effects not easily handled by Tailwind utilities alone -->
+<style data-purpose="custom-effects">
+    .placeholder-img {
+      background-color: #374151;
+    }
+    .shadow-text-code {
+      text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+    }
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0f1014; 
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #374151; 
+      border-radius: 4px;
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-[#0f1014] text-white font-sans antialiased min-h-screen flex flex-col">
+<!-- BEGIN: MainHeader -->
+<header class="pt-10 pb-6 px-4 text-center">
+<h1 class="text-3xl md:text-4xl font-extrabold tracking-tight text-white mb-2 leading-tight">
+      Elite Commander<br/>Selection Portal
+    </h1>
+<p class="text-text-muted text-sm md:text-base font-light">
+      World Conflict 1945 - Nation Selection &amp; Features
+    </p>
+</header>
+<!-- END: MainHeader -->
+<!-- BEGIN: MainContent -->
+<main class="flex-grow px-4 pb-12 w-full max-w-4xl mx-auto space-y-10">
+<!-- BEGIN: GameFeaturesSection -->
+<section>
+<h2 class="text-xl font-bold mb-4 text-white">Game Features</h2>
+<!-- Grid Layout: 2 Columns for Mobile/Tablet -->
+<div class="grid grid-cols-2 gap-3 md:gap-4"><div class="bg-[#1a1d23] border border-[#2a2e35] rounded-lg p-4 flex flex-col items-center text-center">
+<img alt="Icon" class="w-16 h-16 object-contain mb-3" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBUZPUvKnxWoqUT5_o63T7ijexsxEeY2uOddFoyQa9W3oItjdFmdhNZMNY1SSpEs_whKcsUDrvNMPYIQmq2z4TvIJEP5OMWMkqpF0bfLFO_hnyClRYtpTKhU2vJL0OTirtiTYpqIu6aufZDKqOJlE-A5hDepO2kwmR0B9z0xqi1dkMSMf3_9dilnXzVKbvs1wSRLz3FxJXfCdcA2l9J9mj4x-Y9wTZRgJR8awe63DFDy0CO8m5nsIGc3KZ8ng_mWqQQG2v9-C1vj4U"/>
+<h3 class="font-bold text-white mb-2">Live Chat</h3>
+<p class="text-gray-400 text-xs leading-tight">Spinning 3D radar towans can help your vimed commandrs.</p>
+</div>
+<div class="bg-[#1a1d23] border border-[#2a2e35] rounded-lg p-4 flex flex-col items-center text-center">
+<img alt="Icon" class="w-16 h-16 object-contain mb-3" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDDGXShsgymNukCL9ULdwt5aWJZyMTSv-bq_uMWr9tWDkDBZpGcaLQjtDupARuZZCRYeyiq3UXqV9CoKukMvshzemFS4H1DJ_F1lfXZbQwCqoMvaBKzImcBamxXRzeoU5U2irIP1R4cMbac2SiA5i2C4hOBxWqaJVMFvSpskEswKFUNsj3VaiyEPM2irxAajatEPe6OJ8c1u7SXgtWLLj0RlP9MXOOAp4PVBfj99ba0euLKp03v85dd8nq_ExHgNvAg_KCecKCFJck"/>
+<h3 class="font-bold text-white mb-2">3D Isometric Map</h3>
+<p class="text-gray-400 text-xs leading-tight">Detailed globario featunes enchem map, miirnation, and oatiomos.</p>
+</div>
+<div class="bg-[#1a1d23] border border-[#2a2e35] rounded-lg p-4 flex flex-col items-center text-center">
+<img alt="Icon" class="w-16 h-16 object-contain mb-3" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBfiuWkHRqkrP8lJMf33KJzGXyyKF4OoeuLlAZL8EUjYh2KM9r_0I7fFgiCiBbtocYpzOQjZz4DMd1EwvSLKvruSOb6_6YhgwC92MznuarcVvZAuKIXiPD0oMc1iXs7yqPL9wk23QJYnEhZtSawe3MZaFP6PPOokCqPPkasmxjonxBy3TKdD3I66ia3k1VHMRH1WJZLARhf0PjG8P1VWIxQ7LoJPAwqt1j0SpOfOHE1Icvp_TKHb8v-YZSDL58LVJOOYYq6gFyb320"/>
+<h3 class="font-bold text-white mb-2">Diplomacy &amp; Alliances</h3>
+<p class="text-gray-400 text-xs leading-tight">Construction oamentship, diplomacy &amp; alliances to geon reigvorments.</p>
+</div>
+<div class="bg-[#1a1d23] border border-[#2a2e35] rounded-lg p-4 flex flex-col items-center text-center">
+<img alt="Icon" class="w-16 h-16 object-contain mb-3" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDa5w3AtNgth3I7jiPJKgD3GT6cu1hj5uqx9LaRVcX3xdXRDJ3GS3RaBpbyyF9VLds_B3mZZlpRkcTFsZ3BB4WQwgkuuNuxj3LadBkxpoP8Aap3xUBeGTe8Aae6b4iby1ANyCu9dgEQ4HezDLPgZsLwlcVHYnFSmDgwYddkb747M9GEbuC9kS10EiJWJULTkJvnKCGzSLDdgHTqaV4FyubUu_yihlLJpiXIz8J76TLkGMLIeSl9tubclgYYKuPxRyBKZpG2_Xcunys"/>
+<h3 class="font-bold text-white mb-2">Construction &amp; Economy</h3>
+<p class="text-gray-400 text-xs leading-tight">Construction &amp; Economy, resource: and economy:roursers.</p>
+</div>
+<div class="bg-[#1a1d23] border border-[#2a2e35] rounded-lg p-4 flex flex-col items-center text-center">
+<img alt="Icon" class="w-16 h-16 object-contain mb-3" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBel_LPYIXdUcQw870B0XWQ-EsBSddpwXSpfMBm25E5-1beHv8u10wNUo3bH0RVelWG0jN6Zbn0Mtm_Ehr0MqUfV6vjHs1wv-oHBUIEmVhXXiksEMdEX1ehStI0rX45AwQ2CIn0vUpg202Rqng_U-vK9HAzF3lmmvLUOaPJ0mnt8BS0SzHn79cYknJ78cpRjzUKdUDiYKafawGwKhCQIWsdBY--2D-3uS2yeIZ0Pzl9-yXKC3pkDtTqG1WQE7VNhpACiO64lSdZGn4"/>
+<h3 class="font-bold text-white mb-2">Real-Time Battles</h3>
+<p class="text-gray-400 text-xs leading-tight">Real-Time battles for tranocieted real-matches tinnoss.</p>
+</div>
+<div class="bg-[#1a1d23] border border-[#2a2e35] rounded-lg p-4 flex flex-col items-center text-center">
+<img alt="Icon" class="w-16 h-16 object-contain mb-3" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCrVcnesEIunj0XsOx__KwgtPQwhS67K05bKtb34CT-QXjJgsIifhuOaUJGm0VlS-XVirRQrUc-o6IPsfVxq3K_tL7ppl4ZaYl4xWCfjPNwLhIjrTzDVz_lfEovhIkUIrSFePCXe_-mVqPHDk-wpfRkmrS6cAJg9VIj6dGUJ8l2-cGEmkcnzL0ngcx6FnmGqUpk7u_V9dhoAgR9iszBmvUsxf7bJ0nTKgh3udnwIsfvOu70n2IQFF6s1C5UhZtgioLxe4ossUOckIc"/>
+<h3 class="font-bold text-white mb-2">Sleep Mode</h3>
+<p class="text-gray-400 text-xs leading-tight">Sleep mode feits siesty report and mach bo man its soiees.</p>
+</div></div>
+</section>
+<!-- END: GameFeaturesSection -->
+<!-- BEGIN: NationSelectionSection -->
+<section>
+<h2 class="text-xl font-bold mb-4 text-white">Choose Your Nation</h2>
+<div class="grid grid-cols-2 gap-3 md:gap-4"><div class="relative h-[100px] border border-yellow-500 rounded-lg overflow-hidden bg-black">
+<img alt="Flag" class="absolute inset-0 w-full h-full object-cover opacity-60 z-0" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD4KuUzCbkyhzgEovbGPw_TdkQZmqk9xUPGK8f7UdViqHDJ1dQlGatBC2Eo1Drbwf5EMHuI6mIqGjY0u4fXpNr5sVeu3O39u_yFmKdaxlR97gXoHMMEoU6dF2E9Q8HPFa3sg0jdDQSaupS-i2_KVwTJVYN196OVsGz2TSd4MpGUb1YAMz7JLS6g5jnyGr_SxGy8Syywi3MBdZICpY6fzoqJJY9jaVsBu7zEfYLHLIA-X59Uz5Cfo3Wvh2dHRlaxfXSqMKj86Pjl744"/>
+<div class="relative z-10 p-2 h-full flex flex-col justify-between">
+<span class="text-4xl font-black text-white drop-shadow-md">US</span>
+<div class="bg-black/60 -mx-2 -mb-2 px-2 py-1">
+<div class="text-[9px] text-gray-400 uppercase">Nation nation bonus:</div>
+<div class="text-[11px] text-[#FFD700] font-bold">+15% Gold Generation</div>
+</div>
+</div>
+</div>
+<div class="relative h-[100px] border border-yellow-500 rounded-lg overflow-hidden bg-black">
+<img alt="Flag" class="absolute inset-0 w-full h-full object-cover opacity-60 z-0" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAi7uwqs2zgsDTlU25BnN1McvJ6P-ptrzVb91P-3YYUUqz164MoWIDetdNPxCIxoKa9CymVKCQAo2yibiVPqtnZWThxIt_1k2pFB3rZ8Qwea9m39BpHC4QkoXugNHxLTqZBdU8nm-sHtGQSuLZVJJyc0gAbxhmnyxPmptt74ix0UFeGNZlyAA-lXAw1EHezIAf8Nw9NqARl2kHUpOSrj5j303VzJ8L8dDnYRqyZqDLzFqNAsbU7761Ug1p5FdHHlg5ZiUjphXJW_ws"/>
+<div class="relative z-10 p-2 h-full flex flex-col justify-between">
+<span class="text-4xl font-black text-white drop-shadow-md">DE</span>
+<div class="bg-black/60 -mx-2 -mb-2 px-2 py-1">
+<div class="text-[9px] text-gray-400 uppercase">Nation nation bonus:</div>
+<div class="text-[11px] text-[#FFD700] font-bold">+15% Germany Geneatior</div>
+</div>
+</div>
+</div>
+<div class="relative h-[100px] border border-yellow-500 rounded-lg overflow-hidden bg-black">
+<img alt="Flag" class="absolute inset-0 w-full h-full object-cover opacity-60 z-0" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCYTO0-LHiN4ZgHI4JjFWlRyjtPHn1tT_ulzap5OB2PAvGcegnBj2VKJOjaVMUDv4KFuu-tH9aYsU3q5NwAQ6Nan0tOO1e81JplyqaYZJC1mU28fuyIHS_fIfsg3fDeHlscf1F5dr7QAJOczZR9d3JUq008JkykVWZu8u2PHL8D9KHzYrAWAjo-vnkBplmJ6JlS47MC6eVi14o6gdGdnC8Q_HN7Hw_coNgEOgl73Oo-8CRMyLBWe3hn7AHeYckZLyc5xce4-NAsB4I"/>
+<div class="relative z-10 p-2 h-full flex flex-col justify-between">
+<span class="text-4xl font-black text-white drop-shadow-md">RU</span>
+<div class="bg-black/60 -mx-2 -mb-2 px-2 py-1">
+<div class="text-[9px] text-gray-400 uppercase">Nation nation bonus:</div>
+<div class="text-[11px] text-[#FFD700] font-bold">+25% Russia Generation</div>
+</div>
+</div>
+</div>
+<div class="relative h-[100px] border border-yellow-500 rounded-lg overflow-hidden bg-black">
+<img alt="Flag" class="absolute inset-0 w-full h-full object-cover opacity-60 z-0" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC_EShDcZoGfsYoTWaXdf2dUngmnvnzfNu7TmDbStnQWi7GDEA0ULpwhpKVzRHcI2CvCvALd8o3DceO725GsFKRm8eks19aVBjOpmLYLPbuL9GVbmLpSjix5FuzOZN21WvpbUEUaDhUHT7PboIjlKoF2zhs_DpudTu9qmF576QD1jMZkrcu6fR0RDjVR6U-uXlG_jV5YV2qpnMirulO6S2dE21SY_mLAxd72SwHAqDvDHFq57f1EaeUR9RCyufop5gXWS94lpfyCoo"/>
+<div class="relative z-10 p-2 h-full flex flex-col justify-between">
+<span class="text-4xl font-black text-white drop-shadow-md">GB</span>
+<div class="bg-black/60 -mx-2 -mb-2 px-2 py-1">
+<div class="text-[9px] text-gray-400 uppercase">Nation nation bonus:</div>
+<div class="text-[11px] text-[#FFD700] font-bold">+15% Gold Generation</div>
+</div>
+</div>
+</div>
+<div class="relative h-[100px] border border-yellow-500 rounded-lg overflow-hidden bg-black">
+<img alt="Flag" class="absolute inset-0 w-full h-full object-cover opacity-60 z-0" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAmrsBbtd9SfyFDNkPPPp5iLsQIIo-lv7qDQBbTKrX98vukTIo1vzHxXpcFUCdqoj2N9KDn3bpumN3vr67KFZeXMAIJ9wrQdlSOguJCMssAvYesPcFx9JO1Ot6X0vKbostbRjdYOIMSXND8vzMFBLCuzzmhjfNVk1dut1u99iHhTFjtpiF2YmTJojMgAIDlEmsF51oJf5ozOJ58CPiOOqAXoXaRQKmP1pOTIiMqmhKcEEgnAv6HKfxMzS5Z5OkKstqfzyjb1GWAh7E"/>
+<div class="relative z-10 p-2 h-full flex flex-col justify-between">
+<span class="text-4xl font-black text-white drop-shadow-md">JP</span>
+<div class="bg-black/60 -mx-2 -mb-2 px-2 py-1">
+<div class="text-[9px] text-gray-400 uppercase">Nation nation bonus:</div>
+<div class="text-[11px] text-[#FFD700] font-bold">+15% Japan Generation</div>
+</div>
+</div>
+</div>
+<div class="relative h-[100px] border border-yellow-500 rounded-lg overflow-hidden bg-black">
+<img alt="Flag" class="absolute inset-0 w-full h-full object-cover opacity-60 z-0" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBRtk7s8X49rUvEUslP1OM1DZP46MlLCgur7-VXCi-q_gvrC690wktvpnOT5a1J3EchFXU9Lz4pCal6_mxWPdX7wzs09nneeyDedUz7-C1b3AD-xVqKf7YcvTaJq3N9zk-VQFlOIw0gBC1nx83rn20-dRAKNX2AAW6QQKFQliEzQnXqY5GccxTHxsFL8gsP57op0Wu5Ty2IZtMb07Qr5rod9auRPmH56WXBhQ2tgrRl1U3mTfpSiB5Cd8zhhddvB1c-fksaDPp2YNE"/>
+<div class="relative z-10 p-2 h-full flex flex-col justify-between">
+<span class="text-4xl font-black text-white drop-shadow-md">IT</span>
+<div class="bg-black/60 -mx-2 -mb-2 px-2 py-1">
+<div class="text-[9px] text-gray-400 uppercase">Nation nation bonus:</div>
+<div class="text-[11px] text-[#FFD700] font-bold">+15% Italy Generation</div>
+</div>
+</div>
+</div>
+<div class="relative h-[100px] border border-yellow-500 rounded-lg overflow-hidden bg-black">
+<img alt="Flag" class="absolute inset-0 w-full h-full object-cover opacity-60 z-0" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA_tURHecuL1dUtM83tOd4KGPBKfUctrg60k6OwwCJqvM9OAuehKF1qvF2OKBcOPI7CSQfOSa2kwImOv__V0XPElFxQBlp6WI9yj-lzjNy4TJYrZvYh6ZJ5-bjdWrvD-UJtGJ6ouaP2gcDQO9eLqXads9N9Bt4cX4cWJ6hU-8SvBV7hkVs-ZOQzOxrPE7VtFoDpt1eylpVux0vX6EvfLOx8KtWktyAbjj3ZOrdlTGjRguErKRTqPEXZ5PGjN0XQBqlffW2lKIVOytw"/>
+<div class="relative z-10 p-2 h-full flex flex-col justify-between">
+<span class="text-4xl font-black text-white drop-shadow-md">FR</span>
+<div class="bg-black/60 -mx-2 -mb-2 px-2 py-1">
+<div class="text-[9px] text-gray-400 uppercase">Nation nation bonus:</div>
+<div class="text-[11px] text-[#FFD700] font-bold">+15% Gold Generation</div>
+</div>
+</div>
+</div>
+<div class="relative h-[100px] border border-yellow-500 rounded-lg overflow-hidden bg-black">
+<img alt="Flag" class="absolute inset-0 w-full h-full object-cover opacity-60 z-0" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDlAeCAJmBQQEW7ay87xPxy9YC3wdpOomxTVIaD_Y1_FQatiaeTBGfFfkNhEiRzP-w1aNGTrMqhZGe2FddFFwCglzCBEjf6VEsSoHQ8TkJD9G6O7AxEYXihKVO1AywTQFTZlRiq1fAAv5kTreM0jyUwYV2Qbzjdz6IK7dv3ambnPcTgVekSFqd3I4VvlQ77ZvMGZi0BerazOBmMW5cpOUpOEYXk19Ae1b0-y4bbNIV1gFrdzkUKOQzJJCtJVLl6-E7NpWc9lZOEdbo"/>
+<div class="relative z-10 p-2 h-full flex flex-col justify-between">
+<span class="text-4xl font-black text-white drop-shadow-md">CN</span>
+<div class="bg-black/60 -mx-2 -mb-2 px-2 py-1">
+<div class="text-[9px] text-gray-400 uppercase">Nation nation bonus:</div>
+<div class="text-[11px] text-[#FFD700] font-bold">+30% China Bonus</div>
+</div>
+</div>
+</div></div>
+</section>
+<!-- END: NationSelectionSection -->
+</main>
+<!-- END: MainContent -->
+<!-- BEGIN: Footer -->
+<footer class="bg-[#0a0c10] py-4 px-6 border-t border-gray-800">
+<div class="flex flex-col md:flex-row justify-between items-center text-center md:text-left gap-4 max-w-4xl mx-auto w-full">
+<p class="text-[10px] text-gray-500 uppercase tracking-wider">
+        World Conflict 1945 © 2024 - MVP Version
+      </p>
+<!-- Social Media Placeholders -->
+<div class="flex space-x-4">
+<a class="text-gray-500 hover:text-white transition-colors" href="#">
+<!-- Facebook Icon Placeholder -->
+<svg class="w-4 h-4 fill-current" viewbox="0 0 24 24"><path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"></path></svg>
+</a>
+<a class="text-gray-500 hover:text-white transition-colors" href="#">
+<!-- YouTube Icon Placeholder -->
+<svg class="w-4 h-4 fill-current" viewbox="0 0 24 24"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.196-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"></path></svg>
+</a>
+<a class="text-gray-500 hover:text-white transition-colors" href="#">
+<!-- Discord Icon Placeholder -->
+<svg class="w-4 h-4 fill-current" viewbox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.418 2.157-2.418 1.21 0 2.176 1.096 2.157 2.419 0 1.334-.956 2.419-2.157 2.419zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.418 2.157-2.418 1.21 0 2.176 1.096 2.157 2.419 0 1.334-.946 2.419-2.157 2.419z"></path></svg>
+</a>
+</div>
+</div>
+</footer>
+<!-- END: Footer -->
+</body></html>

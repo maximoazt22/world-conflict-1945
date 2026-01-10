@@ -12,7 +12,7 @@ interface GameData {
         id: string
         nation: string
         color: string
-        resources: { gold: number; iron: number; oil: number; food: number }
+        resources: any // Modern resources
     }>
     provinces: Array<{
         id: string

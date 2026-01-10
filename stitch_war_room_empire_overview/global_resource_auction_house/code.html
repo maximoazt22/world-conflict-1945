@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Global Resource Auction House</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Noto+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ffbf00", // Amber
+                        "primary-dim": "#b38600",
+                        "background-light": "#f2f2f3",
+                        "background-dark": "#23292f", // Deep Charcoal
+                        "surface-dark": "#2c333a", // Slightly lighter slate
+                        "surface-darker": "#1c2126", // Darker inset
+                        "border-industrial": "#454f59",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"],
+                        "body": ["Noto Sans", "sans-serif"],
+                    },
+                    borderRadius: {"DEFAULT": "0.125rem", "sm": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "9999px"},
+                    backgroundImage: {
+                        'metal-gradient': 'linear-gradient(180deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0) 100%)',
+                    },
+                    animation: {
+                        'blink-fast': 'blink 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        blink: {
+                            '0%, 100%': { opacity: '1' },
+                            '50%': { opacity: '0.3' },
+                        }
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom scrollbar for horizontal scrolling if needed */
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        /* Inset text effect for that engraved look */
+        .engraved-text {
+            text-shadow: 0px 1px 0px rgba(255,255,255,0.1);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-gray-200 antialiased overflow-x-hidden pb-24 selection:bg-primary selection:text-black">
+<!-- Header Command Bar -->
+<header class="sticky top-0 z-40 w-full bg-[#1c2126]/95 backdrop-blur-md border-b border-border-industrial shadow-lg">
+<div class="px-4 py-3 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="relative flex h-3 w-3">
+<span class="animate-blink-fast absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+<span class="relative inline-flex rounded-full h-3 w-3 bg-primary"></span>
+</div>
+<span class="text-xs font-bold tracking-widest text-primary uppercase">Market Open</span>
+</div>
+<div class="flex items-center gap-3">
+<div class="text-right">
+<div class="text-[10px] text-gray-400 uppercase tracking-wider">Net Worth</div>
+<div class="text-primary font-bold leading-none font-mono text-lg">$45,000</div>
+</div>
+<div class="h-8 w-8 rounded bg-surface-dark border border-border-industrial flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" style="font-size: 20px;">account_balance_wallet</span>
+</div>
+</div>
+</div>
+</header>
+<!-- Stockpile Stats (Control Panel) -->
+<div class="p-4 grid grid-cols-3 gap-2">
+<!-- Stat 1 -->
+<div class="bg-surface-darker border border-border-industrial p-2 rounded relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-1 opacity-20">
+<span class="material-symbols-outlined text-white" style="font-size: 32px;">hardware</span>
+</div>
+<p class="text-[10px] text-gray-400 uppercase tracking-widest mb-1">Iron</p>
+<p class="text-white text-lg font-bold font-mono leading-none tracking-tight">450<span class="text-xs text-gray-500 ml-0.5">t</span></p>
+</div>
+<!-- Stat 2 -->
+<div class="bg-surface-darker border border-border-industrial p-2 rounded relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-1 opacity-20">
+<span class="material-symbols-outlined text-white" style="font-size: 32px;">water_drop</span>
+</div>
+<p class="text-[10px] text-gray-400 uppercase tracking-widest mb-1">Oil</p>
+<p class="text-white text-lg font-bold font-mono leading-none tracking-tight">1.2k<span class="text-xs text-gray-500 ml-0.5">bbl</span></p>
+</div>
+<!-- Stat 3 -->
+<div class="bg-surface-darker border border-border-industrial p-2 rounded relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-1 opacity-20">
+<span class="material-symbols-outlined text-white" style="font-size: 32px;">agriculture</span>
+</div>
+<p class="text-[10px] text-gray-400 uppercase tracking-widest mb-1">Food</p>
+<p class="text-white text-lg font-bold font-mono leading-none tracking-tight">800<span class="text-xs text-gray-500 ml-0.5">t</span></p>
+</div>
+</div>
+<!-- Filter Toggles (Physical Switches) -->
+<div class="px-4 pb-4">
+<div class="flex p-1 gap-1 bg-[#15181c] rounded-lg shadow-[inset_0_2px_4px_rgba(0,0,0,0.6)] border border-border-industrial/50 overflow-x-auto hide-scrollbar">
+<label class="flex-1 min-w-[60px] cursor-pointer group">
+<input checked="" class="peer sr-only" name="resource_filter" type="radio" value="all"/>
+<div class="h-9 flex items-center justify-center rounded text-xs font-bold uppercase tracking-wide text-gray-500 transition-all duration-200 peer-checked:bg-surface-dark peer-checked:text-primary peer-checked:shadow-[0_1px_3px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.1)] peer-checked:border peer-checked:border-border-industrial">
+                    All
+                </div>
+</label>
+<label class="flex-1 min-w-[60px] cursor-pointer group">
+<input class="peer sr-only" name="resource_filter" type="radio" value="iron"/>
+<div class="h-9 flex items-center justify-center rounded text-xs font-bold uppercase tracking-wide text-gray-500 transition-all duration-200 peer-checked:bg-surface-dark peer-checked:text-primary peer-checked:shadow-[0_1px_3px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.1)] peer-checked:border peer-checked:border-border-industrial">
+                    Iron
+                </div>
+</label>
+<label class="flex-1 min-w-[60px] cursor-pointer group">
+<input class="peer sr-only" name="resource_filter" type="radio" value="oil"/>
+<div class="h-9 flex items-center justify-center rounded text-xs font-bold uppercase tracking-wide text-gray-500 transition-all duration-200 peer-checked:bg-surface-dark peer-checked:text-primary peer-checked:shadow-[0_1px_3px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.1)] peer-checked:border peer-checked:border-border-industrial">
+                    Oil
+                </div>
+</label>
+<label class="flex-1 min-w-[60px] cursor-pointer group">
+<input class="peer sr-only" name="resource_filter" type="radio" value="food"/>
+<div class="h-9 flex items-center justify-center rounded text-xs font-bold uppercase tracking-wide text-gray-500 transition-all duration-200 peer-checked:bg-surface-dark peer-checked:text-primary peer-checked:shadow-[0_1px_3px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.1)] peer-checked:border peer-checked:border-border-industrial">
+                    Food
+                </div>
+</label>
+</div>
+</div>
+<!-- Live Bidding Floor -->
+<div class="px-4 space-y-4">
+<!-- Card 1: Urgent (Amber Focus) -->
+<article class="bg-surface-dark rounded border border-primary/30 shadow-lg overflow-hidden relative">
+<!-- Decorative corner accent -->
+<div class="absolute top-0 right-0 w-0 h-0 border-t-[32px] border-t-primary/20 border-l-[32px] border-l-transparent"></div>
+<!-- Header -->
+<div class="flex items-center justify-between px-3 py-2 bg-black/20 border-b border-border-industrial">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+<h3 class="text-xs font-bold tracking-widest text-primary uppercase">LOT 402-A</h3>
+</div>
+<div class="flex items-center gap-1 text-primary">
+<span class="material-symbols-outlined text-[14px]">timer</span>
+<span class="text-xs font-mono font-bold">00:04:23</span>
+</div>
+</div>
+<!-- Main Content Grid -->
+<div class="p-3 grid grid-cols-[80px_1fr] gap-4">
+<!-- Image/Icon Area -->
+<div class="flex flex-col items-center justify-center bg-surface-darker rounded border border-border-industrial p-2 h-full">
+<div class="h-12 w-12 bg-contain bg-center bg-no-repeat opacity-80" data-alt="Oil drop icon stylized" style="background-image: url('data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\' fill=\'%23ffbf00\'%3E%3Cpath d=\'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-5.5-2.5 7.51-3.22-7.52-3.22 7.52 3.22z\'/%3E%3Cpath d=\'M7 13l10-6-8 11z\'/%3E%3C/svg%3E');"></div>
+<span class="text-[10px] text-gray-400 mt-1 uppercase font-bold text-center leading-tight">Crude Oil</span>
+</div>
+<!-- Data & Actions -->
+<div class="flex flex-col justify-between gap-3">
+<div>
+<h4 class="text-white font-bold text-lg leading-tight mb-1">5,000 BBL</h4>
+<div class="flex justify-between items-end border-b border-border-industrial pb-2 mb-1">
+<div class="flex flex-col">
+<span class="text-[10px] text-gray-400 uppercase">Current Bid</span>
+<span class="text-primary font-mono font-bold text-lg">$12,500</span>
+</div>
+<div class="flex flex-col text-right">
+<span class="text-[10px] text-gray-500 uppercase">Seller</span>
+<span class="text-gray-300 text-xs font-medium">Gen. Patton</span>
+</div>
+</div>
+<div class="flex justify-between items-center text-[11px] text-gray-400">
+<span>Buy Now Price:</span>
+<span class="text-white font-mono">$18,000</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer Buttons -->
+<div class="grid grid-cols-2 gap-px bg-border-industrial border-t border-border-industrial">
+<button class="bg-surface-dark hover:bg-surface-darker text-white text-xs font-bold uppercase py-3 flex items-center justify-center gap-1 transition-colors active:bg-primary active:text-black">
+<span class="material-symbols-outlined text-[16px]">gavel</span>
+                    Place Bid
+                </button>
+<button class="bg-surface-dark hover:bg-surface-darker text-primary text-xs font-bold uppercase py-3 flex items-center justify-center gap-1 transition-colors active:bg-primary active:text-black">
+<span class="material-symbols-outlined text-[16px]">shopping_cart</span>
+                    Buy Now
+                </button>
+</div>
+</article>
+<!-- Card 2: Standard -->
+<article class="bg-surface-dark rounded border border-border-industrial shadow-md overflow-hidden">
+<!-- Header -->
+<div class="flex items-center justify-between px-3 py-2 bg-black/20 border-b border-border-industrial">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-gray-500"></span>
+<h3 class="text-xs font-bold tracking-widest text-gray-400 uppercase">LOT 519-C</h3>
+</div>
+<div class="flex items-center gap-1 text-gray-400">
+<span class="material-symbols-outlined text-[14px]">timer</span>
+<span class="text-xs font-mono font-bold">02:15:00</span>
+</div>
+</div>
+<!-- Main Content Grid -->
+<div class="p-3 grid grid-cols-[80px_1fr] gap-4">
+<!-- Image/Icon Area -->
+<div class="flex flex-col items-center justify-center bg-surface-darker rounded border border-border-industrial p-2 h-full">
+<!-- Placeholder visual for steel -->
+<div class="w-full h-12 bg-cover bg-center rounded opacity-80 grayscale mix-blend-luminosity" data-alt="Close up of steel beams stacked" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuD23HfD39W_dC1IThRYnMzsrRdsFpl8i-KUAlBmXcX6Y206hRDkQjQ1xqhdcQgqyLXHaeUdLFt621os1I5wjGqIIVV3wvb_WiLd3zPYzmGQZyh9y8odQfI97vdcWCKTLw7uIpunrdF3dQXlY5ycg5EMpSptXVTRXYAThD8GrtEoOkEx6M6dgnQ4vgLAQ_uNtJMN81BAf0pzg-VpNEKSa1ksnrJbjzIgzcuIBhP3RN3yBeppdjpGphKW65uIAGqbK5LqqJbYL_GtlAA');"></div>
+<span class="text-[10px] text-gray-400 mt-1 uppercase font-bold text-center leading-tight">Steel</span>
+</div>
+<!-- Data & Actions -->
+<div class="flex flex-col justify-between gap-3">
+<div>
+<h4 class="text-white font-bold text-lg leading-tight mb-1">200 Tons</h4>
+<div class="flex justify-between items-end border-b border-border-industrial pb-2 mb-1">
+<div class="flex flex-col">
+<span class="text-[10px] text-gray-400 uppercase">Current Bid</span>
+<span class="text-white font-mono font-bold text-lg">$4,200</span>
+</div>
+<div class="flex flex-col text-right">
+<span class="text-[10px] text-gray-500 uppercase">Seller</span>
+<span class="text-gray-300 text-xs font-medium">Eastern Front</span>
+</div>
+</div>
+<div class="flex justify-between items-center text-[11px] text-gray-400">
+<span>Buy Now Price:</span>
+<span class="text-white font-mono">$6,000</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer Buttons -->
+<div class="grid grid-cols-2 gap-px bg-border-industrial border-t border-border-industrial">
+<button class="bg-surface-dark hover:bg-surface-darker text-white text-xs font-bold uppercase py-3 flex items-center justify-center gap-1 transition-colors active:bg-gray-600">
+<span class="material-symbols-outlined text-[16px]">gavel</span>
+                    Place Bid
+                </button>
+<button class="bg-surface-dark hover:bg-surface-darker text-gray-400 text-xs font-bold uppercase py-3 flex items-center justify-center gap-1 transition-colors active:bg-gray-600">
+<span class="material-symbols-outlined text-[16px]">shopping_cart</span>
+                    Buy Now
+                </button>
+</div>
+</article>
+<!-- Card 3: Outbid Warning -->
+<article class="bg-surface-dark rounded border border-red-900/50 shadow-md overflow-hidden opacity-90">
+<!-- Header -->
+<div class="flex items-center justify-between px-3 py-2 bg-red-900/10 border-b border-red-900/30">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-red-500 text-[16px]">warning</span>
+<h3 class="text-xs font-bold tracking-widest text-red-500 uppercase">OUTBID ALERT</h3>
+</div>
+<div class="flex items-center gap-1 text-red-400">
+<span class="material-symbols-outlined text-[14px]">timer</span>
+<span class="text-xs font-mono font-bold">00:01:45</span>
+</div>
+</div>
+<!-- Main Content Grid -->
+<div class="p-3 grid grid-cols-[80px_1fr] gap-4">
+<!-- Image/Icon Area -->
+<div class="flex flex-col items-center justify-center bg-surface-darker rounded border border-border-industrial p-2 h-full">
+<div class="w-full h-12 bg-cover bg-center rounded opacity-80 grayscale mix-blend-luminosity" data-alt="Stacked wooden crates" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAdwIj7SszIdFbM5HDrWDyDEua8b-khaYuF3B2nPf98W_O3SSGzowwWdPmXGz1QrEtEG6o1Nu1wPbitGvjf7KpBrtMMcXwu03fNvCsEjYC7ig9O-dKjnTabE7levFjh_co_ZV-ZWt9P-yzb1EA84THui1I6KHxB5GsjqZZ0PKZR7pznLVbLFcieYSRYnPTvGEUnVqFyUqMHLJgDe5AetbSvKR9bQjJ2sPdOBXWnNq5iW-hqf4oQyKsNpp-7p0mK71CbbRtW7wYhKIM');"></div>
+<span class="text-[10px] text-gray-400 mt-1 uppercase font-bold text-center leading-tight">Rations</span>
+</div>
+<!-- Data & Actions -->
+<div class="flex flex-col justify-between gap-3">
+<div>
+<h4 class="text-white font-bold text-lg leading-tight mb-1">5,000 MRE Packs</h4>
+<div class="flex justify-between items-end border-b border-border-industrial pb-2 mb-1">
+<div class="flex flex-col">
+<span class="text-[10px] text-gray-400 uppercase">Leading Bid</span>
+<span class="text-red-500 font-mono font-bold text-lg">$1,250</span>
+</div>
+<div class="flex flex-col text-right">
+<span class="text-[10px] text-gray-500 uppercase">Your Last</span>
+<span class="text-gray-500 text-xs font-mono line-through">$1,100</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer Buttons -->
+<div class="w-full bg-border-industrial border-t border-border-industrial">
+<button class="w-full bg-red-900/20 hover:bg-red-900/40 text-red-500 text-xs font-bold uppercase py-3 flex items-center justify-center gap-2 transition-colors border-t border-red-900/30">
+<span class="material-symbols-outlined text-[16px]">arrow_upward</span>
+                   Counter Bid ($1,300)
+               </button>
+</div>
+</article>
+</div>
+<!-- Market Ticker -->
+<div class="mt-6 border-y border-border-industrial bg-[#15181c] py-2 overflow-hidden relative">
+<div class="flex whitespace-nowrap animate-[marquee_20s_linear_infinite] gap-8 items-center px-4">
+<span class="text-[10px] font-mono text-gray-500 uppercase">Latest:</span>
+<span class="text-xs font-mono text-gray-400"><span class="text-primary">Cmdr. Ryan</span> bought 500 Oil @ $45/bbl</span>
+<span class="text-border-industrial">|</span>
+<span class="text-xs font-mono text-gray-400"><span class="text-primary">User882</span> sold 1000 Iron @ $210/t</span>
+<span class="text-border-industrial">|</span>
+<span class="text-xs font-mono text-gray-400"><span class="text-primary">FoxUnit</span> outbid on Lot 401</span>
+<span class="text-border-industrial">|</span>
+<span class="text-xs font-mono text-gray-400"><span class="text-primary">TankDiv_1</span> bought 200 Ammo</span>
+</div>
+<!-- Gradient masks for marquee -->
+<div class="absolute inset-y-0 left-0 w-8 bg-gradient-to-r from-background-dark to-transparent z-10"></div>
+<div class="absolute inset-y-0 right-0 w-8 bg-gradient-to-l from-background-dark to-transparent z-10"></div>
+</div>
+<!-- Bottom Navigation Dock -->
+<nav class="fixed bottom-0 left-0 w-full bg-[#181b1f] border-t-2 border-border-industrial z-50 pb-safe">
+<div class="flex items-center justify-between px-2">
+<button class="flex flex-1 flex-col items-center py-3 gap-1 group relative">
+<!-- Active Indicator (Top line glow) -->
+<div class="absolute top-[-2px] left-0 w-full h-[2px] bg-primary shadow-[0_0_10px_#ffbf00] z-20"></div>
+<span class="material-symbols-outlined text-primary group-hover:scale-110 transition-transform" style="font-variation-settings: 'FILL' 1;">gavel</span>
+<span class="text-[10px] font-bold uppercase tracking-wider text-primary">Auction</span>
+<!-- Background glow for active item -->
+<div class="absolute inset-0 bg-primary/5 z-0"></div>
+</button>
+<button class="flex flex-1 flex-col items-center py-3 gap-1 group text-gray-500 hover:text-gray-300">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform">inventory_2</span>
+<span class="text-[10px] font-bold uppercase tracking-wider">My Bids</span>
+</button>
+<button class="flex flex-1 flex-col items-center py-3 gap-1 group text-gray-500 hover:text-gray-300">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform">sell</span>
+<span class="text-[10px] font-bold uppercase tracking-wider">Sell</span>
+</button>
+<button class="flex flex-1 flex-col items-center py-3 gap-1 group text-gray-500 hover:text-gray-300">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform">history</span>
+<span class="text-[10px] font-bold uppercase tracking-wider">Log</span>
+</button>
+</div>
+</nav>
+<!-- Padding for bottom nav -->
+<div class="h-6"></div>
+<script>
+        tailwind.config.theme.extend.keyframes.marquee = {
+            '0%': { transform: 'translateX(100%)' },
+            '100%': { transform: 'translateX(-100%)' },
+        }
+        tailwind.config.theme.extend.animation.marquee = 'marquee 25s linear infinite';
+    </script>
+</body></html>

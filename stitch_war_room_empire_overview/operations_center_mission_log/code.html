@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Operations Center Mission Log</title>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#3973ac",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#14191e",
+                        "manila": "#F8F3E9",
+                        "manila-dark": "#e8e1d5",
+                        "ink": "#262626",
+                        "stamp-red": "#994D4D"
+                    },
+                    fontFamily: {
+                        "display": ["Newsreader", "serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom scrollbar for the folder content */
+        .folder-scroll::-webkit-scrollbar {
+            width: 6px;
+        }
+        .folder-scroll::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.05);
+        }
+        .folder-scroll::-webkit-scrollbar-thumb {
+            background: rgba(57, 115, 172, 0.3);
+            border-radius: 4px;
+        }
+        
+        /* Pattern for the progress bar */
+        .pattern-diagonal-lines-sm {
+            background-image: repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(255,255,255,0.2) 5px, rgba(255,255,255,0.2) 10px);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-dark overflow-hidden h-screen w-full relative font-display">
+<!-- Background Map Layer -->
+<div class="absolute inset-0 z-0">
+<!-- Using a placeholder for the map, heavily blurred to focus on the UI -->
+<div class="w-full h-full bg-cover bg-center filter sepia contrast-125 brightness-75 blur-sm scale-105" data-alt="Vintage topographic map of European theater 1945" data-location="Europe" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBhEd2eQu1S02zmPAdc0exdPon3gpuODtpF4IAFwTACS0dro9c8sA6jnrnDtjPC39EO2duJivsy178fJ29ELj-5ynJG-FbEAMJu0OrZyIPpUKDc1Wkq_qYnzmKRi6OswZIeLumhXI8kF6M14zERVKgsXR28F-vQXHkYdv-meSjRFG_vZ-uTblowYsrBBgiFJCVtB8h_3kUCalzLVFFoQYLishzh1EedD_Osr2Gi5rtgRbzaFtKgl7KiPy1sxwNBq6PSDN8-fCEzy7c");'>
+</div>
+<div class="absolute inset-0 bg-black/40 mix-blend-multiply"></div>
+</div>
+<!-- Main UI Container -->
+<div class="relative z-10 flex flex-col items-center justify-end h-full w-full pb-0 sm:justify-center sm:pb-0">
+<!-- The Manila Folder -->
+<div class="relative w-full max-w-md h-[92vh] sm:h-[85vh] bg-manila shadow-2xl flex flex-col transform transition-transform duration-300 rounded-t-3xl sm:rounded-xl overflow-visible group/folder">
+<!-- Folder Tab (Top Left) -->
+<div class="absolute -top-10 left-0 w-1/2 h-12 bg-manila rounded-t-xl z-0 shadow-[0_-2px_5px_rgba(0,0,0,0.1)] flex items-center px-6 border-t border-l border-r border-white/20">
+<span class="text-ink/50 text-xs font-bold tracking-widest uppercase">Classified Documents</span>
+</div>
+<!-- Paper Texture Overlay -->
+<div class="absolute inset-0 rounded-t-3xl sm:rounded-xl pointer-events-none opacity-40 mix-blend-multiply bg-[url('https://www.transparenttextures.com/patterns/cream-paper.png')]"></div>
+<!-- Content Area -->
+<div class="relative z-10 flex flex-col h-full p-6 sm:p-8 folder-scroll overflow-y-auto">
+<!-- Header Section -->
+<div class="flex justify-between items-start mb-6">
+<div class="flex-1">
+<div class="inline-block border-[3px] border-stamp-red text-stamp-red px-4 py-2 rotate-[-3deg] opacity-90 mb-4 mix-blend-multiply shadow-sm backdrop-blur-[1px]">
+<h2 class="text-xl font-black tracking-widest leading-none">TOP SECRET</h2>
+<span class="block text-[10px] font-bold tracking-[0.2em] text-center mt-1">MISSION LOG</span>
+</div>
+<p class="text-ink/60 text-sm italic">Date: Oct 14, 1945</p>
+<p class="text-ink/60 text-sm italic">Ref: HQ-45-A</p>
+</div>
+<div class="flex flex-col items-end gap-2">
+<!-- Profile/Officer Badge -->
+<div class="size-14 bg-ink/10 rounded-full flex items-center justify-center border-2 border-ink/20 overflow-hidden relative shadow-inner" data-alt="Commander profile silhouette">
+<span class="material-symbols-outlined text-4xl text-ink/40">person</span>
+<div class="absolute inset-0 bg-yellow-900/10 mix-blend-overlay"></div>
+</div>
+</div>
+</div>
+<!-- Campaign Progress -->
+<div class="mb-8">
+<div class="flex justify-between items-end mb-2 px-1">
+<h3 class="text-ink font-bold uppercase tracking-wider text-sm">Campaign Progress</h3>
+<span class="text-primary font-bold text-lg tabular-nums">42%</span>
+</div>
+<div class="relative h-5 bg-ink/5 border border-ink/30 rounded-sm p-[2px] shadow-inner">
+<!-- Tick marks -->
+<div class="absolute inset-0 flex justify-between px-[2px] z-20 pointer-events-none opacity-30">
+<div class="w-px h-full bg-ink"></div>
+<div class="w-px h-full bg-ink"></div>
+<div class="w-px h-full bg-ink"></div>
+<div class="w-px h-full bg-ink"></div>
+<div class="w-px h-full bg-ink"></div>
+</div>
+<!-- Fill -->
+<div class="h-full bg-primary relative w-[42%] shadow-[inset_0_1px_0_rgba(255,255,255,0.3)] pattern-diagonal-lines-sm border-r border-ink/50">
+<div class="absolute right-0 top-0 bottom-0 w-px bg-white/30"></div>
+</div>
+</div>
+</div>
+<!-- Section 1: Primary Objectives -->
+<div class="mb-8 relative">
+<!-- Section Header with Line -->
+<div class="flex items-center gap-3 mb-4">
+<span class="material-symbols-outlined text-stamp-red text-xl">flag</span>
+<h3 class="text-ink font-bold text-lg tracking-tight border-b-2 border-ink/20 flex-1 pb-1">PRIMARY OBJECTIVES</h3>
+</div>
+<!-- List Items -->
+<div class="flex flex-col gap-3">
+<!-- Item 1 -->
+<div class="group relative bg-white/40 p-3 rounded border border-ink/10 shadow-sm transition-all hover:bg-white/60">
+<div class="flex items-start gap-3">
+<div class="mt-1 size-5 border-2 border-ink/60 rounded-sm flex items-center justify-center bg-white shadow-inner">
+<!-- Checkbox empty -->
+</div>
+<div class="flex-1">
+<h4 class="text-ink font-bold text-base leading-tight">Capture 5 Provinces</h4>
+<div class="flex justify-between items-center mt-2">
+<span class="text-ink/60 text-xs font-medium font-mono tracking-tight">Status: 3/5 Secured</span>
+<div class="flex items-center gap-1 bg-yellow-600/10 px-2 py-0.5 rounded border border-yellow-600/20">
+<span class="material-symbols-outlined text-yellow-700 text-sm">monetization_on</span>
+<span class="text-yellow-800 text-xs font-bold">500</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Paper clip decoration -->
+<div class="absolute -right-2 -top-2 text-ink/30 rotate-45 pointer-events-none drop-shadow-sm">
+<span class="material-symbols-outlined text-2xl">attach_file</span>
+</div>
+</div>
+<!-- Item 2 -->
+<div class="group relative bg-white/40 p-3 rounded border border-ink/10 shadow-sm transition-all hover:bg-white/60">
+<div class="flex items-start gap-3">
+<div class="mt-1 size-5 border-2 border-ink/60 rounded-sm flex items-center justify-center bg-white shadow-inner"></div>
+<div class="flex-1">
+<h4 class="text-ink font-bold text-base leading-tight">Establish Forward Base Alpha</h4>
+<div class="flex justify-between items-center mt-2">
+<span class="text-ink/60 text-xs font-medium font-mono tracking-tight">Pending Deployment</span>
+<div class="flex items-center gap-1 bg-blue-900/10 px-2 py-0.5 rounded border border-blue-900/20">
+<span class="material-symbols-outlined text-blue-800 text-sm">military_tech</span>
+<span class="text-blue-900 text-xs font-bold">1000 XP</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Section 2: Daily Intel -->
+<div class="mb-6">
+<div class="flex items-center gap-3 mb-4">
+<span class="material-symbols-outlined text-ink/60 text-xl">calendar_today</span>
+<h3 class="text-ink font-bold text-lg tracking-tight border-b-2 border-ink/20 flex-1 pb-1">DAILY INTEL</h3>
+</div>
+<div class="flex flex-col gap-0">
+<!-- Item 3 (Completed) -->
+<div class="group relative py-3 border-b border-ink/10 border-dashed flex items-center gap-3 opacity-70">
+<div class="size-5 bg-primary rounded-sm flex items-center justify-center text-white border border-ink/20 shadow-sm">
+<span class="material-symbols-outlined text-sm font-bold">check</span>
+</div>
+<div class="flex-1 relative">
+<h4 class="text-ink font-medium text-base line-through decoration-ink/50 decoration-2">Train 50 Riflemen</h4>
+<!-- Stamped DONE -->
+<div class="absolute right-0 top-1/2 -translate-y-1/2 border-2 border-primary text-primary px-1 py-0 text-[10px] font-black tracking-widest -rotate-6 mix-blend-multiply opacity-80 pointer-events-none">
+                                DONE
+                            </div>
+</div>
+</div>
+<!-- Item 4 -->
+<div class="group relative py-3 border-b border-ink/10 border-dashed flex items-center gap-3">
+<div class="size-5 border-2 border-ink/60 rounded-sm bg-white shadow-inner"></div>
+<div class="flex-1 flex justify-between items-center">
+<div class="flex flex-col">
+<h4 class="text-ink font-bold text-base">Scout Enemy Sector 7</h4>
+<span class="text-stamp-red text-[10px] font-bold tracking-wider uppercase mt-0.5">High Risk</span>
+</div>
+<div class="flex items-center gap-1 bg-manila-dark px-2 py-0.5 rounded border border-ink/10">
+<span class="material-symbols-outlined text-ink/70 text-sm">folder_open</span>
+<span class="text-ink/80 text-xs font-bold">Intel</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom decorative space -->
+<div class="mt-auto pt-8 flex justify-between items-end opacity-60 select-none pointer-events-none">
+<div class="text-[10px] text-ink/60 w-32 leading-relaxed">
+                    AUTHORIZED BY:<br/>
+                    GEN. D. EISENHOWER<br/>
+                    CMD: ALLIED FORCES
+                </div>
+<!-- Signature fake -->
+<div class="font-[cursive] text-2xl text-blue-900 -rotate-12 mr-4 italic font-bold mix-blend-multiply">
+                    Approvd
+                </div>
+</div>
+</div>
+<!-- Floating Action Button: Wax Seal Style -->
+<div class="absolute bottom-6 right-6 z-20">
+<button class="relative group active:scale-95 transition-transform duration-150">
+<div class="size-16 rounded-full bg-[#8B0000] shadow-xl flex items-center justify-center border-[3px] border-[#5a0000] relative overflow-hidden">
+<div class="absolute inset-0 bg-gradient-to-br from-[#A52A2A] to-[#600000]"></div>
+<!-- Inner ring -->
+<div class="absolute inset-2 rounded-full border border-[#600000]/50 opacity-50"></div>
+<span class="material-symbols-outlined text-[#ffcccc] text-2xl relative z-10 drop-shadow-[0_1px_1px_rgba(0,0,0,0.5)]">assignment_turned_in</span>
+</div>
+<!-- Label tooltip -->
+<div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-ink text-white text-[10px] px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap shadow-lg">
+                    Claim Rewards
+                </div>
+</button>
+</div>
+</div>
+</div>
+</body></html>

@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Endgame Strategic Nuclear Command</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Noto+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#da0b50",
+                        "background-light": "#f8f5f6",
+                        "background-dark": "#221016",
+                        "console-bg": "#14171A", // Added per plan for inner panels
+                        "terminal-text": "#0DC8C8", // Cyan for data
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"],
+                        "mono": ["Noto Sans Mono", "monospace"], // Fallback for terminal
+                    },
+                    borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem", "sm": "2px"},
+                    animation: {
+                        'pulse-fast': 'pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'scanline': 'scanline 8s linear infinite',
+                    },
+                    keyframes: {
+                        scanline: {
+                            '0%': { transform: 'translateY(-100%)' },
+                            '100%': { transform: 'translateY(100%)' }
+                        }
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom Scanline Effect */
+        .scanline-container {
+            position: relative;
+            overflow: hidden;
+        }
+        .scanline-container::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                to bottom,
+                transparent 50%,
+                rgba(0, 0, 0, 0.2) 51%,
+                transparent 52%
+            );
+            background-size: 100% 4px;
+            pointer-events: none;
+            z-index: 10;
+        }
+        .crt-flicker {
+            animation: textFlicker 0.01s infinite;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark min-h-screen text-white font-display selection:bg-primary selection:text-white">
+<div class="relative mx-auto flex h-full min-h-screen w-full max-w-md flex-col overflow-hidden bg-background-dark shadow-2xl border-x border-[#3a2e32]">
+<!-- Header: TopAppBar -->
+<header class="flex items-center justify-between border-b border-primary/30 bg-[#181113] p-4 pb-3">
+<button class="flex size-10 items-center justify-center rounded border border-[#3a2e32] hover:bg-white/5 active:bg-white/10 transition-colors">
+<span class="material-symbols-outlined text-white" style="font-size: 24px;">menu</span>
+</button>
+<div class="flex flex-col items-center">
+<h2 class="text-primary text-xs font-bold tracking-[0.2em] uppercase leading-tight">Protocol Omega</h2>
+<span class="text-white text-lg font-bold tracking-tight">SILO #42</span>
+</div>
+<button class="flex size-10 items-center justify-center rounded border border-primary/50 bg-primary/10 hover:bg-primary/20 animate-pulse">
+<span class="material-symbols-outlined text-primary" style="font-size: 24px;">warning</span>
+</button>
+</header>
+<!-- DEFCON Status: HeadlineText -->
+<div class="relative overflow-hidden bg-primary px-4 py-3 shadow-[0_0_15px_rgba(218,11,80,0.4)]">
+<div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-20"></div>
+<div class="flex items-center justify-center gap-3 relative z-10">
+<span class="material-symbols-outlined text-white animate-pulse-fast" style="font-size: 28px;">gpp_maybe</span>
+<h1 class="text-white tracking-wider text-xl font-bold leading-tight uppercase">DEFCON 1: Imminent Threat</h1>
+</div>
+</div>
+<main class="flex-1 overflow-y-auto custom-scrollbar pb-24">
+<!-- Map Module -->
+<div class="p-4">
+<div class="flex items-center justify-between mb-2">
+<span class="text-xs font-mono text-terminal-text tracking-widest">TARGET: 52.52N, 13.40E</span>
+<span class="text-[10px] font-mono bg-primary/20 text-primary px-1 rounded">LIVE FEED</span>
+</div>
+<div class="scanline-container relative aspect-square w-full rounded border border-[#3a2e32] bg-[#0f1113] shadow-inner overflow-hidden group">
+<!-- Map Background -->
+<div class="absolute inset-0 bg-cover bg-center opacity-60 grayscale mix-blend-luminosity" data-alt="Dark satellite view of earth with digital overlay" data-location="Target Zone" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAt9SWqVHn2ygmFKbE8oky3U_osAfc7VjGAYI4_l8aXFrjKN6JCsQuEOaz3rUlss-Zift0gpPk6zYTXT2rWGuLnEsoB3jBEOqFnqSCDeU0NGHs4mBGrKm_AXM_NMvAnL5mbnb7TNLqgSwPyLIPO8EJgg5haNdtATwNZbioTmei7fO_DWeTBFGh-cFLjSQF0xw7RBd6qgVe_hy5C4LqZKSJlgMhdXH6VBBtjbES8inI0fTHuHKmY3posTF-7xunkavdIAIJBcWZysjk');">
+</div>
+<!-- Grid Overlay -->
+<div class="absolute inset-0" style="background-image: linear-gradient(rgba(13, 200, 200, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(13, 200, 200, 0.1) 1px, transparent 1px); background-size: 40px 40px;">
+</div>
+<!-- Target UI -->
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center">
+<!-- Pulsing Blast Radius -->
+<div class="size-32 rounded-full border border-primary/60 bg-primary/10 animate-pulse flex items-center justify-center shadow-[0_0_30px_rgba(218,11,80,0.3)]">
+<div class="size-24 rounded-full border border-primary/40 border-dashed"></div>
+</div>
+<!-- Crosshair -->
+<div class="absolute text-primary">
+<span class="material-symbols-outlined text-4xl">my_location</span>
+</div>
+</div>
+<!-- Corner UI Elements -->
+<div class="absolute top-2 left-2 text-[10px] font-mono text-terminal-text">CAM-04</div>
+<div class="absolute bottom-2 right-2 text-[10px] font-mono text-primary animate-pulse">LOCKING...</div>
+</div>
+</div>
+<!-- Stats Grid -->
+<div class="px-4 pb-2">
+<div class="grid grid-cols-3 gap-2">
+<div class="flex flex-col gap-1 rounded bg-[#181113] p-3 border border-[#3a2e32] shadow-sm">
+<p class="text-[#8a8a8a] text-[10px] font-bold uppercase tracking-wider">Casualties</p>
+<p class="text-white text-lg font-bold leading-none tracking-tighter">2.4M</p>
+</div>
+<div class="flex flex-col gap-1 rounded bg-[#181113] p-3 border border-[#3a2e32] shadow-sm">
+<p class="text-[#8a8a8a] text-[10px] font-bold uppercase tracking-wider">Radius</p>
+<p class="text-white text-lg font-bold leading-none tracking-tighter">50 <span class="text-xs font-normal text-gray-400">KM</span></p>
+</div>
+<div class="flex flex-col gap-1 rounded bg-[#181113] p-3 border border-primary/50 shadow-[0_0_10px_rgba(218,11,80,0.1)]">
+<p class="text-primary text-[10px] font-bold uppercase tracking-wider">Impact In</p>
+<p class="text-primary text-lg font-bold leading-none tracking-tighter">04:00</p>
+</div>
+</div>
+</div>
+<!-- Authorization Keys Section -->
+<div class="p-4">
+<div class="flex justify-between items-end mb-3">
+<h3 class="text-white text-sm font-bold uppercase tracking-widest border-l-2 border-primary pl-2">Authorization Keys</h3>
+<span class="text-xs font-mono text-terminal-text">3/5 VERIFIED</span>
+</div>
+<!-- Key Visuals -->
+<div class="flex gap-2 mb-4 h-12">
+<!-- Key 1: Active -->
+<div class="flex-1 bg-terminal-text/20 border border-terminal-text rounded flex items-center justify-center relative overflow-hidden">
+<div class="absolute inset-0 bg-terminal-text opacity-20 animate-pulse"></div>
+<span class="material-symbols-outlined text-terminal-text text-sm z-10">key</span>
+</div>
+<!-- Key 2: Active -->
+<div class="flex-1 bg-terminal-text/20 border border-terminal-text rounded flex items-center justify-center relative overflow-hidden">
+<div class="absolute inset-0 bg-terminal-text opacity-20 animate-pulse delay-75"></div>
+<span class="material-symbols-outlined text-terminal-text text-sm z-10">key</span>
+</div>
+<!-- Key 3: Active -->
+<div class="flex-1 bg-terminal-text/20 border border-terminal-text rounded flex items-center justify-center relative overflow-hidden">
+<div class="absolute inset-0 bg-terminal-text opacity-20 animate-pulse delay-150"></div>
+<span class="material-symbols-outlined text-terminal-text text-sm z-10">key</span>
+</div>
+<!-- Key 4: Empty -->
+<div class="flex-1 bg-transparent border border-[#3a2e32] border-dashed rounded flex items-center justify-center opacity-50">
+<span class="text-[10px] text-gray-500">WAIT</span>
+</div>
+<!-- Key 5: Empty -->
+<div class="flex-1 bg-transparent border border-[#3a2e32] border-dashed rounded flex items-center justify-center opacity-50">
+<span class="text-[10px] text-gray-500">WAIT</span>
+</div>
+</div>
+<!-- Alliance List -->
+<div class="space-y-2">
+<div class="flex items-center justify-between bg-[#181113] p-2 rounded border border-[#3a2e32]">
+<div class="flex items-center gap-3">
+<div class="size-2 bg-terminal-text rounded-full shadow-[0_0_8px_#0DC8C8]"></div>
+<span class="text-xs font-bold text-gray-200">Cmdr. Viper</span>
+</div>
+<span class="text-[10px] font-mono text-terminal-text">READY</span>
+</div>
+<div class="flex items-center justify-between bg-[#181113] p-2 rounded border border-[#3a2e32]">
+<div class="flex items-center gap-3">
+<div class="size-2 bg-terminal-text rounded-full shadow-[0_0_8px_#0DC8C8]"></div>
+<span class="text-xs font-bold text-gray-200">Gen. X-Ray</span>
+</div>
+<span class="text-[10px] font-mono text-terminal-text">READY</span>
+</div>
+<div class="flex items-center justify-between bg-[#181113] p-2 rounded border border-[#3a2e32] opacity-60">
+<div class="flex items-center gap-3">
+<div class="size-2 bg-yellow-600 rounded-full animate-pulse"></div>
+<span class="text-xs font-bold text-gray-400">Lt. Echo</span>
+</div>
+<span class="text-[10px] font-mono text-yellow-600">PENDING...</span>
+</div>
+</div>
+</div>
+<!-- Terminal Output Log -->
+<div class="px-4 pb-4">
+<div class="bg-black/80 rounded border border-[#3a2e32] p-3 font-mono text-[10px] leading-relaxed h-24 overflow-hidden relative">
+<div class="absolute top-0 right-0 p-1 opacity-50">
+<span class="material-symbols-outlined text-gray-500 text-xs">terminal</span>
+</div>
+<div class="text-green-500/80 space-y-1">
+<p>&gt; System check initiated...</p>
+<p>&gt; Fuel pressure valves [OK]</p>
+<p>&gt; Gyroscope alignment [STABLE]</p>
+<p>&gt; Warhead connectivity <span class="text-primary animate-pulse">[ARMED]</span></p>
+<p>&gt; Establishing secure link to Silo #5...</p>
+<p class="animate-pulse">_</p>
+</div>
+<!-- Gradient fade at bottom -->
+<div class="absolute bottom-0 left-0 w-full h-8 bg-gradient-to-t from-black to-transparent"></div>
+</div>
+</div>
+</main>
+<!-- Footer / Launch Control -->
+<div class="fixed bottom-0 w-full max-w-md bg-[#181113] border-t border-[#3a2e32] p-4 z-50">
+<!-- Warning strip -->
+<div class="flex justify-center mb-3">
+<div class="h-1 w-full bg-[repeating-linear-gradient(45deg,transparent,transparent_10px,#da0b50_10px,#da0b50_20px)] opacity-40"></div>
+</div>
+<!-- Slide to Unlock / Launch Button Concept -->
+<div class="relative group cursor-pointer">
+<!-- Disabled State Overlay (Since keys are missing) -->
+<div class="absolute inset-0 z-20 bg-black/60 backdrop-blur-[1px] flex items-center justify-center rounded border border-gray-700">
+<div class="flex items-center gap-2 text-gray-400">
+<span class="material-symbols-outlined">lock</span>
+<span class="text-sm font-bold tracking-widest">AWAITING KEYS</span>
+</div>
+</div>
+<!-- The Button Underneath -->
+<button class="relative w-full overflow-hidden rounded bg-primary h-16 shadow-[0_0_20px_rgba(218,11,80,0.4)] flex items-center justify-between px-6 border-b-4 border-[#8f0633]">
+<!-- Background Stripes -->
+<div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/diagmonds-light.png')] opacity-30"></div>
+<span class="material-symbols-outlined text-white/50 text-2xl relative z-10">rocket_launch</span>
+<div class="flex flex-col items-center relative z-10">
+<span class="text-white text-lg font-bold tracking-[0.2em]">LAUNCH</span>
+<span class="text-white/70 text-[10px] uppercase font-medium">Sequence Alpha</span>
+</div>
+<span class="material-symbols-outlined text-white/50 text-2xl relative z-10">arrow_forward_ios</span>
+</button>
+</div>
+</div>
+</div>
+</body></html>

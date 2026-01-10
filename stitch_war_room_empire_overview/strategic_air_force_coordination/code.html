@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Strategic Air Force Coordination</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Noto+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#00d4ff",
+              "alert": "#CC3F27",
+              "background-light": "#f9fafb",
+              "background-dark": "#0A0F17", // Custom dark background as per plan
+              "surface-dark": "#1A212D",
+              "grid-line": "rgba(0, 212, 255, 0.1)",
+            },
+            fontFamily: {
+              "display": ["Space Grotesk", "sans-serif"],
+              "body": ["Noto Sans", "sans-serif"],
+            },
+            borderRadius: {
+              "DEFAULT": "4px", // Minimal rounding for military look
+              "lg": "6px",
+              "xl": "8px",
+              "full": "9999px",
+            },
+            backgroundImage: {
+              'radar-grid': "radial-gradient(circle, rgba(0, 212, 255, 0.1) 1px, transparent 1px), linear-gradient(to right, rgba(0, 212, 255, 0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(0, 212, 255, 0.05) 1px, transparent 1px)",
+            }
+          },
+        },
+      }
+    </script>
+<style>
+      /* Custom map styling for the "tactical view" */
+      .map-container {
+        background-color: #0A0F17;
+        background-image: 
+            linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px);
+        background-size: 40px 40px;
+      }
+      
+      .radar-pulse {
+        animation: pulse-ring 3s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+      }
+      
+      @keyframes pulse-ring {
+        0% { transform: scale(0.8); opacity: 0.5; }
+        80% { transform: scale(1.1); opacity: 0; }
+        100% { transform: scale(1.1); opacity: 0; }
+      }
+
+      /* CRT Scanline effect for retro feel */
+      .scanline {
+        background: linear-gradient(
+          to bottom,
+          rgba(255,255,255,0),
+          rgba(255,255,255,0) 50%,
+          rgba(0,0,0,0.2) 50%,
+          rgba(0,0,0,0.2)
+        );
+        background-size: 100% 4px;
+        pointer-events: none;
+      }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display h-screen w-screen overflow-hidden flex flex-col relative">
+<!-- CRT Overlay -->
+<div class="absolute inset-0 z-50 pointer-events-none scanline opacity-10 mix-blend-overlay"></div>
+<!-- Header / Top Bar -->
+<header class="flex items-center justify-between px-4 py-3 bg-[#101718] border-b border-[#395156] z-20 shadow-md">
+<div class="flex items-center gap-3">
+<div class="flex items-center justify-center size-10 border border-primary/30 bg-primary/10 rounded text-primary">
+<span class="material-symbols-outlined text-2xl">radar</span>
+</div>
+<div class="flex flex-col">
+<h1 class="text-white text-base font-bold tracking-widest leading-none">AIR COMMAND</h1>
+<span class="text-primary text-xs tracking-wider opacity-80">SECTOR 4 // NORTHERN FRONT</span>
+</div>
+</div>
+<button class="flex items-center justify-center size-10 text-[#9ab6bc] hover:text-white transition-colors">
+<span class="material-symbols-outlined">settings</span>
+</button>
+</header>
+<!-- Stats Bar (Under Header) -->
+<div class="bg-[#141b1e] border-b border-[#2a383c] px-4 py-2 flex items-center justify-between gap-2 overflow-x-auto z-20">
+<div class="flex items-center gap-2 px-2 py-1 rounded bg-[#1b2628] border border-[#395156]">
+<span class="material-symbols-outlined text-primary text-sm">water_drop</span>
+<span class="text-xs text-[#9ab6bc] font-bold">FUEL 98%</span>
+</div>
+<div class="flex items-center gap-2 px-2 py-1 rounded bg-[#1b2628] border border-[#395156]">
+<span class="material-symbols-outlined text-alert text-sm">warning</span>
+<span class="text-xs text-[#9ab6bc] font-bold">ALERT LVL 3</span>
+</div>
+<div class="flex items-center gap-2 px-2 py-1 rounded bg-[#1b2628] border border-[#395156]">
+<span class="material-symbols-outlined text-white text-sm">air</span>
+<span class="text-xs text-[#9ab6bc] font-bold">WIND 12KT NE</span>
+</div>
+</div>
+<!-- Main Map View Area -->
+<main class="flex-1 relative map-container overflow-hidden w-full h-full group">
+<!-- Interactive Map Background Layer -->
+<!-- Using absolute positioning to create the map scene -->
+<!-- Friendly Base -->
+<div class="absolute top-1/2 left-1/4 -translate-x-1/2 -translate-y-1/2 z-10 flex flex-col items-center">
+<div class="relative">
+<!-- Range Circle -->
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 size-[320px] rounded-full border border-primary/20 bg-primary/5"></div>
+<!-- Active Pulse -->
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 size-[320px] rounded-full border border-primary/40 radar-pulse"></div>
+<!-- Base Icon -->
+<div class="size-6 bg-primary rounded-full border-2 border-white shadow-[0_0_15px_rgba(0,212,255,0.8)] z-20 relative"></div>
+</div>
+<span class="mt-2 text-[10px] font-mono text-primary bg-black/50 px-1 rounded">BASE ALPHA</span>
+</div>
+<!-- Enemy Target 1 -->
+<div class="absolute top-[20%] right-[15%] z-10 flex flex-col items-center">
+<div class="relative">
+<div class="size-[120px] rounded-full border border-dashed border-alert/30 bg-alert/5 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"></div>
+<div class="size-4 bg-alert rotate-45 border border-white z-20 relative shadow-[0_0_10px_rgba(204,63,39,0.8)]"></div>
+</div>
+<span class="mt-2 text-[10px] font-mono text-alert bg-black/50 px-1 rounded">IND. ZONE B</span>
+</div>
+<!-- Enemy Target 2 -->
+<div class="absolute bottom-[30%] right-[25%] z-10 flex flex-col items-center">
+<div class="relative">
+<div class="size-[100px] rounded-full border border-dashed border-alert/30 bg-alert/5 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"></div>
+<div class="size-4 bg-alert rotate-45 border border-white z-20 relative shadow-[0_0_10px_rgba(204,63,39,0.8)]"></div>
+</div>
+<span class="mt-2 text-[10px] font-mono text-alert bg-black/50 px-1 rounded">AIRFIELD 9</span>
+</div>
+<!-- Vector Path Line (Simulated SVG) -->
+<svg class="absolute inset-0 w-full h-full pointer-events-none z-0">
+<defs>
+<marker id="arrowhead" markerheight="7" markerwidth="10" orient="auto" refx="9" refy="3.5">
+<polygon fill="#00d4ff" points="0 0, 10 3.5, 0 7"></polygon>
+</marker>
+<lineargradient id="pathGradient" x1="0%" x2="100%" y1="0%" y2="0%">
+<stop offset="0%" style="stop-color:#00d4ff;stop-opacity:0.8"></stop>
+<stop offset="100%" style="stop-color:#00d4ff;stop-opacity:0.2"></stop>
+</lineargradient>
+</defs>
+<!-- Path from Base to Enemy 1 -->
+<path d="M 95 380 Q 200 300 310 180" fill="none" marker-end="url(#arrowhead)" stroke="url(#pathGradient)" stroke-dasharray="5,5" stroke-width="2"></path>
+</svg>
+<!-- Map Controls -->
+<div class="absolute right-4 top-4 flex flex-col gap-2 z-20">
+<button class="bg-surface-dark/90 backdrop-blur border border-[#395156] text-white size-10 rounded flex items-center justify-center hover:bg-[#395156] transition-colors">
+<span class="material-symbols-outlined">add</span>
+</button>
+<button class="bg-surface-dark/90 backdrop-blur border border-[#395156] text-white size-10 rounded flex items-center justify-center hover:bg-[#395156] transition-colors">
+<span class="material-symbols-outlined">remove</span>
+</button>
+<button class="bg-surface-dark/90 backdrop-blur border border-[#395156] text-primary size-10 rounded flex items-center justify-center hover:bg-[#395156] transition-colors mt-2">
+<span class="material-symbols-outlined">my_location</span>
+</button>
+</div>
+<!-- Coordinate Grid Numbers -->
+<div class="absolute bottom-2 left-2 font-mono text-[10px] text-primary/40 pointer-events-none">
+            LAT: 45.2010 N <br/> LNG: 12.4402 E
+        </div>
+</main>
+<!-- Bottom Sheet / Asset Management -->
+<div class="relative bg-surface-dark border-t border-primary/20 z-30 flex flex-col shadow-[0_-5px_20px_rgba(0,0,0,0.5)]">
+<!-- Drag Handle / Toggle -->
+<div class="flex justify-center pt-2 pb-1 cursor-grab active:cursor-grabbing w-full">
+<div class="w-12 h-1 bg-[#395156] rounded-full"></div>
+</div>
+<!-- Segmented Controls (Unit Type) -->
+<div class="px-4 py-2">
+<div class="flex p-1 bg-[#0A0F17] rounded border border-[#2a383c]">
+<button class="flex-1 py-2 text-xs font-bold text-center rounded bg-[#1b2628] text-primary shadow-sm border border-[#395156]">
+                    CAZAS
+                </button>
+<button class="flex-1 py-2 text-xs font-bold text-center text-[#9ab6bc] hover:text-white transition-colors">
+                    BOMBERS
+                </button>
+<button class="flex-1 py-2 text-xs font-bold text-center text-[#9ab6bc] hover:text-white transition-colors">
+                    TRANSPORTS
+                </button>
+</div>
+</div>
+<!-- Aircraft List -->
+<div class="overflow-y-auto max-h-[35vh] px-4 pb-20 space-y-2">
+<!-- List Item 1: Selected -->
+<div class="group flex items-center gap-3 p-3 bg-gradient-to-r from-primary/10 to-transparent border border-primary/40 rounded cursor-pointer relative overflow-hidden">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-primary"></div>
+<!-- Image -->
+<div class="size-12 bg-black/40 rounded flex items-center justify-center border border-white/10 shrink-0">
+<span class="material-symbols-outlined text-white">flight</span>
+</div>
+<!-- Info -->
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-center mb-1">
+<h3 class="text-white font-bold text-sm tracking-wide truncate">P-51 MUSTANG</h3>
+<span class="text-[10px] font-mono text-primary border border-primary/30 px-1 rounded bg-primary/10">READY</span>
+</div>
+<div class="flex items-center gap-4 text-xs text-[#9ab6bc]">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[10px]">speed</span> 700km/h</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[10px]">social_distance</span> 600km</span>
+</div>
+</div>
+<!-- Checkbox/Radio indicator -->
+<div class="size-5 rounded-full border border-primary flex items-center justify-center bg-primary">
+<span class="material-symbols-outlined text-black text-xs font-bold">check</span>
+</div>
+</div>
+<!-- List Item 2 -->
+<div class="group flex items-center gap-3 p-3 bg-[#131920] border border-[#2a383c] hover:border-white/20 rounded cursor-pointer transition-colors">
+<div class="size-12 bg-black/40 rounded flex items-center justify-center border border-white/10 shrink-0">
+<span class="material-symbols-outlined text-[#9ab6bc]">flight</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-center mb-1">
+<h3 class="text-[#cfd8dc] font-bold text-sm tracking-wide truncate">SPITFIRE MK.IX</h3>
+<span class="text-[10px] font-mono text-[#9ab6bc] border border-[#395156] px-1 rounded">REFUELING</span>
+</div>
+<div class="flex items-center gap-4 text-xs text-[#6e858b]">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[10px]">speed</span> 650km/h</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[10px]">social_distance</span> 580km</span>
+</div>
+</div>
+<div class="size-5 rounded-full border border-[#395156]"></div>
+</div>
+<!-- List Item 3 -->
+<div class="group flex items-center gap-3 p-3 bg-[#131920] border border-[#2a383c] hover:border-white/20 rounded cursor-pointer transition-colors">
+<div class="size-12 bg-black/40 rounded flex items-center justify-center border border-white/10 shrink-0">
+<span class="material-symbols-outlined text-[#9ab6bc]">flight</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-center mb-1">
+<h3 class="text-[#cfd8dc] font-bold text-sm tracking-wide truncate">HAWKER TEMPEST</h3>
+<span class="text-[10px] font-mono text-[#9ab6bc] border border-[#395156] px-1 rounded">REPAIR</span>
+</div>
+<div class="flex items-center gap-4 text-xs text-[#6e858b]">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[10px]">speed</span> 690km/h</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[10px]">social_distance</span> 550km</span>
+</div>
+</div>
+<div class="size-5 rounded-full border border-[#395156]"></div>
+</div>
+</div>
+<!-- Floating Action Button Area (Sticky Bottom) -->
+<div class="absolute bottom-6 left-0 right-0 px-4 flex justify-center pointer-events-none">
+<button class="pointer-events-auto bg-primary text-black font-display font-bold text-base tracking-wider px-8 h-12 rounded flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(0,212,255,0.4)] hover:shadow-[0_0_30px_rgba(0,212,255,0.6)] hover:bg-[#33dfff] transition-all transform active:scale-95 w-full max-w-sm border border-white/20">
+<span class="material-symbols-outlined">edit_location_alt</span>
+                PLAN STRIKE
+            </button>
+</div>
+</div>
+</body></html>

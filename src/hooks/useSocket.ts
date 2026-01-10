@@ -184,7 +184,7 @@ export function useSocket() {
 
         socket.on('game:victory', (data) => {
             console.log(`🏆 GAME OVER! ${data.winnerName} wins with ${data.provinceCount} provinces!`)
-            alert(data.message) // Simple victory popup
+            useGameStore.getState().setWinner({ id: data.winnerId, name: data.winnerName })
         })
 
         socket.on('chat:message', (data) => {
@@ -247,6 +247,14 @@ export function useSocket() {
         socket?.emit('game:restart')
     }, [])
 
+    const captureProvince = useCallback((provinceId: string, color: string) => {
+        socket?.emit('province:capture', { provinceId, color })
+    }, [])
+
+    const constructBuilding = useCallback((provinceId: string, buildingType: 'industry' | 'bunker') => {
+        socket?.emit('building:construct', { provinceId, buildingType })
+    }, [])
+
     return {
         socket,
         isConnected,
@@ -258,6 +266,8 @@ export function useSocket() {
         recruitUnit,
         restartGame,
         sendChat,
+        constructBuilding,
+        captureProvince,
     }
 }
 

@@ -5,24 +5,52 @@
 // ============================================
 
 export interface Resources {
-    gold: number
-    iron: number
+    money: number
     oil: number
+    gas: number
+    uranium: number
+    lithium: number
+    rareEarth: number
+    copper: number
+    gold: number
+    steel: number
+    silicon: number
     food: number
+    manpower: number
+    // Backwards compat alias
+    iron?: number
 }
 
 export const RESOURCE_NAMES: Record<keyof Resources, string> = {
-    gold: 'Oro',
-    iron: 'Hierro',
+    money: 'Dinero',
     oil: 'Petróleo',
+    gas: 'Gas',
+    uranium: 'Uranio',
+    lithium: 'Litio',
+    rareEarth: 'Tierras Raras',
+    copper: 'Cobre',
+    gold: 'Oro',
+    steel: 'Acero',
+    silicon: 'Silicio',
     food: 'Comida',
+    manpower: 'Mano de Obra',
+    iron: 'Hierro',
 }
 
 export const RESOURCE_ICONS: Record<keyof Resources, string> = {
-    gold: '💰',
-    iron: '⚙️',
+    money: '💵',
     oil: '🛢️',
+    gas: '🔥',
+    uranium: '☢️',
+    lithium: '🔋',
+    rareEarth: '💎',
+    copper: '🔶',
+    gold: '🪙',
+    steel: '⚙️',
+    silicon: '💻',
     food: '🌾',
+    manpower: '👷',
+    iron: '⚙️',
 }
 
 // ============================================
@@ -58,7 +86,7 @@ export interface UnitStats {
     defense: number
     health: number
     speed: number
-    cost: Resources
+    cost: Partial<Resources>
     trainTime: number // seconds
     foodConsumption: number // per hour
 }
@@ -257,7 +285,7 @@ export interface BuildingStats {
     icon: string
     description: string
     maxLevel: number
-    baseCost: Resources
+    baseCost: Partial<Resources>
     costMultiplier: number
     baseTime: number // seconds
     effect: {
@@ -487,10 +515,18 @@ export const GAME_CONSTANTS = {
 
     // Resources
     STARTING_RESOURCES: {
-        gold: 1000,
-        iron: 500,
-        oil: 250,
-        food: 750,
+        money: 10000,
+        oil: 500,
+        gas: 300,
+        uranium: 50,
+        lithium: 100,
+        rareEarth: 80,
+        copper: 400,
+        gold: 200,
+        steel: 600,
+        silicon: 150,
+        food: 1000,
+        manpower: 50,
     },
 
     // Map

@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>Unit Arsenal &amp; Customization</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&amp;family=Noto+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Configuration -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#e9445f",
+              "background-light": "#f1f2f4",
+              "background-dark": "#111317",
+              "surface-light": "#22252B",
+              "gold": "#C29633",
+              "electric-blue": "#26A6E0",
+            },
+            fontFamily: {
+              "display": ["Space Grotesk", "sans-serif"],
+              "body": ["Noto Sans", "sans-serif"],
+            },
+            backgroundImage: {
+                'grid-pattern': "url(\"data:image/svg+xml,%3csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3e%3cg fill='%23ffffff' fill-opacity='0.03' fill-rule='evenodd'%3e%3cpath d='M0 40L40 0H20L0 20M40 40V20L20 40'/%3e%3c/g%3e%3c/svg%3e\")",
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        /* Custom Scrollbar for horizontal carousel */
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        
+        /* Glassmorphism utility */
+        .glass-panel {
+            background: rgba(17, 19, 23, 0.85);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        /* Vignette overlay */
+        .vignette {
+            background: radial-gradient(circle at center, transparent 30%, #111317 120%);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-dark text-white font-display overflow-hidden select-none h-screen w-screen relative">
+<!-- 3D Background Layer -->
+<div class="absolute inset-0 z-0 bg-cover bg-center" data-alt="Dark moody hangar with metallic floors and industrial lighting, centered view" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDPhreygwLv-a9V0s-4xen9WvhNCXRQCCZYtciqjjQV10zySIyFKDCX6Pf1EYefNOt-zDvfGHHMV904cdej5RqT9RywDRguOXaeRZ9P5mFtnttIZRhPh6OMYZTuNyDxJVBguG1W_L1t6l5WWi7bPqY1cA5CVbcUOPoJjnt8IPtDeb3qFpsh3oT2CIfUDv-qWeRqIveUHGfYq8JM4jPmaHUZgWE3BrjTWdNBe7vJWAtjyMzCQM9-WuA52JN1vPf2RVIfnwyT4wcx3OM');">
+<!-- Overlay for tinting -->
+<div class="absolute inset-0 bg-background-dark/30 mix-blend-multiply"></div>
+<!-- Vignette -->
+<div class="absolute inset-0 vignette pointer-events-none"></div>
+</div>
+<!-- Central Tank Render Placeholder (Simulated) -->
+<!-- In a real app, this would be the 3D canvas -->
+<div class="absolute inset-0 z-0 flex items-center justify-center pointer-events-none">
+<img class="h-[85%] w-auto object-contain drop-shadow-2xl opacity-90 brightness-90 scale-110 translate-y-4" data-alt="Detailed 3D model of a Panzer VI Tiger tank in dark camouflage rotating slowly" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCrd5NNW2AhCtqCPGnPyknLuoY58VTER2N0_4BLvUmX2WjBzA7Yz4zY5CCyVhEbJw6MR2R1jLEaCBv4GLDiqeOZoP10TTIcQNV1AiNj_dhssdIAXPKs4jYbCJClV0c1yQo-oBf--Mwnaf8BEQe1z5RPhTJNwwi80JrP7o2U6TDaIYgeSwWB2le5nWamxeoA1Mh0duals6pE73FWFoe17-UmhoYnbU2L9lN0m86Wwj8B0JcV8EVRQ7hFHPf3tItZy405dfEQaYoOE38"/>
+</div>
+<!-- Main UI Layout -->
+<div class="relative z-10 flex flex-col h-full w-full justify-between pointer-events-none">
+<!-- Top Navigation Bar -->
+<header class="flex items-center justify-between p-4 pt-2 lg:pt-4 w-full bg-gradient-to-b from-background-dark/90 to-transparent pointer-events-auto">
+<!-- Left: Back & Title -->
+<div class="flex items-center gap-4">
+<button class="flex items-center justify-center w-10 h-10 rounded-full bg-surface-light/50 hover:bg-surface-light transition-colors text-white border border-white/10">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<div class="flex flex-col">
+<div class="flex items-center gap-2">
+<h1 class="text-xl lg:text-2xl font-bold tracking-tight uppercase text-white drop-shadow-md">Panzer VI Tiger</h1>
+<span class="bg-white/10 text-white/80 text-[10px] px-1.5 py-0.5 rounded font-mono border border-white/10">TIER VIII</span>
+</div>
+<div class="flex gap-2 text-xs text-gray-400 font-body">
+<span>Heavy Tank</span>
+<span class="text-white/20">•</span>
+<span>Axis</span>
+</div>
+</div>
+</div>
+<!-- Right: Currency -->
+<div class="flex items-center gap-4">
+<div class="glass-panel px-3 py-1.5 rounded-full flex items-center gap-2">
+<span class="material-symbols-outlined text-gold text-[18px]" style="font-variation-settings: 'FILL' 1;">diamond</span>
+<span class="text-gold font-bold text-sm tracking-wide">1,250</span>
+</div>
+<div class="glass-panel px-3 py-1.5 rounded-full flex items-center gap-2">
+<span class="material-symbols-outlined text-gray-400 text-[18px]">database</span>
+<span class="text-gray-300 font-bold text-sm tracking-wide">45,000</span>
+</div>
+</div>
+</header>
+<!-- Middle Section: Floating Panels -->
+<div class="flex-1 flex flex-row justify-between items-center px-4 lg:px-8 w-full">
+<!-- Left Panel: Stats -->
+<div class="pointer-events-auto w-[160px] lg:w-[200px] flex flex-col gap-3">
+<!-- Stat 1 -->
+<div class="glass-panel p-3 rounded-lg border-l-2 border-l-electric-blue flex flex-col gap-1">
+<div class="flex justify-between items-end">
+<span class="text-2xl font-bold text-white tracking-tighter">78<span class="text-sm align-top opacity-60">%</span></span>
+<span class="material-symbols-outlined text-electric-blue text-sm mb-1">visibility_off</span>
+</div>
+<p class="text-gray-400 text-[10px] uppercase tracking-wider font-bold">Concealment</p>
+<div class="h-1 w-full bg-white/10 rounded-full mt-1 overflow-hidden">
+<div class="h-full bg-electric-blue w-[78%]"></div>
+</div>
+</div>
+<!-- Stat 2 -->
+<div class="glass-panel p-3 rounded-lg border-l-2 border-l-primary flex flex-col gap-1">
+<div class="flex justify-between items-end">
+<span class="text-2xl font-bold text-white tracking-tighter">+5<span class="text-sm align-top opacity-60">%</span></span>
+<span class="material-symbols-outlined text-primary text-sm mb-1">stars</span>
+</div>
+<p class="text-gray-400 text-[10px] uppercase tracking-wider font-bold">Style XP Bonus</p>
+</div>
+</div>
+<!-- Spacer for Tank -->
+<div class="flex-1"></div>
+<!-- Right Panel: Shop (Collapsible feel) -->
+<div class="pointer-events-auto w-[220px] lg:w-[260px]">
+<div class="glass-panel p-0 rounded-lg overflow-hidden flex flex-col shadow-2xl shadow-black/50">
+<!-- Header -->
+<div class="bg-gradient-to-r from-surface-light to-surface-light/80 p-3 border-b border-white/5 flex justify-between items-center">
+<span class="text-[10px] font-bold text-primary tracking-widest uppercase flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+                            Limited Offer
+                        </span>
+<span class="text-[10px] text-gray-500 font-mono">12:04:30</span>
+</div>
+<!-- Content -->
+<div class="p-3 flex flex-col gap-3 relative overflow-hidden">
+<!-- Background decoration -->
+<div class="absolute top-0 right-0 w-24 h-24 bg-primary/10 rounded-full blur-2xl -translate-y-10 translate-x-10 pointer-events-none"></div>
+<div class="flex gap-3 items-center">
+<div class="w-16 h-16 rounded bg-black/40 border border-white/10 bg-cover bg-center shrink-0 relative group" data-alt="Preview of Crimson Fury skin pattern, red and black digital camo" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDnZC3nXf0GRe5jx9m1LGRuto04xKdB_wtozwbHzcvjd5QClbM8qGod40bSZfiaoaUBvqn98bfMTkcJ3snQZ3_KKWrtD8fVpKXcWAJvXLip9AkQlnnd73kMFKxhjethDBcxX56bBCRGGsHLCNcaWhu89W9EOjcohdFnT4AYw2_yiLyKPhJm1W4soTyZGzGhIdDy4hETFpNDHpb-AaTZlzDlz_Wl341Vsq7dmiFHb0zqkXVvpBvqyEIFrzDr-UcaCYfPbMh_hsfa6V4');">
+<div class="absolute inset-0 border border-primary/50 rounded opacity-50"></div>
+</div>
+<div class="flex flex-col">
+<span class="text-white font-bold leading-tight">Crimson Fury</span>
+<span class="text-xs text-gray-400">Legendary Skin</span>
+</div>
+</div>
+<div class="flex items-center justify-between gap-2 mt-1">
+<div class="flex flex-col">
+<span class="text-[10px] text-gray-500 line-through">750 WD</span>
+<div class="flex items-center gap-1 text-gold">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">diamond</span>
+<span class="font-bold text-sm">500</span>
+</div>
+</div>
+<button class="bg-primary hover:bg-primary/90 text-white text-xs font-bold py-2 px-4 rounded transition-colors shadow-[0_0_15px_rgba(233,68,95,0.3)]">
+                                PURCHASE
+                            </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Controls -->
+<footer class="pointer-events-auto bg-gradient-to-t from-background-dark via-background-dark/95 to-transparent pt-8 pb-4 px-4 lg:px-8 flex flex-col gap-4">
+<!-- Controls Row -->
+<div class="flex items-end gap-4 w-full">
+<!-- Left: Category Selection & Filters -->
+<div class="flex-1 flex flex-col gap-3 min-w-0">
+<!-- Tabs -->
+<div class="flex gap-1">
+<button class="px-4 py-1.5 rounded-t bg-surface-light border-t border-x border-white/10 text-white text-xs font-bold uppercase tracking-wide relative">
+                            Camouflage
+                            <div class="absolute bottom-0 left-0 w-full h-0.5 bg-primary"></div>
+</button>
+<button class="px-4 py-1.5 rounded-t bg-transparent hover:bg-surface-light/30 text-gray-400 hover:text-white text-xs font-bold uppercase tracking-wide transition-colors">
+                            Flags
+                        </button>
+<button class="px-4 py-1.5 rounded-t bg-transparent hover:bg-surface-light/30 text-gray-400 hover:text-white text-xs font-bold uppercase tracking-wide transition-colors">
+                            Decals
+                        </button>
+</div>
+<!-- Carousel Container -->
+<div class="glass-panel rounded-lg rounded-tl-none p-2 flex gap-3 overflow-x-auto hide-scrollbar items-center bg-grid-pattern h-[88px]">
+<!-- Filter Chips (Inside Carousel) -->
+<div class="flex flex-col gap-1 pr-3 border-r border-white/10 mr-1 shrink-0">
+<button class="text-[10px] text-primary border border-primary/30 px-2 py-0.5 rounded bg-primary/10 font-mono uppercase">All</button>
+<button class="text-[10px] text-gray-500 hover:text-white px-2 py-0.5 rounded font-mono uppercase transition-colors">Hist.</button>
+<button class="text-[10px] text-gray-500 hover:text-white px-2 py-0.5 rounded font-mono uppercase transition-colors">Digi.</button>
+</div>
+<!-- Items -->
+<!-- Item 1: Active -->
+<button class="relative w-[70px] h-[70px] rounded shrink-0 border-2 border-primary group overflow-hidden focus:outline-none shadow-[0_0_10px_rgba(233,68,95,0.3)]">
+<img class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" data-alt="Winter Ops camouflage pattern" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCh2w8xE3rXeUJdXjQrk7c_wfXrPXGRXVyQ3DIABRizTYvdepwK4bGk5otGH_nyQ5NF-8HzProhxzBWZ1v0JympU8xKZaYMUNa4Hc4upaAPHZJfEN-OW3DjFILgdXri0YC5b9sJdiJzQ-rtKOhQLSHMUWVxAt8pREQucC61usmMqkwa_LJzJ8-QenMThVrhKKy6VZwYYyQX7t4hkxUyKE5ltK7Yl-XHpR2X86Ld5x1oFmk3TZd6dWtv0LX7OikuZhYBTpP1fNAW5wk"/>
+<div class="absolute bottom-0 left-0 w-full bg-black/70 backdrop-blur-sm py-0.5 px-1">
+<span class="text-[9px] text-white font-mono block truncate">Winter Ops</span>
+</div>
+<div class="absolute top-1 right-1 w-2 h-2 bg-primary rounded-full shadow-sm"></div>
+</button>
+<!-- Item 2 -->
+<button class="relative w-[70px] h-[70px] rounded shrink-0 border border-white/10 group overflow-hidden focus:outline-none hover:border-white/40 transition-colors">
+<img class="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity" data-alt="Forest digital camouflage pattern" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA1eZPNNCAb7dra-HstGvoIxWiXx9wy-DhjRKm4dXWqFsVt1B1Eu15PNesMw-EUfhcfqdsgPaxpCr4Hd3qVXxhvFB3uQ7Ra6poTzeKspifrZ8I4uViQTnQK-ur_LSbRo0GmxMEnCj3JVTeO8xa_rsFkz_RjR6sITkAT_zEeitRDIg9gVl_osvbnEMT-Saetp3pzjg5otbF4v063xMA0nWMWpCkqe0b1vi-fmHskgcpVPqwHLvXSBwj_5PvSl5RXUfnHCbQKe6OOaJA"/>
+<div class="absolute bottom-0 left-0 w-full bg-black/70 backdrop-blur-sm py-0.5 px-1">
+<span class="text-[9px] text-gray-300 font-mono block truncate">Forest Digi</span>
+</div>
+<div class="absolute top-0 right-0 p-1">
+<span class="material-symbols-outlined text-[12px] text-gold drop-shadow-md">lock</span>
+</div>
+</button>
+<!-- Item 3 -->
+<button class="relative w-[70px] h-[70px] rounded shrink-0 border border-white/10 group overflow-hidden focus:outline-none hover:border-white/40 transition-colors">
+<img class="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity" data-alt="Desert storm camouflage pattern" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAAEyy7d4DBLgYjO7yIBMMIKba7xelEGG7EQH3btszGoOfMNGNcBGrw4ZNZx9aMHEop8i7RaT3Vfekl3HsmYUnZj1QY4OzvvGT1UDSHqIWBsLqHgavMksmYqhdRq_Rk-2KqLQHc8TJXrZs3j1vtIMK_chG_KwKPPWjQQ1Pj2tKK0TZeB0Nr4f8eZeHmhnB_HPb0IneaMagU5e3adAq2uC1Hf9pLk4BQQIfqTMV_6cPqXFGBM6LGfLUioahCwye0bKbDvSxUJCIK4ks"/>
+<div class="absolute bottom-0 left-0 w-full bg-black/70 backdrop-blur-sm py-0.5 px-1">
+<span class="text-[9px] text-gray-300 font-mono block truncate">Desert</span>
+</div>
+</button>
+<!-- Item 4 -->
+<button class="relative w-[70px] h-[70px] rounded shrink-0 border border-white/10 group overflow-hidden focus:outline-none hover:border-white/40 transition-colors">
+<img class="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity" data-alt="Night raid dark pattern" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD1R5FxSMPtPwMCApFi1p0AK_6F3pKFX-wA8VH-ZZX52WJKRXlsf8EGTb7CDIcDCKGRyyArXw_RNCPCCJYR5xc9KplI7pPeB0ALMiN-0cibDJWW7hmfOeRi7JBCZYeVXC2LEqfyCZlRHMkLNVdcYpujfWgGnlp7avbnqROVExFFcXWpq-2bOwZg128GxksW6ZGwcZra9_U_4FLXJs8SlbQMr6mse7PIyglRE0GhFtb9eQNuQGgO1TBm0N-3FlPYrNLC7ZQIpfuEvn8"/>
+<div class="absolute bottom-0 left-0 w-full bg-black/70 backdrop-blur-sm py-0.5 px-1">
+<span class="text-[9px] text-gray-300 font-mono block truncate">Night Raid</span>
+</div>
+</button>
+<!-- Item 5 -->
+<button class="relative w-[70px] h-[70px] rounded shrink-0 border border-white/10 group overflow-hidden focus:outline-none hover:border-white/40 transition-colors">
+<img class="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity" data-alt="Urban concrete pattern" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAFS65qeK2GRrKISsjb6JCiZC4cYbd0IgviH0r7cQn3hidKvkA1yU1XX9fmfPIynax9d34m0AJ7u-hTTi7nZJ_4JBJQqkrfbZs4YDAqb4pPkwFo00kEFQHnMMcxvz4zEHwlnzKUePU8ScYH5htImeD6BuT7Z1I7ExHFHMGD5tH2V3UFqd0pSxh8qmntWgDCEUe2g_fF_94DC0vva_W2F8eUk5VTPnCMAES8ro3rbG-NdRiaBEVL7V9TOaxAZ_z1NwpEAs_DUOUcyfs"/>
+<div class="absolute bottom-0 left-0 w-full bg-black/70 backdrop-blur-sm py-0.5 px-1">
+<span class="text-[9px] text-gray-300 font-mono block truncate">Urban</span>
+</div>
+</button>
+</div>
+</div>
+<!-- Right: Main Action Button -->
+<div class="pb-2"> <!-- Align with carousel -->
+<button class="h-[70px] w-[140px] bg-primary hover:bg-primary/90 text-white font-bold rounded-lg flex flex-col items-center justify-center gap-1 shadow-[0_0_20px_rgba(233,68,95,0.4)] transition-all active:scale-95 group relative overflow-hidden">
+<!-- Shine Effect -->
+<div class="absolute inset-0 -translate-x-full group-hover:animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-transparent via-white/20 to-transparent z-10"></div>
+<span class="text-lg tracking-widest uppercase z-20">Equip</span>
+<div class="flex items-center gap-1 opacity-80 z-20">
+<span class="material-symbols-outlined text-sm">check_circle</span>
+<span class="text-[10px] uppercase font-medium">Ready</span>
+</div>
+</button>
+</div>
+</div>
+<!-- Safe area spacer for home indicator -->
+<div class="h-1 w-full"></div>
+</footer>
+</div>
+</body></html>

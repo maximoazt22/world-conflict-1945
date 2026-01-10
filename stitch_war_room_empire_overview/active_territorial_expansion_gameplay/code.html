@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>World Conflict 1945 - Tactical View</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#127da1",
+                        "primary-dark": "#0e5e7a",
+                        "background-light": "#f7f7f8",
+                        "background-dark": "#101418",
+                        "surface-dark": "#1C2228",
+                        "military-green": "#3D7A31",
+                        "neutral-gray": "#3f4648",
+                        "neon-green": "#0bda57",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"],
+                        "body": ["Inter", "sans-serif"],
+                    },
+                    boxShadow: {
+                        "glow": "0 0 15px rgba(18, 125, 161, 0.5)",
+                        "glow-green": "0 0 10px rgba(61, 122, 49, 0.4)",
+                    },
+                    animation: {
+                        'march': 'march 1s linear infinite',
+                    },
+                    keyframes: {
+                        march: {
+                            'to': { 'stroke-dashoffset': '-12' },
+                        }
+                    }
+                },
+            },
+        }
+    </script>
+<style>/* Custom map texture pattern */
+.map-texture {
+    background-color: #101418;
+    background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuAhII4ybR5KD4KgXFnviQFcxwbTPqng_1evPcSYyEgRsI_Eepa8rJexaumsAgzRJ6Q3Y-VhICCfPgYGJMUxnljq7ExSM-9HhFPmIVt7nva65lcUMbc71hHdpV-XsVvFP035egxBGoAEmdBWm4NYoGvrWeTz81RqnXuNjQnkfayEROQsSU3KoVVML6RFx7kZ-SMfEeEVReVNJknLEOdbI6ssrBlYknInGtrYNYG5CiWjqa9Ny8z58nXVyY64L9iVWC6x7L_JiqKSEFw)
+    }
+/* Grid overlay */
+.grid-lines {
+    background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 80px 80px
+    }
+.glass-panel {
+    background: rgba(28, 34, 40, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1)
+    }</style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-dark text-white font-display h-screen w-full overflow-hidden flex flex-col relative selection:bg-primary selection:text-white">
+<!-- 1. Global Resource Bar -->
+<header class="absolute top-0 left-0 right-0 z-50 px-2 py-2 w-full">
+<div class="glass-panel rounded-full px-4 py-2 flex items-center justify-between shadow-lg mx-auto max-w-lg w-full">
+<!-- Oil -->
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-gray-400 text-[20px]">water_drop</span>
+<div class="flex flex-col leading-none">
+<span class="text-xs text-gray-400 font-body">Oil</span>
+<div class="flex items-end gap-1">
+<span class="font-bold text-sm">12.4k</span>
+<span class="text-[10px] text-neon-green mb-[1px]">+120</span>
+</div>
+</div>
+</div>
+<div class="h-6 w-[1px] bg-white/10"></div>
+<!-- Steel -->
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-gray-400 text-[20px]">construction</span>
+<div class="flex flex-col leading-none">
+<span class="text-xs text-gray-400 font-body">Steel</span>
+<div class="flex items-end gap-1">
+<span class="font-bold text-sm">5.2k</span>
+<span class="text-[10px] text-neon-green mb-[1px]">+45</span>
+</div>
+</div>
+</div>
+<div class="h-6 w-[1px] bg-white/10"></div>
+<!-- Manpower -->
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-gray-400 text-[20px]">groups</span>
+<div class="flex flex-col leading-none">
+<span class="text-xs text-gray-400 font-body">Troops</span>
+<div class="flex items-end gap-1">
+<span class="font-bold text-sm">8.1k</span>
+<span class="text-[10px] text-neon-green mb-[1px]">+60</span>
+</div>
+</div>
+</div>
+</div>
+</header>
+<!-- 2. Main Map Area -->
+<main class="absolute inset-0 z-0 map-texture">
+<!-- Terrain Image Overlay (Darkened) -->
+<div class="absolute inset-0 opacity-30 bg-cover bg-center mix-blend-overlay pointer-events-none" data-alt="Dark topographic map texture showing terrain elevation" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDQB7ojldOQleEsGK1aLJmyY4RDDScE7RO-Gu4mUw9iCwGeBHEmxcRmJPMsKaqn-vOUhTnqyEgue1he_L-85xfEkql2rEr3qbAQpTgb11b2PX2xQVtNTQJorCE0TbXszdszlDwRMBVH-0epuqRnuXQX4v3cNZayC8s3cd7ecBnjjWVBLzIAXCTL_7dyOjz5Y-ihyoVncuPcAkxrsR8eAdGxTC7V-_iLU_D0WW6xTHWgsKRopNdQLAyObj12_nBCs9BZS_X1MuireDQ');">
+</div>
+<!-- Grid Lines -->
+<div class="absolute inset-0 grid-lines pointer-events-none opacity-50"></div>
+<!-- Interactive Map Layer (SVG) -->
+<svg class="absolute inset-0 w-full h-full pointer-events-none" style="filter: drop-shadow(0px 4px 10px rgba(0,0,0,0.5));">
+<defs>
+<pattern height="8" id="diagonalHatch" patterntransform="rotate(45 0 0)" patternunits="userSpaceOnUse" width="8">
+<line style="stroke:rgba(255,255,255,0.1); stroke-width:1" x1="0" x2="0" y1="0" y2="8"></line>
+</pattern>
+<filter id="glow-primary">
+<fegaussianblur result="coloredBlur" stddeviation="2.5"></fegaussianblur>
+<femerge>
+<femergenode in="coloredBlur"></femergenode>
+<femergenode in="SourceGraphic"></femergenode>
+</femerge>
+</filter>
+</defs>
+<!-- Friendly Territory (Left) -->
+<g class="transition-opacity duration-300 hover:opacity-90">
+<path d="M -50 200 L 150 180 L 220 300 L 180 500 L -50 550 Z" fill="rgba(61, 122, 49, 0.25)" stroke="#3D7A31" stroke-dasharray="5,5" stroke-width="2"></path>
+<!-- Label for Friendly Base -->
+<text fill="#a3cfbb" font-family="Space Grotesk" font-size="12" font-weight="600" opacity="0.8" x="80" y="320">BASE ALPHA</text>
+</g>
+<!-- Neutral Territory (Right - Prague) -->
+<g>
+<path d="M 220 300 L 450 250 L 500 450 L 350 600 L 180 500 Z" fill="rgba(28, 34, 40, 0.6)" stroke="#6B7280" stroke-width="2"></path>
+<path class="pointer-events-none" d="M 220 300 L 450 250 L 500 450 L 350 600 L 180 500 Z" fill="url(#diagonalHatch)"></path>
+</g>
+<!-- Tactical Movement Path -->
+<!-- From Friendly (approx 100, 350) to Target (approx 300, 450) -->
+<!-- The path is curved slightly for aesthetics -->
+<path class="animate-march" d="M 120 360 Q 200 380 280 430" fill="none" filter="url(#glow-primary)" stroke="#127da1" stroke-dasharray="8,4" stroke-width="3"></path>
+<!-- Target Indicator Circle -->
+<circle class="animate-pulse" cx="280" cy="430" fill="#127da1" r="6"></circle>
+<circle cx="280" cy="430" fill="none" opacity="0.5" r="16" stroke="#127da1" stroke-width="1"></circle>
+</svg>
+<!-- World Units (Decor) -->
+<div class="absolute top-[300px] left-[100px] pointer-events-none">
+<div class="w-2 h-2 bg-green-500 rounded-full shadow-[0_0_8px_rgba(74,222,128,0.8)]"></div>
+</div>
+<div class="absolute top-[220px] left-[60px] pointer-events-none opacity-60">
+<div class="w-2 h-2 bg-green-500 rounded-full shadow-[0_0_8px_rgba(74,222,128,0.8)]"></div>
+</div>
+<div class="absolute top-[480px] left-[150px] pointer-events-none opacity-60">
+<div class="w-2 h-2 bg-green-500 rounded-full shadow-[0_0_8px_rgba(74,222,128,0.8)]"></div>
+</div>
+<!-- Active Draggable Unit (Simulated Drag State) -->
+<div class="absolute top-[380px] left-[180px] -translate-x-1/2 -translate-y-1/2 z-20 cursor-grab active:cursor-grabbing group">
+<!-- Ripple Effect -->
+<div class="absolute inset-0 rounded-full border border-primary opacity-50 animate-ping"></div>
+<!-- Unit Icon Body -->
+<div class="relative w-14 h-14 bg-surface-dark border-2 border-primary rounded-full flex items-center justify-center shadow-glow z-10">
+<span class="material-symbols-outlined text-white" style="font-size: 28px;">military_tech</span>
+<!-- Badge indicating unit size -->
+<div class="absolute -bottom-1 -right-1 bg-primary text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full border border-surface-dark">
+                    3
+                </div>
+</div>
+<!-- Unit Label -->
+<div class="absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap">
+<span class="bg-black/60 text-white text-[10px] px-2 py-1 rounded backdrop-blur-sm font-mono">1st Armored</span>
+</div>
+</div>
+<!-- ETA Chip Floating on Path -->
+<div class="absolute top-[410px] left-[230px] z-20">
+<div class="flex items-center gap-1.5 px-3 py-1.5 bg-primary/90 rounded-lg shadow-lg backdrop-blur-sm transform -rotate-6 border border-white/20">
+<span class="material-symbols-outlined text-white text-[16px]">schedule</span>
+<span class="text-white text-xs font-bold tracking-wide">30m</span>
+</div>
+</div>
+<!-- Target Marker/Name -->
+<div class="absolute top-[450px] left-[320px] z-10 pointer-events-none">
+<div class="flex flex-col items-start opacity-60">
+<span class="text-xs uppercase tracking-widest text-gray-400 font-bold">Neutral</span>
+<span class="text-4xl font-bold text-white/10 tracking-tighter absolute -top-8 -left-4 -z-10">PRAGUE</span>
+</div>
+</div>
+<!-- Map Controls (Zoom/Pan) -->
+<div class="absolute top-24 right-4 flex flex-col gap-2 z-20">
+<button class="w-10 h-10 glass-panel rounded-lg flex items-center justify-center text-white hover:bg-white/10 active:scale-95 transition-all shadow-lg">
+<span class="material-symbols-outlined">add</span>
+</button>
+<button class="w-10 h-10 glass-panel rounded-lg flex items-center justify-center text-white hover:bg-white/10 active:scale-95 transition-all shadow-lg">
+<span class="material-symbols-outlined">remove</span>
+</button>
+<button class="w-10 h-10 glass-panel rounded-lg flex items-center justify-center text-primary border-primary/30 hover:bg-white/10 active:scale-95 transition-all shadow-lg mt-2">
+<span class="material-symbols-outlined">my_location</span>
+</button>
+</div>
+</main>
+<!-- 3. Bottom Interface Panel (Province Intel) -->
+<footer class="absolute bottom-6 left-4 right-4 z-30 flex items-end justify-between pointer-events-none">
+<!-- Selected Province Card -->
+<div class="glass-panel p-4 rounded-xl shadow-2xl w-full max-w-[320px] pointer-events-auto border-l-4 border-l-gray-500 relative overflow-hidden group">
+<!-- Subtle background gradient inside card -->
+<div class="absolute inset-0 bg-gradient-to-r from-gray-800/50 to-transparent opacity-50 z-0"></div>
+<div class="relative z-10 flex justify-between items-start">
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-2">
+<h2 class="text-2xl font-bold text-white tracking-tight uppercase">Prague</h2>
+<span class="material-symbols-outlined text-gray-400 text-lg">info</span>
+</div>
+<p class="text-neutral-gray text-xs font-medium uppercase tracking-wider flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-gray-500"></span> Neutral Territory
+                    </p>
+</div>
+<!-- Mini visual of the city -->
+<div class="w-16 h-10 rounded bg-gray-800 bg-cover bg-center border border-white/10 shadow-inner" data-alt="Prague city silhouette" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDgDzBnDY10UC9at9jjz96jHnwMMrJDQ2rFW40EgljEP2TyHbWiEc0lVt04TcTLWjkIbBGBoKkYUD4gktxpl5xQ6nZvhE9mh-zSq0DfmkwJ4Y4P9K_zWj505T8Pa1l5B_291D86nqh0kfXg-0zevtCJ8_LarZayO1mn5n-gRes-3A0mCdkrHXjvddB-N3q2P4VRN4nN9XdV39oIrfnKeRx36NIzknf0j4KqlFS2FJPIRd6Q24S2nhDGI_1WVmYNoTacqeMcKOGnQbc');">
+</div>
+</div>
+<div class="relative z-10 mt-4 grid grid-cols-3 gap-2">
+<div class="bg-black/30 rounded p-2 flex flex-col items-center border border-white/5">
+<span class="text-[10px] text-gray-400 font-body uppercase">Defense</span>
+<span class="text-white font-bold text-sm">5</span>
+</div>
+<div class="bg-black/30 rounded p-2 flex flex-col items-center border border-white/5">
+<span class="text-[10px] text-gray-400 font-body uppercase">Pop.</span>
+<span class="text-white font-bold text-sm">1.2M</span>
+</div>
+<div class="bg-black/30 rounded p-2 flex flex-col items-center border border-white/5">
+<span class="text-[10px] text-gray-400 font-body uppercase">Resources</span>
+<span class="text-yellow-500 font-bold text-sm">High</span>
+</div>
+</div>
+<!-- Action Button Hint -->
+<div class="absolute bottom-0 right-0 p-1 opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-gray-600 text-xs">drag_handle</span>
+</div>
+</div>
+<!-- Secondary FAB or Action (Contextual) -->
+<button class="pointer-events-auto h-14 w-14 rounded-full bg-primary text-white shadow-glow shadow-lg flex items-center justify-center active:scale-90 transition-transform mb-2 mr-2 border-2 border-surface-dark">
+<span class="material-symbols-outlined text-2xl">swords</span>
+</button>
+</footer>
+<!-- Overlay Vignette for atmosphere -->
+<div class="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_center,transparent_30%,#101418_100%)] opacity-80 z-10"></div>
+</body></html>

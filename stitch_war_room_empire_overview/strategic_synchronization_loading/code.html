@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Strategic Synchronization Loading</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&amp;family=Noto+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#3bff0f",
+                        "primary-dim": "#2a8f15",
+                        "background-light": "#f6f8f5",
+                        "background-dark": "#050a04",
+                        "surface-dark": "#0c140a",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"],
+                        "body": ["Noto Sans", "sans-serif"],
+                    },
+                    backgroundImage: {
+                        'grid-pattern': "linear-gradient(to right, #111e10 1px, transparent 1px), linear-gradient(to bottom, #111e10 1px, transparent 1px)",
+                        'scanline': "linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.2))"
+                    },
+                    borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+                    animation: {
+                        'pulse-fast': 'pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'scan': 'scan 3s linear infinite',
+                    },
+                    keyframes: {
+                        scan: {
+                            '0%': { transform: 'translateY(-100%)' },
+                            '100%': { transform: 'translateY(100%)' },
+                        }
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .scanline-overlay {
+            background-size: 100% 4px;
+            pointer-events: none;
+        }
+        .crt-flicker {
+            animation: flicker 0.15s infinite;
+        }
+        @keyframes flicker {
+            0% { opacity: 0.97; }
+            50% { opacity: 1; }
+            100% { opacity: 0.98; }
+        }
+        .text-glow {
+            text-shadow: 0 0 10px rgba(59, 255, 15, 0.5);
+        }
+        .border-glow {
+            box-shadow: 0 0 15px rgba(59, 255, 15, 0.2);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display h-screen w-full overflow-hidden flex flex-col relative select-none">
+<!-- Grid Background & Scanlines -->
+<div class="absolute inset-0 bg-grid-pattern bg-[length:40px_40px] opacity-20 pointer-events-none"></div>
+<div class="absolute inset-0 bg-scanline scanline-overlay opacity-30 pointer-events-none z-50"></div>
+<!-- Top Bar Status -->
+<header class="relative z-10 w-full px-5 py-6 flex justify-between items-start">
+<div class="flex flex-col">
+<h2 class="text-primary text-xs font-bold tracking-[0.15em] leading-tight mb-1 crt-flicker">
+                SYNC STATUS: <span class="text-white">ACTIVE</span>
+</h2>
+<div class="flex items-center gap-2 text-[10px] text-primary/60 tracking-widest font-mono">
+<span class="material-symbols-outlined text-[14px]">satellite_alt</span>
+<span>UPLINK ESTABLISHED // CH_09</span>
+</div>
+</div>
+<div class="flex flex-col items-end">
+<div class="h-2 w-2 bg-primary rounded-full animate-pulse-fast shadow-[0_0_8px_#3bff0f]"></div>
+<span class="text-[10px] text-primary/40 font-mono mt-1">REC</span>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col items-center justify-center w-full relative z-10 px-4">
+<!-- Tactical Map Container -->
+<div class="w-full max-w-sm aspect-square relative mb-8 border border-primary/20 bg-surface-dark/50 rounded-lg p-1 border-glow">
+<!-- Corner Accents -->
+<div class="absolute top-0 left-0 w-4 h-4 border-l-2 border-t-2 border-primary z-20"></div>
+<div class="absolute top-0 right-0 w-4 h-4 border-r-2 border-t-2 border-primary z-20"></div>
+<div class="absolute bottom-0 left-0 w-4 h-4 border-l-2 border-b-2 border-primary z-20"></div>
+<div class="absolute bottom-0 right-0 w-4 h-4 border-r-2 border-b-2 border-primary z-20"></div>
+<!-- Map Image -->
+<div class="w-full h-full relative overflow-hidden rounded bg-[#0a1109]">
+<div class="absolute inset-0 bg-cover bg-center opacity-60 mix-blend-luminosity brightness-125 contrast-125" data-alt="Wireframe tactical world map with glowing borders" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBsb8B5cnRqnw0UJsz6i5Az_gYp58fN6uaEoJMP3GvO5T-ST-1xubvVHQuCSP8P1SdPxAnqqH9ySRJYtRmK66PaEBL9gBXM8jnRi4Y0zDAQE_iCoEmDiYOJoJb3AUYJkk_O9ZPY94cvtIxdEugUcx1AAtPqboHWqIEpSNznM2QLD1cNkQHxpYAVb5gFnj-rLJMkpDT5LO8y3gn4i0QIfmpLYer0qboOD-A-FDGSrFJbzgZqRJNvWILe2WVtlg8XolWxflSnvDDe5TY');">
+</div>
+<!-- Radar Sweep Line -->
+<div class="absolute inset-x-0 h-1 bg-primary/50 shadow-[0_0_15px_#3bff0f] animate-scan z-10 blur-[1px]"></div>
+<!-- Map Overlays -->
+<div class="absolute top-1/3 left-1/4">
+<span class="material-symbols-outlined text-primary text-lg animate-ping absolute">target</span>
+<span class="material-symbols-outlined text-primary text-lg relative">target</span>
+</div>
+<div class="absolute bottom-1/4 right-1/3">
+<div class="flex flex-col items-center gap-0.5">
+<span class="text-[8px] text-primary font-mono bg-black/80 px-1 border border-primary/30">N 48.85 E 2.35</span>
+<div class="w-1 h-1 bg-white rounded-full"></div>
+</div>
+</div>
+</div>
+<!-- Side Stats (Decorative) -->
+<div class="absolute -left-3 top-1/2 -translate-y-1/2 flex flex-col gap-1">
+<div class="w-1 h-4 bg-primary/20"></div>
+<div class="w-1 h-8 bg-primary"></div>
+<div class="w-1 h-3 bg-primary/40"></div>
+</div>
+<div class="absolute -right-3 top-1/2 -translate-y-1/2 flex flex-col gap-1">
+<div class="w-1 h-3 bg-primary/40"></div>
+<div class="w-1 h-8 bg-primary"></div>
+<div class="w-1 h-4 bg-primary/20"></div>
+</div>
+</div>
+<!-- Tactical Stats Row -->
+<div class="flex w-full max-w-sm justify-between gap-2 px-2 mb-6 font-mono">
+<div class="flex-1 bg-surface-dark border border-primary/20 p-2 rounded flex flex-col items-start">
+<p class="text-[10px] text-primary/60 uppercase">Signal_STR</p>
+<div class="flex items-end gap-1">
+<span class="text-white text-sm font-bold">-45</span>
+<span class="text-[10px] text-primary mb-0.5">dBm</span>
+</div>
+</div>
+<div class="flex-1 bg-surface-dark border border-primary/20 p-2 rounded flex flex-col items-start">
+<p class="text-[10px] text-primary/60 uppercase">Encryption</p>
+<div class="flex items-end gap-1">
+<span class="text-white text-sm font-bold">AES-256</span>
+<span class="material-symbols-outlined text-[12px] text-primary mb-1">lock</span>
+</div>
+</div>
+<div class="flex-1 bg-surface-dark border border-primary/20 p-2 rounded flex flex-col items-start">
+<p class="text-[10px] text-primary/60 uppercase">Packet_Loss</p>
+<span class="text-primary text-sm font-bold">0.02%</span>
+</div>
+</div>
+</main>
+<!-- Bottom Action Area -->
+<footer class="relative z-20 w-full bg-gradient-to-t from-background-dark via-background-dark to-transparent pt-12 pb-8 px-6">
+<!-- Loading State Container -->
+<div class="flex flex-col gap-3 mb-6 w-full max-w-sm mx-auto">
+<div class="flex justify-between items-end">
+<p class="text-white text-sm font-mono tracking-wide crt-flicker">
+                    &gt; DEPLOYING STRATEGIC ASSETS<span class="animate-pulse">_</span>
+</p>
+<p class="text-primary text-sm font-bold font-mono">100%</p>
+</div>
+<!-- Progress Bar -->
+<div class="relative h-4 w-full bg-[#1a2e18] rounded-sm overflow-hidden border border-primary/30 p-0.5">
+<!-- Segmented visual -->
+<div class="absolute inset-0 flex w-full h-full z-20 pointer-events-none">
+<div class="w-full h-full bg-[repeating-linear-gradient(90deg,transparent,transparent_4px,#050a04_4px,#050a04_6px)]"></div>
+</div>
+<!-- Fill -->
+<div class="h-full bg-primary w-full shadow-[0_0_10px_#3bff0f] relative z-10"></div>
+</div>
+<p class="text-primary/50 text-[10px] uppercase tracking-widest text-right font-mono">
+                System Ready // Awaiting Input
+            </p>
+</div>
+<!-- Call to Action Button -->
+<div class="w-full max-w-sm mx-auto mt-4">
+<button class="group relative w-full overflow-hidden bg-primary/10 hover:bg-primary/20 border border-primary text-primary transition-all duration-200 active:scale-[0.98] py-5 px-6 rounded-sm">
+<!-- Button Glow Effect -->
+<div class="absolute inset-0 bg-primary/20 blur-xl opacity-0 group-hover:opacity-40 transition-opacity duration-500"></div>
+<div class="relative flex items-center justify-between z-10">
+<div class="flex flex-col items-start">
+<span class="text-[10px] tracking-[0.2em] font-mono text-primary-dim group-hover:text-primary transition-colors">COMMAND AUTH</span>
+<span class="text-xl font-bold tracking-widest text-glow group-hover:text-white transition-colors">ENTER WAR ZONE</span>
+</div>
+<span class="material-symbols-outlined text-3xl animate-pulse-fast group-hover:text-white transition-colors">double_arrow</span>
+</div>
+<!-- Decorative corners for button -->
+<div class="absolute top-0 right-0 p-1">
+<div class="w-2 h-2 border-t border-r border-primary"></div>
+</div>
+<div class="absolute bottom-0 left-0 p-1">
+<div class="w-2 h-2 border-b border-l border-primary"></div>
+</div>
+</button>
+<p class="text-[#3c4e38] text-[9px] text-center mt-3 tracking-[0.1em] font-mono">AUTHORIZED PERSONNEL ONLY // CLEARANCE LEVEL 5</p>
+</div>
+</footer>
+</body></html>

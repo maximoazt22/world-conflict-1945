@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>War Front Battle Pass</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@300;400;500;700;800&amp;family=Manrope:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Config -->
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#c38022",
+                        "primary-dark": "#8a5a18",
+                        "background-light": "#1a1c20", // Overriding purely light bg for a dark theme feel
+                        "background-dark": "#15171a",
+                        "metal-dark": "#232529",
+                        "metal-light": "#2f3238",
+                        "tactical-green": "#5c8a4c",
+                        "display-case": "#0f1012"
+                    },
+                    fontFamily: {
+                        "display": ["Epilogue", "sans-serif"],
+                        "body": ["Manrope", "sans-serif"]
+                    },
+                    boxShadow: {
+                        'inset-deep': 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.6)',
+                        'glow': '0 0 10px rgba(195, 128, 34, 0.3)',
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom scrollbar hiding for horizontal scroll */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        
+        .brushed-metal {
+            background-image: 
+                repeating-linear-gradient(90deg, transparent 0, transparent 2px, rgba(255,255,255,0.02) 2px, rgba(255,255,255,0.02) 4px),
+                linear-gradient(180deg, rgba(35,37,41,1) 0%, rgba(26,28,32,1) 100%);
+        }
+
+        .premium-sheen {
+            background: linear-gradient(135deg, rgba(195,128,34,0.05) 0%, rgba(195,128,34,0.1) 50%, rgba(195,128,34,0.05) 100%);
+            border: 1px solid rgba(195,128,34,0.3);
+        }
+
+        .recessed-slot {
+            background: #0f1012;
+            box-shadow: inset 0 2px 6px rgba(0,0,0,0.8), inset 0 1px 2px rgba(0,0,0,0.9);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-dark text-white font-display overflow-hidden h-screen w-full flex flex-col antialiased selection:bg-primary selection:text-white">
+<!-- Header / Top Bar -->
+<header class="flex-none z-20 bg-background-dark border-b border-white/5 relative">
+<div class="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent pointer-events-none"></div>
+<div class="px-4 py-3 flex items-center justify-between">
+<button class="size-10 flex items-center justify-center text-white/70 hover:text-white transition-colors rounded-lg hover:bg-white/5">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<div class="text-center">
+<h1 class="text-xs font-bold tracking-[0.2em] text-primary uppercase mb-0.5">Season 4</h1>
+<div class="text-lg font-bold leading-none tracking-tight">IRON STORM</div>
+</div>
+<button class="size-10 flex items-center justify-center text-white/70 hover:text-white transition-colors rounded-lg hover:bg-white/5">
+<span class="material-symbols-outlined">help</span>
+</button>
+</div>
+<!-- Quick Stats -->
+<div class="flex justify-center items-center gap-6 pb-3 text-xs font-body font-medium text-white/50 border-t border-white/5 pt-2">
+<span class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-tactical-green">timer</span>
+<span class="text-tactical-green">14 Days Remaining</span>
+</span>
+<span class="w-px h-3 bg-white/10"></span>
+<span class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-primary">stars</span>
+<span>Tier 35 / 90</span>
+</span>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col relative overflow-hidden">
+<!-- Hero Preview Section (Top Half) -->
+<section class="relative h-[45%] w-full bg-display-case flex flex-col items-center justify-center p-6 border-b border-white/10 shadow-[0_4px_24px_rgba(0,0,0,0.5)] z-10">
+<!-- Background Elements -->
+<div class="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]"></div>
+<div class="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-background-dark to-transparent opacity-80"></div>
+<!-- Tier 90 Reward Preview -->
+<div class="relative w-full h-full flex items-center justify-center group/hero">
+<!-- Spotlight Effect -->
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-primary/10 blur-[80px] rounded-full"></div>
+<div class="relative z-10 flex flex-col items-center text-center w-full max-w-sm">
+<div class="text-primary/60 text-[10px] font-bold tracking-widest uppercase mb-2 border border-primary/30 px-2 py-1 rounded bg-black/40 backdrop-blur-sm">Tier 90 Ultimate Reward</div>
+<!-- Image -->
+<div class="relative w-full aspect-[16/9] mb-4 transition-transform duration-700 ease-out group-hover/hero:scale-105">
+<img alt="Goliath MK-IV Mech" class="w-full h-full object-contain drop-shadow-[0_10px_20px_rgba(0,0,0,0.8)] filter contrast-125 brightness-110" data-alt="Futuristic heavy mech robot standing in a dark hangar environment" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDpayMYG2EVXmGm3m0gOYUJ2169lUMd_SFPJD9o44qSdYeFf8FxWJwv4REOTxWm3dp7NQV3vtJTzsJYx91b8OsvuX4TOTXsaOkcFeNAhAu31A7HPt4MHmWwE6-LB7n5F386IMn3nGcoqVz4wI77stWfEDia14EkXwz6QCU6L3YdWFKb4ljEgCHW8fHm56rcdf6uf_16LrZzjGD91mNnFdxGQaGsRHKfjmE-IRZ7-rb9k0kzg8dJt4-tS8YAWloQaEIbmtpBlill_g8"/>
+</div>
+<div class="space-y-1">
+<h2 class="text-2xl font-bold text-white tracking-tight drop-shadow-md">Goliath MK-IV</h2>
+<div class="flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-primary text-sm">shield</span>
+<p class="text-white/60 text-sm font-body">Super-Heavy Mech Class</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Inspect Button (Floating) -->
+<button class="absolute bottom-4 right-4 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/10 text-white text-xs font-bold py-1.5 px-3 rounded flex items-center gap-1 transition-all">
+<span class="material-symbols-outlined text-[16px]">3d_rotation</span>
+                INSPECT
+            </button>
+</section>
+<!-- Horizontal Scroll Track (Bottom Half) -->
+<section class="flex-1 bg-metal-dark relative flex flex-col min-h-0">
+<!-- Track Header Labels -->
+<div class="flex-none px-4 py-2 bg-[#121417] border-b border-white/5 flex items-center text-[10px] font-bold tracking-wider text-white/40 uppercase sticky left-0 z-20">
+<div class="w-24">Tier</div>
+<div class="flex-1 pl-4">Free Rewards</div>
+<div class="flex-1 text-right text-primary pr-2 flex items-center justify-end gap-1">
+<span class="material-symbols-outlined text-[14px]">lock</span> Premium
+                </div>
+</div>
+<!-- The Scrolling Track -->
+<div class="flex-1 overflow-x-auto overflow-y-hidden no-scrollbar flex items-center py-6 px-6 gap-0 relative">
+<!-- Connection Line behind items -->
+<div class="absolute top-1/2 left-0 w-[2000px] h-1 bg-[#121417] border-y border-white/5 -z-0"></div>
+<!-- Level 33 (Past) -->
+<div class="relative flex flex-col gap-3 items-center min-w-[140px] opacity-50 grayscale select-none">
+<div class="text-xs font-bold text-white/30 font-body mb-2">LVL 33</div>
+<!-- Free Item -->
+<div class="w-28 h-20 recessed-slot rounded relative flex items-center justify-center group border border-transparent">
+<img alt="Credits" class="w-10 h-10 object-contain opacity-60" data-alt="Small pile of silver coins" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCofyzpWoKaJzVFPGtN87u1LleiVodmPgA5GTUfUkTc3e5e1lpu6olHAQ75hBoFWlgaHcGXPIgnMi7n3O8M4N_zDUaudTYP3TT9jmzU3gT-iA4PklzVgzEOtTKgIwT_dhS6RdrtV-vk8azwJjSLoVcK5i2tF2s2wPm-xKh2tHsBSN5Pzd_fmsl2OIGh-1eDQtKGbCA7drWVHDrb6Ul5l50DveqrHghW0LbUuIxciwW3zmTfJKSqaRLp9cisO-SH_K-mPKEy8tz8xVU"/>
+<div class="absolute inset-0 flex items-center justify-center bg-black/60">
+<span class="material-symbols-outlined text-green-500 text-2xl">check_circle</span>
+</div>
+</div>
+<!-- Premium Item -->
+<div class="w-28 h-20 recessed-slot rounded relative flex items-center justify-center border border-primary/10">
+<img alt="Badge" class="w-12 h-12 object-contain opacity-60" data-alt="Simple military badge" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAc671LYa5amUGZ70wScDO6H4TklCmlHJlZhp_rJ57aBmFw-yRy5OtFDzj8bZcxjP4KpJ1lkiQEr7nJ1R9TZq5c_8devGMM5iJziOcEgPMRMT4E3gP9PQakDX_8FkppQhB2Bbpog7R09dkqhgnjME_n8mP-nMUEQWvlBcNkvnOi72NUSiXHrzB3X67i4lEi6n0-2ILQV15MSHT_8tafCeVX6Fd6uYy1S2EZmwq37fDDUsutQATjW3aEvCGigcZZQPUz5pywDt7Sb2g"/>
+<div class="absolute inset-0 flex items-center justify-center bg-black/60">
+<span class="material-symbols-outlined text-green-500 text-2xl">check_circle</span>
+</div>
+</div>
+</div>
+<!-- Spacer -->
+<div class="w-px h-32 bg-white/5 mx-2"></div>
+<!-- Level 34 (Current/Claimable) -->
+<div class="relative flex flex-col gap-3 items-center min-w-[160px] z-10 scale-105 origin-center transition-transform">
+<div class="text-sm font-bold text-primary font-body mb-2 flex items-center gap-1">
+                        LVL 34 <span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+</div>
+<!-- Free Item (Claimable) -->
+<div class="w-32 h-24 bg-gradient-to-b from-metal-light to-metal-dark rounded border border-primary shadow-[0_0_15px_rgba(195,128,34,0.2)] relative flex flex-col items-center justify-center group overflow-hidden">
+<div class="absolute inset-0 bg-primary/5"></div>
+<img alt="Ammo Pack" class="w-14 h-14 object-contain z-10 drop-shadow-lg" data-alt="Box of ammunition with green stripe" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAzsyoOD6ND9S3EFVPk-5TXRgs-xH0TsBBivLKrV3XapPxMVKkwrEk5jIWkgeYxrw1b1Lo5ZeGWMC7c9TBdPkOkAXJExNqG4ECnMcX_BBiENllmqrvTlZA4Auus45Xfl4Vd6nqWo7Hlt8QOArYlKTQ-4sr2CpwDGuhsrPAk-ypb9qGxrg93ZZQQU8w7cHBMZ8ovIgRrmwVKkI2d0vL2qORz_L3bdgVRm9Q55xCz4I_J4vJ2JdAYskWFX6ZF97Ndyw1PFccnN7eSJtc"/>
+<span class="absolute bottom-1 right-1 text-[9px] font-bold text-white/50 bg-black/50 px-1 rounded">FREE</span>
+<!-- Claim Overlay Button -->
+<div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-[1px]">
+<button class="bg-primary text-white text-xs font-bold px-3 py-1 rounded shadow-lg transform hover:scale-105 transition-transform">CLAIM</button>
+</div>
+</div>
+<!-- Premium Item (Locked - Requires Pass) -->
+<div class="w-32 h-24 premium-sheen rounded relative flex flex-col items-center justify-center group overflow-hidden">
+<div class="absolute top-2 right-2 z-20">
+<span class="material-symbols-outlined text-primary text-sm drop-shadow-md">lock</span>
+</div>
+<img alt="Medal of Honor" class="w-16 h-16 object-contain z-10 grayscale-[0.3]" data-alt="Golden medal with red ribbon" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB4bikHy4MD14188CZoPNmsz2qssSSS-UiHrcab3ALWr6bfK07Miwib27sgSYf-8RylthrCMPIQJkakOrmOY3UDvgkYcZEKwpDpfd3FU8LeOZSrsduU_mvB44gYP2zxPktQh3_9C9_36uU2sJIZtjilOSR9rPXoqZ4G7g0z6YlB2-ahxek_TKLqPW6lHho4vntECrUwJaqVrb45aFKZ_k2Qm36_MzbTjYqE7nnhpvnGCbNVA-wmagaCWfqgGQP1Dj8CaGt3w3dd_GE"/>
+<div class="absolute bottom-0 w-full bg-black/60 py-1 text-center text-[9px] text-primary font-bold uppercase tracking-wide">
+                             Premium
+                         </div>
+</div>
+</div>
+<!-- Spacer -->
+<div class="w-px h-32 bg-white/5 mx-2"></div>
+<!-- Level 35 (Locked) -->
+<div class="relative flex flex-col gap-3 items-center min-w-[140px]">
+<div class="text-xs font-bold text-white/40 font-body mb-2">LVL 35</div>
+<!-- Free Item -->
+<div class="w-28 h-20 recessed-slot rounded relative flex items-center justify-center opacity-70">
+<img alt="Fuel" class="w-12 h-12 object-contain opacity-50 grayscale" data-alt="Fuel canister icon" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCV0UA8cRklIi6Jx8tG6omxtZPYRGaT8yiCpuG8Lr3iRc61RqdNPEOOROcDzowh4QD4JG38wTNYKiX3b_u0MQ5WbTFNdoHi8ji36ujU7NZZv9OGdx5zpX_Cn_aq0CpWkeltyhv7qcoVpvxJyETw7QXLkEBocnjBLlgaIpNT-XWr7IEx8DEDBbxeJfs2B7k0irGnQmtaINlY0X3Q4QJC4Zb-ioDsJKjjndIEH276UCikgkuLZnjSLVVf0huLUlDj8TftkOO8ihK9YYQ"/>
+</div>
+<!-- Premium Item -->
+<div class="w-28 h-20 recessed-slot rounded relative flex items-center justify-center border border-white/5 opacity-70">
+<div class="absolute top-2 right-2 z-20 opacity-50">
+<span class="material-symbols-outlined text-white text-xs">lock</span>
+</div>
+<img alt="Camo Skin" class="w-14 h-14 object-contain opacity-50 grayscale" data-alt="Military camouflage pattern swatch" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDSECH5CcmNbIuytNT_r2KsAw_em61awOSAPj-u_DN9rt07yXp4wqP_6hjEb4LSrN59Ud800xjx08ZViFIngZzR7XeV1SrW0sAhtDbeE5DBnF4fVZrPSfQlsqg-de0t6sQztfoVBdc4H_rRZSkxmcxGQsgAx1t6eEDlrFLzgQ-E7QVSbVsKnKq5VUI4hqsAhCd2breDEC-fDn8lCOz0tC5N9xV5CtD_uwdGRONX15QJQ0QYAiuieuxNmZXFSwY0CpdS1DYqX0uRqr0"/>
+</div>
+</div>
+<!-- Spacer -->
+<div class="w-px h-32 bg-white/5 mx-2"></div>
+<!-- Level 36 (Locked) -->
+<div class="relative flex flex-col gap-3 items-center min-w-[140px]">
+<div class="text-xs font-bold text-white/40 font-body mb-2">LVL 36</div>
+<!-- Free Item -->
+<div class="w-28 h-20 recessed-slot rounded relative flex items-center justify-center opacity-70">
+<img alt="XP Boost" class="w-12 h-12 object-contain opacity-50 grayscale" data-alt="XP boost icon with lightning bolt" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCvrFu4TsRGc1yTjy8bgIdn0AEax0VPWG_8srjeCZE-ktD3n8QyUukv8Qj-J75ZmiQQcCcaO-xnkJlntDcjOcudbOmXBVxH8zt8lzeoA5P2fFgFvZ2x0x20RbfGtpec-odw10XD59a2EtGez3ix32NcnuiFdipiQaQ6PHldgiGZ-Ogg3DA7hz3ZY1Z2bo3grumcvkhR_wHI0PKIMNj1ld7GMBQEyL4_PgdqV53ZHtFf1WIXJxy-3ysGc4e6y4osCYShd8VIbCPgKUY"/>
+</div>
+<!-- Premium Item -->
+<div class="w-28 h-20 recessed-slot rounded relative flex items-center justify-center border border-white/5 opacity-70">
+<div class="absolute top-2 right-2 z-20 opacity-50">
+<span class="material-symbols-outlined text-white text-xs">lock</span>
+</div>
+<img alt="Gems" class="w-12 h-12 object-contain opacity-50 grayscale" data-alt="Gemstone pile" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAfuYSPULmNPTirZeNWk0ODiHCWSB-3eyTudyRDP0UB7XpmK93Bt8KUNErnwBIiEWVZL8cdDMfK2OKBEtI4crTwv_lpljMX5AOMx1hER0fh5jhCUD26p963_NqMpEeY2_qN3CwC4tHo6VAZucGgyg9lq-dmiTjANpOduwD7bDyN8s4E0kXIYM8dku3kSVXOi-JInyEd4MRlCrio4ja2LLwf1Mc7V2jXgqAYUWCRjL3JF-yXMFOmc0xgStROyh4I886jb0qA9xVHIw0"/>
+</div>
+</div>
+<!-- Spacer - Fading out -->
+<div class="w-px h-32 bg-gradient-to-b from-transparent via-white/5 to-transparent mx-2"></div>
+<!-- Level 37 (Preview) -->
+<div class="relative flex flex-col gap-3 items-center min-w-[140px] opacity-40">
+<div class="text-xs font-bold text-white/20 font-body mb-2">LVL 37</div>
+<div class="w-28 h-20 recessed-slot rounded"></div>
+<div class="w-28 h-20 recessed-slot rounded"></div>
+</div>
+</div>
+<!-- Fade Overlay on Right -->
+<div class="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-metal-dark to-transparent pointer-events-none z-10"></div>
+<div class="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-metal-dark to-transparent pointer-events-none z-10"></div>
+</section>
+<!-- Bottom Action Bar (Sticky) -->
+<div class="flex-none bg-[#121417] p-4 border-t border-white/5 shadow-[0_-4px_20px_rgba(0,0,0,0.5)] z-30">
+<div class="flex gap-3 mb-4">
+<button class="flex-1 bg-gradient-to-r from-primary to-primary-dark hover:brightness-110 active:scale-95 text-white font-bold text-sm py-3 px-4 rounded shadow-lg shadow-orange-900/20 flex items-center justify-center gap-2 transition-all">
+<span class="material-symbols-outlined text-xl">workspace_premium</span>
+<div class="flex flex-col items-start leading-none">
+<span class="text-[10px] font-normal opacity-90">UNLOCK PREMIUM</span>
+<span>$9.99</span>
+</div>
+</button>
+<button class="bg-metal-light hover:bg-white/10 active:scale-95 border border-white/10 text-white font-bold text-sm py-3 px-4 rounded flex items-center gap-2 transition-all">
+<span class="material-symbols-outlined">done_all</span>
+                    Claim All
+                </button>
+</div>
+<!-- Nav -->
+<nav class="flex justify-between items-center px-2">
+<a class="flex flex-col items-center gap-1 text-primary opacity-100 transition-opacity group" href="#">
+<span class="material-symbols-outlined">military_tech</span>
+<span class="text-[10px] font-bold">Battle Pass</span>
+<span class="w-1 h-1 rounded-full bg-primary mt-1"></span>
+</a>
+<a class="flex flex-col items-center gap-1 text-white/40 hover:text-white transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform">swords</span>
+<span class="text-[10px] font-medium">Challenges</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-white/40 hover:text-white transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform">storefront</span>
+<span class="text-[10px] font-medium">Shop</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-white/40 hover:text-white transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform">person</span>
+<span class="text-[10px] font-medium">Profile</span>
+</a>
+</nav>
+</div>
+</main>
+</body></html>

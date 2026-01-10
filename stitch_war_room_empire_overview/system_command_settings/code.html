@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>System Command Settings</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Noto+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#00eeff",
+                        "primary-dim": "rgba(0, 238, 255, 0.1)",
+                        "primary-glow": "rgba(0, 238, 255, 0.5)",
+                        "background-light": "#f2f2f3",
+                        "background-dark": "#161a22",
+                        "glass-surface": "rgba(22, 26, 34, 0.75)",
+                        "glass-border": "rgba(255, 255, 255, 0.1)",
+                        "glass-highlight": "rgba(255, 255, 255, 0.05)",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"],
+                        "body": ["Noto Sans", "sans-serif"],
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                    backdropBlur: {
+                        'xs': '2px',
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .glass-panel {
+            background: rgba(22, 26, 34, 0.65);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1), inset 0 0 20px rgba(255, 255, 255, 0.02);
+        }
+        
+        /* Custom Range Slider Styling */
+        input[type=range] {
+            -webkit-appearance: none; 
+            background: transparent; 
+        }
+
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 20px;
+            width: 20px;
+            border-radius: 50%;
+            background: #00eeff;
+            cursor: pointer;
+            margin-top: -8px; 
+            box-shadow: 0 0 10px rgba(0, 238, 255, 0.8);
+            border: 2px solid #fff;
+        }
+
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 4px;
+            cursor: pointer;
+            background: #27393a;
+            border-radius: 2px;
+        }
+        
+        input[type=range]:focus::-webkit-slider-runnable-track {
+            background: #3a5557;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.2); 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.1); 
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255,255,255,0.2); 
+        }
+        
+        .scanline {
+            background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.1));
+            background-size: 100% 4px;
+            pointer-events: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-dark text-white font-display overflow-hidden h-screen w-full relative">
+<!-- Background Layer: Map -->
+<div class="absolute inset-0 z-0 bg-cover bg-center" data-alt="Dark tactical map background with grid lines and terrain features" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCBsFXGkS7899KKK4s4a2X9Id5SBhVFPla93t3IBX8NzNyStas7FznJpdpovVqWOf6y5RSYpVUrzm-1gun_KiI1kzT4A4dcfzP_DVfyBgmQal243bDv6QgyQnynXz8Ca5D2avfQmlUxGkf9UO-pqM_1Zcx--IuSg_HWLNEjOjWatwDzMYl-HHfLzOX2aYBXJ0H1pGMDbSwiVh17_urPP6AcvdJEelHKo9s6xznmjiFTKbQj0NZWHYc78cHj9cBCF9OHEJoJBNowxQM');">
+<div class="absolute inset-0 bg-[#161a22]/60 backdrop-blur-[2px]"></div>
+<div class="absolute inset-0 scanline opacity-20 z-0"></div>
+</div>
+<!-- Main Content Wrapper -->
+<div class="relative z-10 flex flex-col h-full w-full max-w-md mx-auto bg-black/10 shadow-2xl overflow-hidden border-x border-white/5">
+<!-- Top App Bar -->
+<header class="shrink-0 flex items-center justify-between px-4 py-3 glass-panel border-b border-white/10 rounded-b-lg mx-2 mt-2">
+<div class="flex items-center gap-3">
+<div class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary border border-primary/30">
+<span class="material-symbols-outlined text-[20px]">military_tech</span>
+</div>
+<div>
+<h2 class="text-xs font-bold tracking-[0.15em] text-primary/80 uppercase">System Config</h2>
+<p class="text-[10px] text-gray-400 tracking-wider">V.1.0 // ONLINE</p>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<div class="flex flex-col items-end">
+<span class="text-[10px] font-mono text-primary">PING: 24ms</span>
+<div class="flex gap-0.5 mt-0.5">
+<div class="w-1 h-2 bg-primary"></div>
+<div class="w-1 h-2 bg-primary"></div>
+<div class="w-1 h-2 bg-primary"></div>
+<div class="w-1 h-2 bg-white/20"></div>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Layout: Sidebar + Grid -->
+<div class="flex flex-1 overflow-hidden pt-4 pb-2 px-2 gap-3">
+<!-- Left Command Rail (Nav Drawer variant) -->
+<nav class="w-14 flex flex-col gap-3 shrink-0 py-2">
+<button class="size-12 rounded-lg bg-primary/10 border border-primary/30 flex items-center justify-center text-primary shadow-[0_0_15px_rgba(0,238,255,0.2)]">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<div class="w-full h-px bg-white/10 my-1"></div>
+<button class="size-12 rounded-lg glass-panel hover:bg-white/5 flex items-center justify-center text-gray-400 hover:text-white transition-colors group relative">
+<span class="material-symbols-outlined">chat</span>
+<div class="absolute right-0 top-0 size-3 bg-red-500 rounded-full border-2 border-[#161a22] translate-x-1 -translate-y-1"></div>
+</button>
+<button class="size-12 rounded-lg glass-panel hover:bg-white/5 flex items-center justify-center text-gray-400 hover:text-white transition-colors">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+<div class="mt-auto flex flex-col items-center gap-3">
+<button class="size-10 rounded-lg glass-panel hover:bg-red-500/20 hover:border-red-500/50 hover:text-red-400 flex items-center justify-center text-gray-500 transition-all">
+<span class="material-symbols-outlined text-[20px]">power_settings_new</span>
+</button>
+</div>
+</nav>
+<!-- Scrollable Content Area -->
+<main class="flex-1 overflow-y-auto pr-1 pb-20 space-y-4">
+<!-- Account Status Banner -->
+<div class="glass-panel p-4 rounded-lg flex items-center gap-4 border-l-4 border-l-primary relative overflow-hidden group">
+<div class="absolute -right-6 -top-6 size-24 bg-primary/10 rounded-full blur-2xl group-hover:bg-primary/20 transition-all duration-500"></div>
+<div class="relative size-12">
+<div class="absolute inset-0 bg-primary/20 rounded-lg animate-pulse"></div>
+<img alt="Commander avatar placeholder" class="size-12 rounded-lg object-cover border border-primary/50 relative z-10" src="https://lh3.googleusercontent.com/aida-public/AB6AXuApW_Sppe6evoZpd8xZ3g7lbhxXEvdqHF2COk3WbRml-2ix3pjcXjARVyPQ-hUIp_qPYE4vxoTMyIw6Mr1gmh2g9KbFSFWrt870oPqOUxaCDi-6DDUd679Kd6a8J0VX8shonYl8OyNCYS97PS8KBfcp2UG8uMViC80LPmLJ8aYwKE0jcMz2dkb9F1_yZRBJDhyEVum22lygEvVbJrlaGrhMwdkHaFbmW77rPyMtpE1W9UGZFigp7TMj8lPAG8_3Ja9XeY65nrDniKw"/>
+<div class="absolute -bottom-1 -right-1 bg-green-500 size-3 rounded-full border-2 border-black z-20"></div>
+</div>
+<div class="flex-1 z-10">
+<h3 class="text-sm font-bold text-white tracking-wide">COMMANDER AXEL</h3>
+<p class="text-xs text-primary/80">ID: 884-291-00</p>
+</div>
+<button class="p-2 rounded hover:bg-white/10 text-white/50 hover:text-white transition-colors">
+<span class="material-symbols-outlined text-[20px]">edit</span>
+</button>
+</div>
+<!-- Section: Visual Output -->
+<section class="space-y-2">
+<div class="flex items-center justify-between px-1">
+<h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest flex items-center gap-2">
+<span class="material-symbols-outlined text-[14px]">visibility</span>
+                            Visual Output
+                        </h3>
+</div>
+<div class="glass-panel p-4 rounded-lg space-y-5">
+<!-- Quality Segmented Control -->
+<div class="space-y-2">
+<div class="flex justify-between items-end">
+<label class="text-xs font-medium text-gray-300">Global Quality</label>
+<span class="text-xs font-bold text-primary">HIGH</span>
+</div>
+<div class="flex p-1 bg-black/40 rounded-lg border border-white/5 relative">
+<!-- Active Indicator Background (Logic would move this) -->
+<div class="absolute top-1 bottom-1 left-[50%] w-[25%] bg-primary/20 border border-primary/50 rounded shadow-[0_0_10px_rgba(0,238,255,0.2)] transition-all"></div>
+<button class="flex-1 py-2 text-[10px] font-bold text-gray-500 hover:text-white relative z-10 text-center uppercase tracking-wide">Low</button>
+<button class="flex-1 py-2 text-[10px] font-bold text-gray-500 hover:text-white relative z-10 text-center uppercase tracking-wide">Med</button>
+<button class="flex-1 py-2 text-[10px] font-bold text-white relative z-10 text-center uppercase tracking-wide">High</button>
+<button class="flex-1 py-2 text-[10px] font-bold text-gray-500 hover:text-white relative z-10 text-center uppercase tracking-wide">Ultra</button>
+</div>
+</div>
+<!-- Toggles -->
+<div class="grid grid-cols-2 gap-4">
+<div class="flex items-center justify-between">
+<span class="text-sm text-gray-300">Motion Blur</span>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox" value=""/>
+<div class="w-9 h-5 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-primary/80 shadow-inner"></div>
+</label>
+</div>
+<div class="flex items-center justify-between">
+<span class="text-sm text-gray-300">Bloom</span>
+<label class="relative inline-flex items-center cursor-pointer">
+<input class="sr-only peer" type="checkbox" value=""/>
+<div class="w-9 h-5 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-primary/80 shadow-inner"></div>
+</label>
+</div>
+</div>
+</div>
+</section>
+<!-- Section: Audio Feeds -->
+<section class="space-y-2">
+<div class="flex items-center justify-between px-1">
+<h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest flex items-center gap-2">
+<span class="material-symbols-outlined text-[14px]">graphic_eq</span>
+                            Audio Feeds
+                        </h3>
+</div>
+<div class="glass-panel p-4 rounded-lg space-y-4">
+<!-- Master Volume -->
+<div class="space-y-2 group">
+<div class="flex justify-between text-xs">
+<span class="text-gray-300 group-hover:text-primary transition-colors">Master Channel</span>
+<span class="font-mono text-primary">85%</span>
+</div>
+<input class="w-full h-2 rounded-lg appearance-none cursor-pointer" max="100" min="0" type="range" value="85"/>
+</div>
+<!-- SFX Volume -->
+<div class="space-y-2 group">
+<div class="flex justify-between text-xs">
+<span class="text-gray-300 group-hover:text-primary transition-colors">Tactical SFX</span>
+<span class="font-mono text-primary">60%</span>
+</div>
+<input class="w-full h-2 rounded-lg appearance-none cursor-pointer" max="100" min="0" type="range" value="60"/>
+</div>
+<!-- Voice Volume -->
+<div class="space-y-2 group">
+<div class="flex justify-between text-xs">
+<span class="text-gray-300 group-hover:text-primary transition-colors">Unit Responses</span>
+<span class="font-mono text-primary">100%</span>
+</div>
+<input class="w-full h-2 rounded-lg appearance-none cursor-pointer" max="100" min="0" type="range" value="100"/>
+</div>
+</div>
+</section>
+<!-- Section: Comms & Alerts -->
+<section class="space-y-2">
+<div class="flex items-center justify-between px-1">
+<h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest flex items-center gap-2">
+<span class="material-symbols-outlined text-[14px]">notifications_active</span>
+                            Comms &amp; Alerts
+                        </h3>
+</div>
+<div class="glass-panel rounded-lg divide-y divide-white/5">
+<div class="flex items-center justify-between p-3 hover:bg-white/5 transition-colors">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-full bg-red-500/20 text-red-500 flex items-center justify-center border border-red-500/30">
+<span class="material-symbols-outlined text-[18px]">warning</span>
+</div>
+<div class="flex flex-col">
+<span class="text-sm font-medium text-gray-200">Base Under Attack</span>
+<span class="text-[10px] text-gray-500">Critical alerts only</span>
+</div>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox" value=""/>
+<div class="w-9 h-5 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-primary/80 shadow-inner"></div>
+</label>
+</div>
+<div class="flex items-center justify-between p-3 hover:bg-white/5 transition-colors">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-full bg-blue-500/20 text-blue-500 flex items-center justify-center border border-blue-500/30">
+<span class="material-symbols-outlined text-[18px]">groups</span>
+</div>
+<div class="flex flex-col">
+<span class="text-sm font-medium text-gray-200">Alliance Pings</span>
+<span class="text-[10px] text-gray-500">Map markers &amp; requests</span>
+</div>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox" value=""/>
+<div class="w-9 h-5 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-primary/80 shadow-inner"></div>
+</label>
+</div>
+<div class="flex items-center justify-between p-3 hover:bg-white/5 transition-colors">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-full bg-yellow-500/20 text-yellow-500 flex items-center justify-center border border-yellow-500/30">
+<span class="material-symbols-outlined text-[18px]">inventory_2</span>
+</div>
+<div class="flex flex-col">
+<span class="text-sm font-medium text-gray-200">Logistics</span>
+<span class="text-[10px] text-gray-500">Trade &amp; resource full</span>
+</div>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input class="sr-only peer" type="checkbox" value=""/>
+<div class="w-9 h-5 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-primary/80 shadow-inner"></div>
+</label>
+</div>
+</div>
+</section>
+<div class="h-6"></div> <!-- Extra spacing for scrolling -->
+</main>
+</div>
+<!-- Footer Actions -->
+<footer class="absolute bottom-0 left-0 right-0 glass-panel border-t border-white/10 p-4 z-20 backdrop-blur-xl">
+<div class="flex gap-4">
+<button class="flex-1 h-12 rounded-lg bg-transparent border border-white/20 text-white font-bold tracking-wide uppercase text-sm hover:bg-white/5 transition-colors">
+                    Discard
+                </button>
+<button class="flex-[2] h-12 rounded-lg bg-primary text-background-dark font-bold tracking-wide uppercase text-sm shadow-[0_0_20px_rgba(0,238,255,0.4)] hover:shadow-[0_0_30px_rgba(0,238,255,0.6)] hover:bg-[#33f2ff] transition-all flex items-center justify-center gap-2 group">
+<span class="material-symbols-outlined group-hover:animate-pulse">check_circle</span>
+                    Apply Config
+                </button>
+</div>
+</footer>
+</div>
+</body></html>

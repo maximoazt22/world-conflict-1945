@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Legendary Hall of Fame</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,100..900;1,100..900&amp;family=Manrope:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#cb9434",
+                        "background-light": "#f7f5f3",
+                        "background-dark": "#1a1a1a",
+                        "stone-surface": "#30353A",
+                        "stone-highlight": "#3d434a",
+                    },
+                    fontFamily: {
+                        "display": ["Noto Serif", "serif"],
+                        "body": ["Manrope", "sans-serif"],
+                    },
+                    backgroundImage: {
+                        'marble': "url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxmaWx0ZXIgaWQ9Im4iPjxmZVR1cmJ1bGVuY2UgdHlwZT0iZnJhY3RhbE5vaXNlIiBiYXNlRnJlcXVlbmN5PSIwLjUiIG51bU9jdGF2ZXM9IjEiIHN0aXRjaFRpbGVzPSJzdGl0Y2giLz48L2ZpbHRlcj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMzAzNTNBIi8+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idHJhbnNwYXJlbnQiIGZpbHRlcj0idXJsKCNuKSIgb3BhY2l0eT0iMC4wNSIvPjwvc3ZnPg==')",
+                        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom scrollbar for webkit to fit the dark theme */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1a1a1a; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #30353A; 
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #cb9434; 
+        }
+        
+        /* Subtle shine animation for gold elements */
+        @keyframes shine {
+            0% { background-position: -100% 50%; }
+            100% { background-position: 200% 50%; }
+        }
+        .gold-shimmer {
+            background: linear-gradient(90deg, transparent, rgba(203, 148, 52, 0.2), transparent);
+            background-size: 200% 100%;
+            animation: shine 3s infinite linear;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-dark text-white font-display antialiased selection:bg-primary selection:text-black">
+<div class="relative flex min-h-screen w-full flex-col overflow-hidden max-w-md mx-auto border-x border-[#30353A]">
+<!-- Header -->
+<header class="sticky top-0 z-50 bg-[#1a1a1a]/95 backdrop-blur-sm border-b border-[#30353A]">
+<div class="flex items-center justify-between p-4 pb-2">
+<button class="text-white/80 hover:text-primary transition-colors flex size-10 items-center justify-center rounded-full hover:bg-white/5">
+<span class="material-symbols-outlined text-[24px]">arrow_back</span>
+</button>
+<h1 class="text-[#f0f0f0] text-xl font-bold tracking-tight text-center drop-shadow-md">Legendary Hall</h1>
+<button class="text-white/80 hover:text-primary transition-colors flex size-10 items-center justify-center rounded-full hover:bg-white/5">
+<span class="material-symbols-outlined text-[24px]">info</span>
+</button>
+</div>
+<!-- Season Selector Chips -->
+<div class="flex gap-2 px-4 pb-4 overflow-x-auto no-scrollbar mask-gradient-right">
+<button class="flex shrink-0 items-center gap-2 rounded-sm bg-primary px-3 py-1.5 shadow-[0_0_10px_rgba(203,148,52,0.3)]">
+<span class="text-black text-sm font-bold font-body">Season 5 (1945)</span>
+<span class="material-symbols-outlined text-black text-[18px]">expand_more</span>
+</button>
+<button class="flex shrink-0 items-center gap-2 rounded-sm bg-stone-surface border border-white/10 px-3 py-1.5 hover:border-primary/50 transition-colors">
+<span class="text-white/60 text-sm font-medium font-body">Season 4</span>
+</button>
+<button class="flex shrink-0 items-center gap-2 rounded-sm bg-stone-surface border border-white/10 px-3 py-1.5 hover:border-primary/50 transition-colors">
+<span class="text-white/60 text-sm font-medium font-body">Season 3</span>
+</button>
+</div>
+</header>
+<!-- Main Content -->
+<main class="flex-1 flex flex-col relative">
+<!-- Ambient Light Effect -->
+<div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[400px] bg-gradient-radial from-primary/10 via-transparent to-transparent pointer-events-none z-0"></div>
+<!-- Podium Section -->
+<section class="relative z-10 px-4 pt-6 pb-12">
+<div class="flex items-end justify-center gap-3 md:gap-4 h-[340px]">
+<!-- 2nd Place -->
+<div class="flex flex-col items-center w-1/3 max-w-[110px]">
+<div class="relative w-full aspect-[3/4] mb-[-10px] z-10">
+<div class="w-full h-full bg-stone-surface rounded-sm border border-white/10 shadow-lg overflow-hidden relative group">
+<div class="absolute inset-0 bg-cover bg-center opacity-90 group-hover:scale-105 transition-transform duration-700" data-alt="Black and white portrait of a strict military general looking left" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuB8UCQO4ATJ7Djvas0iFCFuERm45gDSvhnnavqPIfQsk7etTHLg9TXDyRhHl4GsbFqAqPqlrLoS5uLqLwdQLlM2LYiCL_BaK_tkGEijAqu50uIpOCkC0XTnq1HF103y6hFednBlkFkljGHAle2H9dWhPAW-7txLcWK4LRxTqYlMukk0O3UjgP9gw-JdssFaXmcw-KzRxrMyXsWW8IgfRyeF67nsbnk2Ufz2UUkcN5QC0NNf5BYgFsD5ZabsF2Lh-E0pyX5osX3CgVU')"></div>
+<div class="absolute bottom-0 w-full bg-gradient-to-t from-black/90 to-transparent p-2 pt-8">
+<div class="text-center">
+<p class="text-xs font-bold text-gray-300 font-body uppercase tracking-wider">UK</p>
+</div>
+</div>
+</div>
+<!-- Rank Badge -->
+<div class="absolute -top-3 -left-2 size-8 bg-[#C0C0C0] text-black font-bold flex items-center justify-center rounded-full border-2 border-[#1a1a1a] shadow-md z-20 font-body text-sm">2</div>
+</div>
+<!-- Pedestal Base -->
+<div class="w-full h-24 bg-marble bg-stone-surface rounded-t-sm border-t border-white/20 shadow-[0_10px_30px_rgba(0,0,0,0.5)] flex flex-col items-center justify-start pt-4 px-1">
+<h3 class="text-white text-xs md:text-sm font-bold text-center leading-tight mb-1">Montgomery</h3>
+<p class="text-white/40 text-[10px] text-center font-body">Op. Market Garden</p>
+</div>
+</div>
+<!-- 1st Place -->
+<div class="flex flex-col items-center w-1/3 max-w-[130px] -mb-2 z-20">
+<div class="relative w-full aspect-[3/4] mb-[-12px] z-10">
+<!-- Gold Glow -->
+<div class="absolute -inset-1 bg-primary/20 blur-md rounded-sm"></div>
+<div class="w-full h-full bg-stone-surface rounded-sm border-2 border-primary shadow-2xl shadow-primary/20 overflow-hidden relative group">
+<div class="gold-shimmer absolute inset-0 opacity-30 pointer-events-none z-10"></div>
+<div class="absolute inset-0 bg-cover bg-center group-hover:scale-105 transition-transform duration-700" data-alt="Portrait of a determined commander in desert uniform" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAYd_tlj28k7upsU_bmuptxb9hP3lZ0BLmN_Hntj6V6l8t_NnqI6KI5N_TiXiLnE0TSmdBv5GDHh41piiBfqKbYyD8ul6p6dbDmJX2MOTPJ3EYbY2-LRy3xomSzFTkKTNJgOo79nHy9bbbb82zvuFhdiXFsdzXukn4qGcpyvym3mIYUcte5DV8D1Rjzi48AC_shArkKTCOo-l-kHMLVC0E5yxbBj6XacQ2FPHhWDBid7HAIC00sdVp448AsTzwAiLWNz1yBx0V98EU')"></div>
+<div class="absolute bottom-0 w-full bg-gradient-to-t from-primary/90 to-transparent p-2 pt-10">
+<div class="text-center">
+<p class="text-xs font-bold text-black font-body uppercase tracking-wider">DE</p>
+</div>
+</div>
+</div>
+<!-- Rank Badge -->
+<div class="absolute -top-4 -right-3 size-10 bg-primary text-black font-bold flex items-center justify-center rounded-full border-4 border-[#1a1a1a] shadow-lg z-20 font-body text-lg">
+<span class="material-symbols-outlined text-lg">emoji_events</span>
+</div>
+</div>
+<!-- Pedestal Base -->
+<div class="w-full h-32 bg-marble bg-stone-surface rounded-t-sm border-t border-primary/50 shadow-[0_10px_40px_rgba(203,148,52,0.15)] flex flex-col items-center justify-start pt-5 px-1 relative overflow-hidden">
+<div class="absolute top-0 inset-x-0 h-[1px] bg-gradient-to-r from-transparent via-primary to-transparent"></div>
+<h3 class="text-primary text-sm md:text-base font-bold text-center leading-tight mb-1">Rommel</h3>
+<p class="text-white/60 text-[10px] text-center font-body">El Alamein</p>
+</div>
+</div>
+<!-- 3rd Place -->
+<div class="flex flex-col items-center w-1/3 max-w-[110px]">
+<div class="relative w-full aspect-[3/4] mb-[-10px] z-10">
+<div class="w-full h-full bg-stone-surface rounded-sm border border-white/10 shadow-lg overflow-hidden relative group">
+<div class="absolute inset-0 bg-cover bg-center opacity-90 group-hover:scale-105 transition-transform duration-700" data-alt="Vintage style photo of a general with helmet" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBR0Cn13TrOeJA2kAtoYP5OJidcIkHNvjS5vryv-sgN6kSRQWkpsxUb7Y_mB24W5A-eQPwLYrdk0QqF-lxENY3sF-vKtvUTRgG5t_tyQRP1jNeSn_GYX2YtcNLPNP_O49UcjR-eSekYh81qCSZmcAsDPfRz2-lcBqRiM4f1fU5C5cGzPa2Mt-mHGntsPf3035t1LUwzvO0WLJq5v8_G1mwl8mbAf4NzE5p9g7AAyfeEJTTrVDXt-IsON8F3g8L94xzX9KEN6Vi4LGA')"></div>
+<div class="absolute bottom-0 w-full bg-gradient-to-t from-black/90 to-transparent p-2 pt-8">
+<div class="text-center">
+<p class="text-xs font-bold text-gray-300 font-body uppercase tracking-wider">US</p>
+</div>
+</div>
+</div>
+<!-- Rank Badge -->
+<div class="absolute -top-3 -right-2 size-8 bg-[#cd7f32] text-black font-bold flex items-center justify-center rounded-full border-2 border-[#1a1a1a] shadow-md z-20 font-body text-sm">3</div>
+</div>
+<!-- Pedestal Base -->
+<div class="w-full h-20 bg-marble bg-stone-surface rounded-t-sm border-t border-white/20 shadow-[0_10px_30px_rgba(0,0,0,0.5)] flex flex-col items-center justify-start pt-4 px-1">
+<h3 class="text-white text-xs md:text-sm font-bold text-center leading-tight mb-1">Patton</h3>
+<p class="text-white/40 text-[10px] text-center font-body">Battle of Bulge</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Wall of Valor Header -->
+<div class="sticky top-[138px] z-40 bg-[#1a1a1a] shadow-lg border-y border-[#30353A]">
+<div class="flex items-center justify-between px-6 py-3">
+<h3 class="text-white text-base font-bold tracking-widest uppercase flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-sm">military_tech</span>
+                        Wall of Valor
+                    </h3>
+<span class="text-xs text-white/40 font-body uppercase tracking-wide">Top 100</span>
+</div>
+</div>
+<!-- Scrollable List -->
+<div class="flex flex-col pb-10 bg-[#151515]">
+<!-- List Item 4 -->
+<div class="group relative flex items-center gap-4 px-4 py-4 border-b border-white/5 bg-[#1a1a1a] hover:bg-[#202020] transition-colors">
+<div class="absolute left-0 top-0 bottom-0 w-[2px] bg-transparent group-hover:bg-primary transition-colors"></div>
+<div class="flex flex-col items-center justify-center min-w-[24px]">
+<span class="text-white/30 text-lg font-bold font-display group-hover:text-primary transition-colors">4</span>
+</div>
+<div class="relative size-12 shrink-0 rounded-sm overflow-hidden border border-white/10 group-hover:border-primary/50 transition-colors">
+<img alt="Zhukov" class="h-full w-full object-cover" data-alt="Portrait of Soviet commander Zhukov" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAf0b3aolkkxiaEVxpAGKoDuWFwitIeLtscUd9PVhWhgdV4I_ANcK9wIHmiXaKfM--KkUfg2mJs90x-pU3Q5460KSf6EF9fRPBKUqsq9pw09rXiWw31sTNHIks1-9aEEZMpl_Ujb3eIQSfaXgBo8Q1VQ90A947TcmI4OgNhdjHOVNF_HvIDC7Ur5dJzXVrxaUgQ7kyK7Dmm9oX1o-OExOFVXP6EszG60f-myEevPvJ31cx5nBtKGGi3gVsfJrxkkVCKXLi2guAhTGE"/>
+</div>
+<div class="flex flex-1 flex-col justify-center min-w-0">
+<div class="flex items-center gap-2 mb-0.5">
+<p class="text-white text-base font-bold truncate">Zhukov</p>
+<span class="text-[10px] bg-white/10 text-white/60 px-1.5 py-0.5 rounded font-body font-bold">USSR</span>
+</div>
+<p class="text-white/40 text-xs truncate font-body">Siege of Leningrad • 1943</p>
+</div>
+<button class="shrink-0 flex items-center justify-center gap-1.5 rounded-sm border border-primary/30 px-3 py-1.5 text-primary text-xs font-bold uppercase tracking-wide hover:bg-primary hover:text-black transition-all active:scale-95 font-body group/btn">
+<span>Replay</span>
+<span class="material-symbols-outlined text-[14px] group-hover/btn:translate-x-0.5 transition-transform">play_circle</span>
+</button>
+</div>
+<!-- List Item 5 -->
+<div class="group relative flex items-center gap-4 px-4 py-4 border-b border-white/5 bg-[#1a1a1a] hover:bg-[#202020] transition-colors">
+<div class="absolute left-0 top-0 bottom-0 w-[2px] bg-transparent group-hover:bg-primary transition-colors"></div>
+<div class="flex flex-col items-center justify-center min-w-[24px]">
+<span class="text-white/30 text-lg font-bold font-display group-hover:text-primary transition-colors">5</span>
+</div>
+<div class="relative size-12 shrink-0 rounded-sm overflow-hidden border border-white/10 group-hover:border-primary/50 transition-colors">
+<img alt="MacArthur" class="h-full w-full object-cover" data-alt="Portrait of US General MacArthur" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDMQpSyTEBxqWhQdwQkmr6PhizMOFbUmzSOj88jZiG4oGagJw6VSf3ZxG7o9ZYAPTHlNQHKkiQuWOds9nrYMN8f-wbT44Zej-FexrN4mSx15AyPTRsXUNW63ODtF66qkgBf4K83ERZDQhaRdYc-rVa-n1eZ8onvDpOVkW-J3mJP1COx9IGZMMR_L83IdU616kMQOBkUrG7RPXUnVfMltxML-TQ5dmYflo1lWVU52dTZbIXB2MITGFgG1udIOqq6O5CItuR2X6wj7Es"/>
+</div>
+<div class="flex flex-1 flex-col justify-center min-w-0">
+<div class="flex items-center gap-2 mb-0.5">
+<p class="text-white text-base font-bold truncate">MacArthur</p>
+<span class="text-[10px] bg-white/10 text-white/60 px-1.5 py-0.5 rounded font-body font-bold">US</span>
+</div>
+<p class="text-white/40 text-xs truncate font-body">Pacific Campaign • 1944</p>
+</div>
+<button class="shrink-0 flex items-center justify-center gap-1.5 rounded-sm border border-primary/30 px-3 py-1.5 text-primary text-xs font-bold uppercase tracking-wide hover:bg-primary hover:text-black transition-all active:scale-95 font-body group/btn">
+<span>Replay</span>
+<span class="material-symbols-outlined text-[14px] group-hover/btn:translate-x-0.5 transition-transform">play_circle</span>
+</button>
+</div>
+<!-- List Item 6 -->
+<div class="group relative flex items-center gap-4 px-4 py-4 border-b border-white/5 bg-[#1a1a1a] hover:bg-[#202020] transition-colors">
+<div class="absolute left-0 top-0 bottom-0 w-[2px] bg-transparent group-hover:bg-primary transition-colors"></div>
+<div class="flex flex-col items-center justify-center min-w-[24px]">
+<span class="text-white/30 text-lg font-bold font-display group-hover:text-primary transition-colors">6</span>
+</div>
+<div class="relative size-12 shrink-0 rounded-sm overflow-hidden border border-white/10 group-hover:border-primary/50 transition-colors">
+<img alt="De Gaulle" class="h-full w-full object-cover" data-alt="Portrait of French General De Gaulle" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCfJ0Jy4K9yJ3u7h7Vu7K9j9BVW4sRchBGDxaLzaTv4E5cw97suAR6Lgidzp70cnvwijZCNdWr9sve0KbXeTTby-zOxeVsXU5Ut8uLWBavRWfUAfQigLNIApPnpiAjM0Xqi-bg5hsxM2AA3D_EdcPuMPnT9PilnwH7M8plCCcvTNmWw20vWl4dbHwq1pStDZ0CARGIdcidLLJWiBgtmQGVLGagxuboVfoyKG_j_Sg7p8Rz1wHU_cdLZ20VOmwQeOzw2q9GxfETxbeo"/>
+</div>
+<div class="flex flex-1 flex-col justify-center min-w-0">
+<div class="flex items-center gap-2 mb-0.5">
+<p class="text-white text-base font-bold truncate">De Gaulle</p>
+<span class="text-[10px] bg-white/10 text-white/60 px-1.5 py-0.5 rounded font-body font-bold">FR</span>
+</div>
+<p class="text-white/40 text-xs truncate font-body">Liberation of Paris • 1944</p>
+</div>
+<button class="shrink-0 flex items-center justify-center gap-1.5 rounded-sm border border-primary/30 px-3 py-1.5 text-primary text-xs font-bold uppercase tracking-wide hover:bg-primary hover:text-black transition-all active:scale-95 font-body group/btn">
+<span>Replay</span>
+<span class="material-symbols-outlined text-[14px] group-hover/btn:translate-x-0.5 transition-transform">play_circle</span>
+</button>
+</div>
+<!-- List Item 7 -->
+<div class="group relative flex items-center gap-4 px-4 py-4 border-b border-white/5 bg-[#1a1a1a] hover:bg-[#202020] transition-colors">
+<div class="absolute left-0 top-0 bottom-0 w-[2px] bg-transparent group-hover:bg-primary transition-colors"></div>
+<div class="flex flex-col items-center justify-center min-w-[24px]">
+<span class="text-white/30 text-lg font-bold font-display group-hover:text-primary transition-colors">7</span>
+</div>
+<div class="relative size-12 shrink-0 rounded-sm overflow-hidden border border-white/10 group-hover:border-primary/50 transition-colors">
+<img alt="Yamamoto" class="h-full w-full object-cover" data-alt="Portrait of Japanese Admiral Yamamoto" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBNQ_JkY6YL5NYaRG2uAkYZsk3d70lBknamMvI42JJ50UaMVveCgW_MW54EL8YTz29hPInv8DpvJN1Cu-Nh0h8fuOdrVa54g0jI-eknzGVZdRpnQfzy-GRJDLmHLUyqznCUbiC_5JQbSGNnMuKW46qE80YwqDx9Q3nhMhVKyQkXAF1XBH8Ew6aGSdxt4kbtPi6tjo88SBKTdTtrCzjiBjuKfKv8Wtyx4dAPZI1J9_DCDJgywt_vGXD_TGDAjS3bCTSVYj6B5kn3oz0"/>
+</div>
+<div class="flex flex-1 flex-col justify-center min-w-0">
+<div class="flex items-center gap-2 mb-0.5">
+<p class="text-white text-base font-bold truncate">Yamamoto</p>
+<span class="text-[10px] bg-white/10 text-white/60 px-1.5 py-0.5 rounded font-body font-bold">JP</span>
+</div>
+<p class="text-white/40 text-xs truncate font-body">Pearl Harbor Raid • 1941</p>
+</div>
+<button class="shrink-0 flex items-center justify-center gap-1.5 rounded-sm border border-primary/30 px-3 py-1.5 text-primary text-xs font-bold uppercase tracking-wide hover:bg-primary hover:text-black transition-all active:scale-95 font-body group/btn">
+<span>Replay</span>
+<span class="material-symbols-outlined text-[14px] group-hover/btn:translate-x-0.5 transition-transform">play_circle</span>
+</button>
+</div>
+<!-- Footer spacer -->
+<div class="h-20 flex items-center justify-center text-white/20 text-xs font-body">
+                    End of Hall of Fame
+                </div>
+</div>
+</main>
+</div>
+</body></html>

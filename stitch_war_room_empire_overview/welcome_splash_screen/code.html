@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>World Conflict 1945 - Welcome</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#1fad7e",
+              "primary-dark": "#168a64",
+              "background-light": "#f2f2f3",
+              "background-dark": "#0f1115",
+              "glass-bg": "rgba(23, 25, 29, 0.75)",
+              "glass-border": "rgba(255, 255, 255, 0.08)",
+            },
+            fontFamily: {
+              "display": ["Space Grotesk", "sans-serif"]
+            },
+            backgroundImage: {
+              'grid-pattern': "linear-gradient(to right, #ffffff05 1px, transparent 1px), linear-gradient(to bottom, #ffffff05 1px, transparent 1px)",
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .glass-panel {
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+        }
+        .scanline {
+            width: 100%;
+            height: 100px;
+            z-index: 10;
+            background: linear-gradient(0deg, rgba(0,0,0,0) 0%, rgba(31, 173, 126, 0.1) 50%, rgba(0,0,0,0) 100%);
+            opacity: 0.1;
+            position: absolute;
+            bottom: 100%;
+            animation: scanline 10s linear infinite;
+        }
+        @keyframes scanline {
+            0% { bottom: 100%; }
+            100% { bottom: -100px; }
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-display bg-background-light dark:bg-background-dark text-white overflow-hidden h-screen w-full relative select-none">
+<!-- Background Layer: 3D Isometric Map -->
+<!-- The user requested a cinematic background showing a 3D isometric military map. -->
+<div class="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat w-full h-full transform scale-105" data-alt="Dark moody 3D isometric military terrain map with fog and low lighting" style="background-image: url('https://placeholder.pics/svg/390x844/222222/222222-2A2A2A'); background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDQb3L8PUFuO0UHm6OgvxSk50NAuWOwRhGeIlUlboZLcV5etNhton_EcvnN7UOWefnSIcCe-JcsFLw4Nmez34bFAxnOAJJcR0avX2Q9-arb2FY8y3dfhNd2t0yQ_beP3WS7p4QYkck1lF3Cf_4uzcHkksxPybX4p4jbipX-Zj1zeGOSRL-dmoK_X61wVpQm8OcQTFP8kIb-U4ReFyXSIHToR4YzzKobBj0DedAQ7I79kd-xCWtwOcMN1baBJw29sxpUHEDwxf_s9p8');">
+<div class="absolute inset-0 bg-black/40 mix-blend-multiply"></div>
+<div class="absolute inset-0 bg-gradient-to-b from-[#0f1115]/80 via-transparent to-[#0f1115]"></div>
+</div>
+<!-- Decorative Scanline overlay -->
+<div class="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+<div class="scanline"></div>
+</div>
+<!-- Main Content Container -->
+<div class="relative z-10 flex flex-col items-center justify-between h-full w-full px-6 py-12 safe-area-inset-bottom">
+<!-- Top Spacer (Can hold status bar area) -->
+<div class="h-12 w-full flex justify-between items-center opacity-60 text-xs tracking-widest uppercase">
+<span class="flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span> Server: EU-West</span>
+<span>v.2.0.4</span>
+</div>
+<!-- Center Glass Card -->
+<div class="w-full max-w-sm">
+<div class="glass-panel bg-glass-bg border border-glass-border rounded-2xl p-8 flex flex-col items-center relative overflow-hidden group">
+<!-- Subtle grid decoration inside card -->
+<div class="absolute inset-0 bg-grid-pattern bg-[length:20px_20px] opacity-20 pointer-events-none"></div>
+<!-- Decorative corner accents -->
+<div class="absolute top-0 left-0 w-4 h-4 border-l-2 border-t-2 border-primary/40 rounded-tl-lg"></div>
+<div class="absolute top-0 right-0 w-4 h-4 border-r-2 border-t-2 border-primary/40 rounded-tr-lg"></div>
+<div class="absolute bottom-0 left-0 w-4 h-4 border-l-2 border-b-2 border-primary/40 rounded-bl-lg"></div>
+<div class="absolute bottom-0 right-0 w-4 h-4 border-r-2 border-b-2 border-primary/40 rounded-br-lg"></div>
+<!-- Logo Section -->
+<div class="relative z-10 flex flex-col items-center mb-10 mt-2 text-center">
+<div class="w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center mb-4 ring-1 ring-primary/40 shadow-[0_0_15px_rgba(31,173,126,0.3)]">
+<span class="material-symbols-outlined text-primary text-4xl">military_tech</span>
+</div>
+<h2 class="text-white/70 text-sm tracking-[0.2em] font-medium mb-1">TACTICAL WARFARE</h2>
+<h1 class="text-white text-4xl font-bold leading-none tracking-tighter drop-shadow-lg">
+<span class="block text-2xl mb-1 text-white/90">WORLD CONFLICT</span>
+<span class="text-primary">1945</span>
+</h1>
+</div>
+<!-- Primary Actions -->
+<div class="w-full flex flex-col gap-4 relative z-10">
+<button class="relative w-full h-14 bg-primary hover:bg-primary-dark transition-all duration-300 rounded-lg flex items-center justify-center group/btn overflow-hidden shadow-lg shadow-primary/20 active:scale-[0.98]">
+<div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-100%] group-hover/btn:translate-x-[100%] transition-transform duration-700"></div>
+<span class="text-white font-bold tracking-widest text-sm relative z-10 flex items-center gap-2">
+                            INITIATE COMMAND
+                            <span class="material-symbols-outlined text-lg">arrow_forward</span>
+</span>
+</button>
+<button class="w-full h-14 bg-transparent border border-white/20 hover:border-white/40 hover:bg-white/5 transition-all duration-300 rounded-lg flex items-center justify-center text-white/90 font-bold tracking-widest text-sm active:scale-[0.98]">
+                        LOGIN TO HQ
+                    </button>
+</div>
+</div>
+<!-- Connection Status / Decorative Tech Text under card -->
+<div class="w-full text-center mt-6 opacity-40">
+<p class="text-[10px] tracking-widest font-mono">SECURE CONNECTION ESTABLISHED • ENCRYPTION: AES-256</p>
+</div>
+</div>
+<!-- Footer / Guest Link -->
+<div class="w-full flex flex-col items-center gap-2 mb-4">
+<button class="group flex items-center gap-2 text-white/50 hover:text-primary transition-colors py-3 px-6 rounded-full hover:bg-white/5">
+<span class="text-sm font-medium tracking-wide border-b border-transparent group-hover:border-primary transition-all">Play as Guest</span>
+</button>
+<!-- Legal / Version small text -->
+<div class="flex gap-4 text-[10px] text-white/20 uppercase tracking-wider">
+<a class="hover:text-white/40 transition-colors" href="#">Privacy</a>
+<span>|</span>
+<a class="hover:text-white/40 transition-colors" href="#">Terms</a>
+</div>
+</div>
+</div>
+</body></html>

@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Experimental Weapons Bunker</title>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&amp;family=Inter:wght@400;500;600&amp;family=Share+Tech+Mono&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+            extend: {
+                colors: {
+                "primary": "#1a9fff",
+                "background-light": "#f5f7f8",
+                "background-dark": "#0f1b23",
+                "surface-dark": "#162028",
+                "surface-highlight": "#1e2b36",
+                "alert": "#fa6238",
+                "success": "#0bda5b",
+                },
+                fontFamily: {
+                "display": ["Space Grotesk", "sans-serif"],
+                "body": ["Inter", "sans-serif"],
+                "mono": ["Share Tech Mono", "monospace"],
+                },
+                backgroundImage: {
+                    'scanlines': 'linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06))',
+                    'grid-pattern': 'linear-gradient(to right, #1a9fff1a 1px, transparent 1px), linear-gradient(to bottom, #1a9fff1a 1px, transparent 1px)',
+                },
+                boxShadow: {
+                    'glow': '0 0 10px rgba(26, 159, 255, 0.3)',
+                    'glow-sm': '0 0 5px rgba(26, 159, 255, 0.5)',
+                }
+            },
+            },
+        }
+    </script>
+<style>
+        /* Custom scrollbar for logs */
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+        .scanline-overlay {
+            background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.2));
+            background-size: 100% 4px;
+            pointer-events: none;
+        }
+        .crt-flicker {
+            opacity: 0.95;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white font-display overflow-x-hidden antialiased selection:bg-primary selection:text-white">
+<div class="relative flex h-full min-h-screen w-full flex-col max-w-md mx-auto bg-background-light dark:bg-background-dark shadow-2xl border-x border-white/5">
+<!-- Header Module -->
+<header class="sticky top-0 z-30 flex items-center bg-background-dark/95 backdrop-blur-md border-b border-white/10 p-4 pb-3 justify-between">
+<div class="text-primary/80 flex size-10 shrink-0 items-center justify-center rounded border border-white/10 bg-surface-dark">
+<span class="material-symbols-outlined text-[20px]">encrypted</span>
+</div>
+<div class="flex flex-col items-center">
+<h2 class="text-white text-sm font-bold tracking-[0.2em] leading-tight">SECTOR 7</h2>
+<span class="text-[10px] text-primary font-mono tracking-widest">EXP. LAB // RESTRICTED</span>
+</div>
+<div class="flex size-10 items-center justify-center rounded border border-white/10 bg-surface-dark cursor-pointer hover:bg-white/5 active:scale-95 transition-all">
+<span class="material-symbols-outlined text-white text-[20px]">settings</span>
+</div>
+</header>
+<!-- Stats Module -->
+<div class="grid grid-cols-3 gap-3 p-4">
+<div class="relative flex flex-col gap-1 rounded bg-surface-dark p-3 border border-white/5 shadow-inner">
+<div class="flex items-center gap-1 text-slate-400">
+<span class="material-symbols-outlined text-[14px]">science</span>
+<p class="text-[10px] font-bold tracking-wider">URANIUM</p>
+</div>
+<p class="text-white font-mono text-xl font-bold leading-tight tabular-nums tracking-tight">14.2K</p>
+<div class="absolute top-0 right-0 p-1">
+<div class="h-1.5 w-1.5 rounded-full bg-success shadow-[0_0_8px_#0bda5b]"></div>
+</div>
+</div>
+<div class="relative flex flex-col gap-1 rounded bg-surface-dark p-3 border border-white/5 shadow-inner">
+<div class="flex items-center gap-1 text-slate-400">
+<span class="material-symbols-outlined text-[14px]">construction</span>
+<p class="text-[10px] font-bold tracking-wider">STEEL</p>
+</div>
+<p class="text-white font-mono text-xl font-bold leading-tight tabular-nums tracking-tight">5,800</p>
+</div>
+<div class="relative flex flex-col gap-1 rounded bg-surface-dark p-3 border border-primary/30 shadow-[inset_0_0_20px_rgba(26,159,255,0.05)]">
+<div class="flex items-center gap-1 text-primary">
+<span class="material-symbols-outlined text-[14px]">bolt</span>
+<p class="text-[10px] font-bold tracking-wider">ENERGY</p>
+</div>
+<p class="text-primary font-mono text-xl font-bold leading-tight tabular-nums tracking-tight text-shadow-glow">99%</p>
+<div class="absolute bottom-3 right-3 text-alert text-[10px] font-mono">-2%</div>
+</div>
+</div>
+<!-- Main Viewport (Holo-Table) -->
+<div class="px-4 pb-2">
+<div class="relative flex flex-col rounded-lg overflow-hidden border border-primary/30 bg-surface-dark group">
+<!-- Decorative Corners -->
+<div class="absolute top-0 left-0 w-4 h-4 border-l-2 border-t-2 border-primary z-20"></div>
+<div class="absolute top-0 right-0 w-4 h-4 border-r-2 border-t-2 border-primary z-20"></div>
+<div class="absolute bottom-0 left-0 w-4 h-4 border-l-2 border-b-2 border-primary z-20"></div>
+<div class="absolute bottom-0 right-0 w-4 h-4 border-r-2 border-b-2 border-primary z-20"></div>
+<!-- Main Image Area -->
+<div class="relative w-full aspect-[4/3] bg-surface-highlight overflow-hidden">
+<div class="absolute inset-0 bg-[url('https://placeholder.pics/svg/300')] bg-cover bg-center opacity-30 mix-blend-overlay" data-alt="Dark industrial metal texture background"></div>
+<!-- Wireframe Image -->
+<div class="absolute inset-4 bg-contain bg-center bg-no-repeat opacity-90 z-10 filter drop-shadow-[0_0_5px_rgba(26,159,255,0.8)]" data-alt="Wireframe blueprint of a heavy mech walker robot glowing blue" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDR8DVmbMgFj6nrxppv7q3jiISEy7aeGO222XqIcUUA7y51s6bBbVI9cH7K4UNzovvvQobufXUNmLlK8aScqsD22enUU6NDbLlOCznkvL6Qul6g0a5rSsHS1HwGePDQRbdR-muj4Mr-v-JtwpGE2MQuXjIEysea4va158GoThth8KeIRZNSI-ufADLnF0h92KnylCcuuTdTFl632DTt4NnRzucYXqVsjNRbW11kGB2iO5EKJ_BTxUWBA9J7AyxlKEG9HoKR63sI7mk'); filter: sepia(100%) hue-rotate(170deg) saturate(300%) contrast(1.2);"></div>
+<!-- Scanlines & Grid -->
+<div class="absolute inset-0 bg-grid-pattern bg-[length:20px_20px] opacity-30 z-10"></div>
+<div class="absolute inset-0 scanline-overlay z-10 opacity-30"></div>
+<!-- Overlay Text -->
+<div class="absolute top-4 left-4 z-20">
+<span class="bg-primary/20 text-primary border border-primary/40 px-2 py-0.5 text-[10px] font-bold rounded tracking-widest backdrop-blur-sm">PROJECT: TITAN</span>
+</div>
+<div class="absolute bottom-4 right-4 z-20 text-right">
+<p class="text-white/60 text-[10px] font-mono">CLASS: HVY WALKER</p>
+<p class="text-alert font-bold text-xs tracking-wider animate-pulse">STATUS: CLASSIFIED</p>
+</div>
+</div>
+<!-- Info Panel Below Viewport -->
+<div class="flex flex-col gap-2 p-4 bg-surface-dark border-t border-white/5 relative">
+<div class="flex justify-between items-end">
+<div>
+<p class="text-white/50 text-[10px] font-mono mb-1">CURRENT RESEARCH</p>
+<h3 class="text-white text-xl font-bold leading-none tracking-tight">MK-IV PLATING</h3>
+</div>
+<div class="text-right">
+<p class="text-primary text-2xl font-mono font-bold leading-none text-shadow-glow">T-45m</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Progress Bar -->
+<div class="px-4 py-2">
+<div class="flex justify-between items-end mb-2">
+<p class="text-white text-xs font-bold tracking-widest">PROTOTYPE INTEGRITY</p>
+<p class="text-primary font-mono text-sm font-bold">72%</p>
+</div>
+<div class="relative h-4 w-full rounded-sm bg-surface-highlight border border-white/10 overflow-hidden">
+<!-- Background Grid inside bar -->
+<div class="absolute inset-0 bg-[linear-gradient(90deg,transparent_0%,transparent_49%,rgba(255,255,255,0.05)_50%,transparent_51%)] bg-[length:10px_100%]"></div>
+<!-- The Bar -->
+<div class="h-full bg-gradient-to-r from-primary/60 via-primary to-white w-[72%] shadow-[0_0_15px_rgba(26,159,255,0.6)] relative">
+<!-- Lightning/Plasma texture overlay -->
+<div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/diagmonds-light.png')] opacity-30 mix-blend-overlay"></div>
+<div class="absolute right-0 top-0 bottom-0 w-1 bg-white shadow-[0_0_10px_white]"></div>
+</div>
+</div>
+<div class="flex justify-between mt-1">
+<p class="text-primary/60 text-[10px] font-mono">STABILIZING CORE...</p>
+<p class="text-white/30 text-[10px] font-mono">EST: 14H 20M</p>
+</div>
+</div>
+<!-- Resource Allocation Controls -->
+<div class="px-4 py-2 flex-1 flex flex-col gap-4">
+<h3 class="text-white/80 text-sm font-bold tracking-widest border-b border-white/10 pb-2">RESOURCE INJECTION</h3>
+<div class="grid grid-cols-2 gap-3">
+<button class="relative group overflow-hidden rounded bg-surface-highlight border border-white/10 p-3 flex flex-col items-start hover:border-primary/50 transition-colors">
+<span class="text-[10px] text-white/50 font-bold mb-1">INVEST ENERGY</span>
+<span class="text-white font-mono text-lg font-bold">5,000</span>
+<span class="absolute right-2 top-2 material-symbols-outlined text-white/20 group-hover:text-primary transition-colors text-[18px]">bolt</span>
+</button>
+<button class="relative group overflow-hidden rounded bg-surface-highlight border border-white/10 p-3 flex flex-col items-start hover:border-success/50 transition-colors">
+<span class="text-[10px] text-white/50 font-bold mb-1">INVEST STEEL</span>
+<span class="text-white font-mono text-lg font-bold">2,500</span>
+<span class="absolute right-2 top-2 material-symbols-outlined text-white/20 group-hover:text-success transition-colors text-[18px]">grid_on</span>
+</button>
+</div>
+<!-- Primary Action Button -->
+<button class="relative w-full overflow-hidden rounded bg-primary/10 border border-primary/50 text-primary py-4 group active:bg-primary/20 transition-all">
+<div class="absolute inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(26,159,255,0.1)_50%,transparent_75%)] bg-[length:250%_250%] opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<div class="relative flex items-center justify-center gap-2">
+<span class="material-symbols-outlined animate-pulse">keyboard_double_arrow_up</span>
+<span class="font-bold tracking-[0.15em] text-sm">INITIATE SEQUENCE</span>
+<span class="material-symbols-outlined animate-pulse">keyboard_double_arrow_up</span>
+</div>
+</button>
+</div>
+<!-- Research Log (Terminal) -->
+<div class="mx-4 mb-24 rounded bg-black/40 border border-white/5 p-3 font-mono text-[10px] leading-relaxed h-24 overflow-y-auto scrollbar-hide shadow-inner">
+<div class="text-white/40 mb-1">&gt; SYSTEM_BOOT_SEQUENCE_INIT</div>
+<div class="text-white/40 mb-1">&gt; CHECKING_PERIMETER... <span class="text-success">SECURE</span></div>
+<div class="text-white/40 mb-1">&gt; LOADING_BLUEPRINT: TITAN_MK4</div>
+<div class="text-primary mb-1">&gt; ENERGY_FLOW_OPTIMAL</div>
+<div class="text-alert animate-pulse">&gt; WARNING: CORE_TEMP_RISING [340K]</div>
+<div class="text-white/40">&gt; AWAITING_INPUT_</div>
+</div>
+<!-- Bottom Navigation -->
+<nav class="fixed bottom-0 left-0 right-0 z-40 max-w-md mx-auto bg-background-dark/95 backdrop-blur-xl border-t border-white/10 pb-safe">
+<div class="flex justify-around items-center h-16 px-2">
+<button class="flex flex-col items-center gap-1 p-2 text-white/40 hover:text-white transition-colors">
+<span class="material-symbols-outlined text-[24px]">grid_view</span>
+<span class="text-[9px] font-bold tracking-wider">OVERVIEW</span>
+</button>
+<button class="flex flex-col items-center gap-1 p-2 text-primary">
+<div class="relative">
+<span class="material-symbols-outlined text-[24px] shadow-glow">science</span>
+<span class="absolute -top-1 -right-1 flex h-2 w-2">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+</span>
+</div>
+<span class="text-[9px] font-bold tracking-wider">LAB</span>
+</button>
+<button class="flex flex-col items-center gap-1 p-2 text-white/40 hover:text-white transition-colors">
+<span class="material-symbols-outlined text-[24px]">article</span>
+<span class="text-[9px] font-bold tracking-wider">SCHEMATICS</span>
+</button>
+<button class="flex flex-col items-center gap-1 p-2 text-white/40 hover:text-white transition-colors">
+<span class="material-symbols-outlined text-[24px]">rocket_launch</span>
+<span class="text-[9px] font-bold tracking-wider">DEPLOY</span>
+</button>
+</div>
+<!-- Home Indicator Safe Area -->
+<div class="h-5 w-full"></div>
+</nav>
+</div>
+</body></html>

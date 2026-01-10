@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Global Strategic Map Overview</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&amp;family=Noto+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#00aaff",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#0f1c23",
+                        "tactical-black": "#121416",
+                        "alert-red": "#E03D3D",
+                        "warn-amber": "#FFB333",
+                        "glass": "rgba(15, 28, 35, 0.85)",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"],
+                        "body": ["Noto Sans", "sans-serif"],
+                    },
+                    backgroundImage: {
+                        'grid-pattern': "linear-gradient(to right, #1b2830 1px, transparent 1px), linear-gradient(to bottom, #1b2830 1px, transparent 1px)",
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .map-glow {
+            filter: drop-shadow(0 0 8px rgba(0, 170, 255, 0.4));
+        }
+        .text-glow {
+            text-shadow: 0 0 10px rgba(0, 170, 255, 0.6);
+        }
+        .text-glow-red {
+            text-shadow: 0 0 10px rgba(224, 61, 61, 0.6);
+        }
+        .glass-panel {
+            background: rgba(15, 28, 35, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .scanner-line {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #00aaff, transparent);
+            animation: scan 4s linear infinite;
+            opacity: 0.3;
+            pointer-events: none;
+        }
+        @keyframes scan {
+            0% { top: 0%; }
+            100% { top: 100%; }
+        }
+        .pulse-ring {
+            animation: pulse-ring 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+        }
+        @keyframes pulse-ring {
+            0% { transform: scale(0.8); opacity: 0.8; }
+            100% { transform: scale(2.2); opacity: 0; }
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-dark text-white font-display overflow-hidden select-none">
+<div class="relative flex h-screen w-full flex-col group/design-root overflow-hidden">
+<!-- Map Layer (Background) -->
+<div class="absolute inset-0 z-0 bg-[#0f1c23] overflow-hidden">
+<!-- Abstract Grid Overlay -->
+<div class="absolute inset-0 bg-[length:40px_40px] bg-grid-pattern opacity-20 pointer-events-none"></div>
+<!-- Map Image -->
+<!-- Using a dark, desaturated map to fit the theme -->
+<div class="absolute inset-0 bg-cover bg-center opacity-60 mix-blend-overlay" data-alt="Dark stylized satellite view of Earth from space showing continents and oceans with blue atmospheric glow" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuC40aN4YfPwYwDBfWPfJXV6ybqjNaKmwFHgtmY8wavmo76eeIELswRHv1zjG1mGqaMMXeuV-95xQ6o2JMyNn93i5tgJKbCBxppTtIqEqS1y4CZHOszzYumhpXaZmKFnCexg6SRHYCoTUVST5Y2NNu88rjwZh_66u-Di4oyglqE5U6AmO9nPcoVUQJfL2XgCMdHtM2hXvjFnYsJodzq2heJwTRsUbOKHu1tOdH48DLMxQzHUEHfo_ezlIB0gym6gYWjgPAeGOL4U68Y');">
+</div>
+<!-- Scanner Effect -->
+<div class="scanner-line z-10"></div>
+<!-- Map Elements (Fleets & Provinces) -->
+<div class="absolute inset-0 z-0 scale-125 origin-center">
+<!-- Fleet 1: Pacific -->
+<div class="absolute top-[35%] left-[20%] flex flex-col items-center group cursor-pointer">
+<div class="material-symbols-outlined" data-icon="Sailing" style="font-size: 28px;">sailing</div>
+<span class="text-[10px] text-primary font-bold tracking-widest mt-1 opacity-80 bg-black/50 px-1 rounded">TF-ALPHA</span>
+</div>
+<!-- Fleet 2: Atlantic -->
+<div class="absolute top-[28%] left-[48%] flex flex-col items-center group cursor-pointer">
+<div class="material-symbols-outlined" data-icon="Sailing" style="font-size: 28px;">sailing</div>
+<span class="text-[10px] text-primary font-bold tracking-widest mt-1 opacity-80 bg-black/50 px-1 rounded">TF-BRAVO</span>
+</div>
+<!-- Enemy Fleet -->
+<div class="absolute top-[45%] left-[65%] flex flex-col items-center group cursor-pointer">
+<div class="material-symbols-outlined" data-icon="Sailing" style="font-size: 28px;">sailing</div>
+<span class="text-[10px] text-alert-red font-bold tracking-widest mt-1 opacity-80 bg-black/50 px-1 rounded">AXIS-V</span>
+</div>
+<!-- Conflict Zone 1: Europe -->
+<div class="absolute top-[25%] left-[52%] flex items-center justify-center">
+<div class="absolute w-3 h-3 bg-alert-red rounded-full"></div>
+<div class="absolute w-8 h-8 border-2 border-alert-red rounded-full pulse-ring"></div>
+<div class="absolute w-12 h-12 border border-alert-red/50 rounded-full pulse-ring" style="animation-delay: 0.5s"></div>
+</div>
+<!-- Conflict Zone 2: SE Asia -->
+<div class="absolute top-[50%] left-[75%] flex items-center justify-center">
+<div class="absolute w-3 h-3 bg-warn-amber rounded-full"></div>
+<div class="absolute w-8 h-8 border-2 border-warn-amber rounded-full pulse-ring"></div>
+</div>
+</div>
+</div>
+<!-- UI HUD Layer -->
+<div class="relative z-10 flex flex-col h-full pointer-events-none">
+<!-- Header (TopAppBar) -->
+<div class="pointer-events-auto w-full glass-panel border-b border-white/5">
+<div class="flex items-center justify-between p-3 pt-safe-top">
+<!-- Hamburger Menu / Drawer Toggle -->
+<button class="flex size-10 items-center justify-center rounded-lg bg-white/5 text-white hover:bg-white/10 active:scale-95 transition-all">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<!-- Title & DEFCON -->
+<div class="flex flex-col items-center">
+<h2 class="text-white text-sm font-bold tracking-[0.2em] text-glow uppercase">Global Command</h2>
+<div class="flex items-center gap-1 mt-0.5">
+<span class="w-2 h-2 rounded-full bg-alert-red animate-pulse"></span>
+<span class="text-alert-red text-xs font-black tracking-widest text-glow-red">DEFCON 2</span>
+</div>
+</div>
+<!-- Resources Mini -->
+<div class="flex items-center gap-3 bg-black/40 px-3 py-1.5 rounded-lg border border-white/10">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[#9ab0bc] text-[16px]">water_drop</span>
+<span class="text-white text-xs font-mono font-bold">12K</span>
+</div>
+<div class="w-px h-3 bg-white/20"></div>
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[#9ab0bc] text-[16px]">build</span>
+<span class="text-white text-xs font-mono font-bold">5K</span>
+</div>
+</div>
+</div>
+<!-- Chips (Map Filters) -->
+<div class="flex gap-2 p-3 overflow-x-auto no-scrollbar scroll-smooth">
+<button class="flex h-7 shrink-0 items-center justify-center gap-x-1.5 rounded-full bg-primary/20 border border-primary/40 pl-3 pr-3 hover:bg-primary/30 active:scale-95 transition-all">
+<span class="w-1.5 h-1.5 rounded-full bg-primary shadow-[0_0_5px_#00aaff]"></span>
+<span class="text-primary text-xs font-bold tracking-wide uppercase">Influence</span>
+</button>
+<button class="flex h-7 shrink-0 items-center justify-center gap-x-1.5 rounded-full bg-[#27343a]/80 border border-white/10 pl-3 pr-3 hover:bg-white/10 active:scale-95 transition-all">
+<span class="text-[#9ab0bc] text-xs font-medium tracking-wide uppercase">Economy</span>
+</button>
+<button class="flex h-7 shrink-0 items-center justify-center gap-x-1.5 rounded-full bg-[#27343a]/80 border border-white/10 pl-3 pr-3 hover:bg-white/10 active:scale-95 transition-all">
+<span class="text-[#9ab0bc] text-xs font-medium tracking-wide uppercase">Military</span>
+</button>
+</div>
+</div>
+<!-- Center Content Space (Empty for Map View) -->
+<div class="flex-1 relative pointer-events-none">
+<!-- Floating Map Controls (Right Side) -->
+<div class="absolute right-3 top-4 flex flex-col gap-3 pointer-events-auto">
+<div class="flex flex-col gap-px rounded-lg overflow-hidden glass-panel shadow-lg">
+<button class="flex size-10 items-center justify-center bg-white/5 hover:bg-primary/20 text-white active:bg-primary/30 transition-colors">
+<span class="material-symbols-outlined text-[20px]">add</span>
+</button>
+<div class="h-px w-full bg-white/10"></div>
+<button class="flex size-10 items-center justify-center bg-white/5 hover:bg-primary/20 text-white active:bg-primary/30 transition-colors">
+<span class="material-symbols-outlined text-[20px]">remove</span>
+</button>
+</div>
+<button class="flex size-10 items-center justify-center rounded-lg glass-panel hover:bg-primary/20 text-primary shadow-lg active:scale-95 transition-all">
+<span class="material-symbols-outlined text-[20px]">my_location</span>
+</button>
+<button class="flex size-10 items-center justify-center rounded-lg glass-panel hover:bg-primary/20 text-white shadow-lg active:scale-95 transition-all mt-2">
+<span class="material-symbols-outlined text-[20px]">layers</span>
+</button>
+</div>
+</div>
+<!-- Bottom Sheet (Tactical Data) -->
+<!-- Adapted NavigationDrawer component for mobile bottom view -->
+<div class="pointer-events-auto glass-panel border-t border-white/10 rounded-t-2xl shadow-[0_-4px_20px_rgba(0,0,0,0.5)] transition-transform duration-300">
+<!-- Handle -->
+<div class="flex justify-center pt-3 pb-1 w-full" onclick="this.parentElement.classList.toggle('translate-y-[calc(100%-60px)]')">
+<div class="w-12 h-1 bg-white/20 rounded-full"></div>
+</div>
+<div class="p-4 pb-0 flex flex-col h-auto max-h-[40vh] overflow-y-auto">
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-white font-bold text-lg tracking-tight">Tactical Overview</h3>
+<span class="text-xs text-primary font-mono bg-primary/10 px-2 py-0.5 rounded border border-primary/20">LIVE FEED</span>
+</div>
+<div class="grid grid-cols-1 gap-4">
+<!-- Section: Global Conflicts -->
+<div class="flex flex-col gap-2">
+<p class="text-[#9ab0bc] text-xs font-bold uppercase tracking-wider mb-1">Active Conflicts</p>
+<!-- Conflict Card 1 -->
+<div class="flex items-center gap-3 bg-white/5 p-2 rounded-lg border border-white/5 hover:border-alert-red/40 transition-colors cursor-pointer group">
+<div class="w-10 h-10 rounded bg-alert-red/10 flex items-center justify-center border border-alert-red/20 text-alert-red group-hover:bg-alert-red/20 group-hover:text-white transition-colors">
+<span class="material-symbols-outlined">crisis_alert</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-center">
+<h4 class="text-white text-sm font-bold truncate">Battle of Midway</h4>
+<span class="text-[10px] text-alert-red font-bold uppercase">Critical</span>
+</div>
+<p class="text-[#9ab0bc] text-xs truncate">Naval skirmish detected in Sector 7</p>
+</div>
+</div>
+<!-- Conflict Card 2 -->
+<div class="flex items-center gap-3 bg-white/5 p-2 rounded-lg border border-white/5 hover:border-warn-amber/40 transition-colors cursor-pointer group">
+<div class="w-10 h-10 rounded bg-warn-amber/10 flex items-center justify-center border border-warn-amber/20 text-warn-amber group-hover:bg-warn-amber/20 group-hover:text-white transition-colors">
+<span class="material-symbols-outlined">shield</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-center">
+<h4 class="text-white text-sm font-bold truncate">North African Front</h4>
+<span class="text-[10px] text-warn-amber font-bold uppercase">Stalemate</span>
+</div>
+<p class="text-[#9ab0bc] text-xs truncate">Heavy tank movement reported</p>
+</div>
+</div>
+</div>
+<!-- Section: Top Alliances -->
+<div class="flex flex-col gap-2 mt-2">
+<p class="text-[#9ab0bc] text-xs font-bold uppercase tracking-wider mb-1">Top Alliances</p>
+<!-- Alliance Row 1 -->
+<div class="flex items-center justify-between bg-gradient-to-r from-white/5 to-transparent px-3 py-2 rounded border-l-2 border-primary">
+<div class="flex items-center gap-3">
+<span class="text-xs font-mono text-[#9ab0bc]">01</span>
+<span class="text-sm font-bold text-white">Iron Vanguard</span>
+</div>
+<span class="text-sm font-mono text-primary font-bold">34%</span>
+</div>
+<!-- Alliance Row 2 -->
+<div class="flex items-center justify-between bg-gradient-to-r from-white/5 to-transparent px-3 py-2 rounded border-l-2 border-white/20">
+<div class="flex items-center gap-3">
+<span class="text-xs font-mono text-[#9ab0bc]">02</span>
+<span class="text-sm font-bold text-white">Pacific Coalition</span>
+</div>
+<span class="text-sm font-mono text-[#9ab0bc] font-bold">28%</span>
+</div>
+</div>
+</div>
+<!-- Spacer for Bottom Nav -->
+<div class="h-20 shrink-0"></div>
+</div>
+</div>
+<!-- Bottom Navigation (Footer) -->
+<div class="pointer-events-auto absolute bottom-0 left-0 w-full glass-panel border-t border-white/10 pb-safe-bottom">
+<div class="flex justify-around items-center h-16">
+<button class="flex flex-col items-center justify-center gap-1 w-16 h-full text-primary relative">
+<span class="material-symbols-outlined text-[24px]">public</span>
+<span class="text-[10px] font-bold uppercase tracking-wide">Map</span>
+<!-- Active Indicator -->
+<span class="absolute top-0 left-1/2 -translate-x-1/2 w-8 h-0.5 bg-primary shadow-[0_0_8px_#00aaff]"></span>
+</button>
+<button class="flex flex-col items-center justify-center gap-1 w-16 h-full text-[#9ab0bc] hover:text-white transition-colors">
+<span class="material-symbols-outlined text-[24px]">fort</span>
+<span class="text-[10px] font-bold uppercase tracking-wide">Base</span>
+</button>
+<button class="flex flex-col items-center justify-center gap-1 w-16 h-full text-[#9ab0bc] hover:text-white transition-colors">
+<span class="material-symbols-outlined text-[24px]">handshake</span>
+<span class="text-[10px] font-bold uppercase tracking-wide">Diplo</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<script>
+    // Simple script to handle bottom sheet interaction for demonstration
+    // In a real app, this would be handled by a framework
+    document.querySelector('.glass-panel.rounded-t-2xl').addEventListener('click', function(e) {
+        // Only toggle if clicking the handle area/header
+        if(e.target.closest('.flex.justify-center.pt-3')) {
+            // Logic handled by onclick attribute for simplicity in this demo
+        }
+    });
+</script>
+</body></html>

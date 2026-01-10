@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>National Transport &amp; Rail Network</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#00ff55",
+                        "background-light": "#f5f8f6",
+                        "background-dark": "#0f2316", // Deep forest/charcoal base
+                        "surface-dark": "#162e1f", // Slightly lighter for cards
+                        "border-dark": "#2a4a35",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"],
+                        "body": ["Noto Sans", "sans-serif"],
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem", 
+                        "lg": "0.5rem", 
+                        "xl": "0.75rem", 
+                        "full": "9999px"
+                    },
+                    boxShadow: {
+                        "glow": "0 0 15px rgba(0, 255, 85, 0.15)",
+                        "glow-sm": "0 0 8px rgba(0, 255, 85, 0.2)",
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom scrollbar for horizontal scrolling elements */
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        
+        /* Scanline effect overlay */
+        .scanlines {
+            background: linear-gradient(
+                to bottom,
+                rgba(255,255,255,0),
+                rgba(255,255,255,0) 50%,
+                rgba(0,0,0,0.2) 50%,
+                rgba(0,0,0,0.2)
+            );
+            background-size: 100% 4px;
+            pointer-events: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-white overflow-x-hidden selection:bg-primary selection:text-black">
+<div class="relative flex min-h-screen w-full flex-col pb-24">
+<!-- Header -->
+<header class="sticky top-0 z-30 flex items-center justify-between border-b border-border-dark bg-background-dark/95 px-4 py-3 backdrop-blur-md">
+<div class="flex items-center gap-3">
+<button class="flex size-10 items-center justify-center rounded border border-border-dark bg-surface-dark hover:bg-primary/10 active:scale-95 transition-all">
+<span class="material-symbols-outlined text-primary" style="font-size: 20px;">arrow_back</span>
+</button>
+<div class="flex flex-col">
+<h1 class="text-sm font-bold uppercase tracking-widest text-primary/80">Command Hub</h1>
+<h2 class="text-lg font-bold leading-none tracking-tight text-white">RAIL &amp; TRANSPORT</h2>
+</div>
+</div>
+<div class="flex items-center gap-2 rounded border border-primary/30 bg-primary/10 px-2 py-1 shadow-glow-sm">
+<span class="material-symbols-outlined animate-pulse text-[10px] text-primary fill-1">circle</span>
+<span class="text-xs font-bold tracking-wider text-primary">ONLINE</span>
+</div>
+</header>
+<!-- Resource Ticker -->
+<div class="w-full border-b border-border-dark bg-surface-dark/50 px-4 py-2">
+<div class="flex justify-between gap-2 overflow-x-auto hide-scrollbar">
+<div class="flex items-center gap-2 min-w-fit">
+<span class="material-symbols-outlined text-gray-400 text-[18px]">local_gas_station</span>
+<span class="text-sm font-bold text-white">4.2k <span class="text-[10px] text-gray-400 font-normal">FUEL</span></span>
+</div>
+<div class="h-4 w-px bg-border-dark self-center"></div>
+<div class="flex items-center gap-2 min-w-fit">
+<span class="material-symbols-outlined text-gray-400 text-[18px]">hardware</span>
+<span class="text-sm font-bold text-white">1.5k <span class="text-[10px] text-gray-400 font-normal">STEEL</span></span>
+</div>
+<div class="h-4 w-px bg-border-dark self-center"></div>
+<div class="flex items-center gap-2 min-w-fit">
+<span class="material-symbols-outlined text-gray-400 text-[18px]">groups</span>
+<span class="text-sm font-bold text-white">850 <span class="text-[10px] text-gray-400 font-normal">UNIT</span></span>
+</div>
+</div>
+</div>
+<!-- Hero Map Section -->
+<section class="relative mx-4 mt-4 overflow-hidden rounded-lg border border-border-dark bg-surface-dark shadow-glow">
+<div class="absolute inset-0 z-10 bg-gradient-to-t from-background-dark via-transparent to-transparent opacity-80"></div>
+<!-- Map Image -->
+<div class="h-56 w-full bg-cover bg-center opacity-60" data-alt="Dark abstract map interface with glowing green connection lines" data-location="Sector 4 Logistics Grid" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBR9oeEZxw-BtdQLyUds3CgUTxuFzJrxNA8Vs0QMggJU2sMZzb07EggRtzjmwexT9sX1Qr-9Ckfqp0Hu-0yFnYAx3SwSSfABlLZyi1fpZRo6l5HjeGBra9_vr5UZzAtmQW-XhjZb9OKJfrCbnu7LW8PIp6jjEZ0SzOhOMP__4eHnrMiozjAyyqXHMeO5azuDeSbaXgjefKIngIsh3IXkhCfAdV4cNweuSsQSL5xiez5falY1xyjLjsvI2Di_g0v7BpFZ34-PMZajpk'); filter: grayscale(100%) contrast(120%) brightness(0.7) hue-rotate(90deg);">
+</div>
+<!-- Map UI Overlays -->
+<div class="absolute right-3 top-3 z-20 flex flex-col items-end gap-1">
+<span class="text-[10px] font-bold uppercase tracking-widest text-primary">Map View // V.9.0</span>
+<span class="material-symbols-outlined text-primary/50 text-xl">gps_fixed</span>
+</div>
+<div class="absolute bottom-3 left-3 z-20">
+<div class="flex items-center gap-2">
+<div class="size-2 rounded-full bg-primary shadow-glow"></div>
+<p class="text-xs font-medium text-white">Sector 4 Grid Active</p>
+</div>
+<p class="text-[10px] text-gray-400 pl-4">Updating route diagnostics...</p>
+</div>
+</section>
+<!-- Main Upgrade Grid -->
+<section class="mt-6 px-4">
+<div class="mb-3 flex items-end justify-between">
+<h3 class="text-base font-bold uppercase tracking-wider text-white">Infrastructure Upgrades</h3>
+<span class="text-[10px] text-gray-500">SYS_CONFIG_WRITE_RW</span>
+</div>
+<div class="grid grid-cols-2 gap-3">
+<!-- Speed Card -->
+<div class="group relative flex flex-col justify-between overflow-hidden rounded border border-border-dark bg-surface-dark p-3 transition-colors hover:border-primary/50">
+<div class="absolute -right-4 -top-4 size-16 rounded-full bg-primary/5 blur-xl group-hover:bg-primary/10"></div>
+<div class="mb-4 flex items-start justify-between">
+<div class="rounded bg-background-dark p-1.5 border border-border-dark">
+<span class="material-symbols-outlined text-primary text-xl">speed</span>
+</div>
+<span class="text-[10px] font-bold text-gray-500">LVL 3</span>
+</div>
+<div>
+<p class="text-[10px] font-bold uppercase tracking-wider text-gray-400">Locomotive Velocity</p>
+<p class="text-2xl font-bold text-white">60 <span class="text-sm font-medium text-gray-500">km/h</span></p>
+</div>
+<button class="mt-3 flex w-full items-center justify-center gap-1 rounded bg-primary/10 py-2 text-xs font-bold text-primary hover:bg-primary hover:text-black transition-colors border border-primary/20">
+<span>UPGRADE</span>
+<span class="material-symbols-outlined text-[14px]">arrow_upward</span>
+</button>
+<p class="mt-1 text-center text-[10px] text-gray-500">-150 Steel</p>
+</div>
+<!-- Capacity Card -->
+<div class="group relative flex flex-col justify-between overflow-hidden rounded border border-border-dark bg-surface-dark p-3 transition-colors hover:border-primary/50">
+<div class="absolute -right-4 -top-4 size-16 rounded-full bg-primary/5 blur-xl group-hover:bg-primary/10"></div>
+<div class="mb-4 flex items-start justify-between">
+<div class="rounded bg-background-dark p-1.5 border border-border-dark">
+<span class="material-symbols-outlined text-primary text-xl">weight</span>
+</div>
+<span class="text-[10px] font-bold text-gray-500">LVL 2</span>
+</div>
+<div>
+<p class="text-[10px] font-bold uppercase tracking-wider text-gray-400">Cargo Throughput</p>
+<p class="text-2xl font-bold text-white">200 <span class="text-sm font-medium text-gray-500">T/hr</span></p>
+</div>
+<button class="mt-3 flex w-full items-center justify-center gap-1 rounded bg-primary/10 py-2 text-xs font-bold text-primary hover:bg-primary hover:text-black transition-colors border border-primary/20">
+<span>UPGRADE</span>
+<span class="material-symbols-outlined text-[14px]">arrow_upward</span>
+</button>
+<p class="mt-1 text-center text-[10px] text-gray-500">-300 Steel</p>
+</div>
+</div>
+</section>
+<!-- Network Diagnostics Chart -->
+<section class="mt-6 px-4">
+<div class="rounded-lg border border-border-dark bg-surface-dark p-4 relative overflow-hidden">
+<!-- Header -->
+<div class="flex items-start justify-between mb-4">
+<div>
+<h3 class="text-sm font-bold uppercase tracking-wider text-white">Traffic Load Efficiency</h3>
+<div class="flex items-center gap-2 mt-1">
+<span class="text-3xl font-bold text-white tracking-tighter">94%</span>
+<span class="flex items-center text-xs font-bold text-primary bg-primary/10 px-1.5 py-0.5 rounded border border-primary/20">
+<span class="material-symbols-outlined text-[10px] mr-0.5">trending_up</span>
+                                +2.4%
+                            </span>
+</div>
+</div>
+<div class="flex gap-1">
+<div class="h-1 w-1 bg-primary rounded-full animate-pulse"></div>
+<div class="h-1 w-1 bg-primary rounded-full animate-pulse delay-75"></div>
+<div class="h-1 w-1 bg-primary rounded-full animate-pulse delay-150"></div>
+</div>
+</div>
+<!-- SVG Chart -->
+<div class="relative h-32 w-full">
+<!-- Grid Lines -->
+<div class="absolute inset-0 flex flex-col justify-between">
+<div class="border-t border-dashed border-gray-700 w-full h-0"></div>
+<div class="border-t border-dashed border-gray-700 w-full h-0"></div>
+<div class="border-t border-dashed border-gray-700 w-full h-0"></div>
+<div class="border-t border-dashed border-gray-700 w-full h-0"></div>
+</div>
+<!-- Line -->
+<svg class="absolute inset-0 h-full w-full" preserveaspectratio="none" viewbox="0 0 100 50">
+<defs>
+<lineargradient id="gradient" x1="0%" x2="0%" y1="0%" y2="100%">
+<stop offset="0%" style="stop-color:#00ff55;stop-opacity:0.2"></stop>
+<stop offset="100%" style="stop-color:#00ff55;stop-opacity:0"></stop>
+</lineargradient>
+</defs>
+<path d="M0,40 Q10,35 20,38 T40,25 T60,30 T80,15 T100,20 L100,50 L0,50 Z" fill="url(#gradient)"></path>
+<path d="M0,40 Q10,35 20,38 T40,25 T60,30 T80,15 T100,20" fill="none" stroke="#00ff55" stroke-linecap="round" stroke-width="1.5" vector-effect="non-scaling-stroke"></path>
+</svg>
+</div>
+<!-- X Axis Labels -->
+<div class="flex justify-between mt-2 px-1">
+<span class="text-[10px] font-mono text-gray-500">00:00</span>
+<span class="text-[10px] font-mono text-gray-500">06:00</span>
+<span class="text-[10px] font-mono text-gray-500">12:00</span>
+<span class="text-[10px] font-mono text-gray-500">18:00</span>
+</div>
+</div>
+</section>
+<!-- Alerts/Notifications List (Dense info) -->
+<section class="mt-4 px-4 pb-4">
+<div class="flex flex-col gap-2">
+<div class="flex items-center gap-3 rounded border border-border-dark bg-background-dark p-2">
+<div class="flex size-8 shrink-0 items-center justify-center rounded bg-yellow-500/10 text-yellow-500">
+<span class="material-symbols-outlined text-lg">warning</span>
+</div>
+<div class="flex-1">
+<p class="text-xs font-bold text-white">Maintenance Required</p>
+<p class="text-[10px] text-gray-400">Sector 7-B rail integrity at 65%</p>
+</div>
+<button class="text-[10px] font-bold text-yellow-500 hover:text-white">VIEW</button>
+</div>
+<div class="flex items-center gap-3 rounded border border-border-dark bg-background-dark p-2">
+<div class="flex size-8 shrink-0 items-center justify-center rounded bg-primary/10 text-primary">
+<span class="material-symbols-outlined text-lg">check_circle</span>
+</div>
+<div class="flex-1">
+<p class="text-xs font-bold text-white">Supply Line Established</p>
+<p class="text-[10px] text-gray-400">Route to Western Front optimized</p>
+</div>
+<span class="text-[10px] text-gray-600">2m ago</span>
+</div>
+</div>
+</section>
+<!-- Bottom Navigation -->
+<nav class="fixed bottom-0 left-0 z-40 w-full border-t border-border-dark bg-background-dark/90 backdrop-blur-lg">
+<div class="flex items-center justify-around pb-6 pt-3">
+<button class="group flex flex-col items-center gap-1 p-2">
+<span class="material-symbols-outlined text-gray-500 group-hover:text-white transition-colors">dashboard</span>
+<span class="text-[10px] font-medium text-gray-500 group-hover:text-white">Overview</span>
+</button>
+<button class="relative group flex flex-col items-center gap-1 p-2">
+<div class="absolute inset-x-0 -top-3 h-0.5 bg-primary shadow-glow"></div>
+<span class="material-symbols-outlined text-primary fill-1">train</span>
+<span class="text-[10px] font-bold text-primary">Rail</span>
+</button>
+<button class="group flex flex-col items-center gap-1 p-2">
+<span class="material-symbols-outlined text-gray-500 group-hover:text-white transition-colors">add_road</span>
+<span class="text-[10px] font-medium text-gray-500 group-hover:text-white">Road</span>
+</button>
+<button class="group flex flex-col items-center gap-1 p-2">
+<span class="material-symbols-outlined text-gray-500 group-hover:text-white transition-colors">anchor</span>
+<span class="text-[10px] font-medium text-gray-500 group-hover:text-white">Ports</span>
+</button>
+</div>
+</nav>
+<!-- Scanline Overlay Effect -->
+<div class="scanlines fixed inset-0 z-50 pointer-events-none opacity-30"></div>
+</div>
+</body></html>

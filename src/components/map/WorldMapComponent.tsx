@@ -1,0 +1,528 @@
+'use client'
+
+import { useState, useEffect, useMemo, useCallback, useRef } from 'react'
+import { useGameStore, Province, Army } from '@/stores/gameStore'
+import { useUIStore } from '@/stores/uiStore'
+import { usePlayerStore } from '@/stores/playerStore'
+import useSocket from '@/hooks/useSocket'
+import * as d3Geo from 'd3-geo'
+import * as topojson from 'topojson-client'
+
+const WORLD_URL = 'https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json'
+
+// 2026 COMMODITY PRICES (Real Market Data)
+// Oil ~$55/barrel, Lithium ~$15k/ton, Uranium ~$135/lb, Copper ~$11k/ton, Gold ~$4800/oz
+const RESOURCE_CONFIG = {
+    money: { icon: '💵', name: 'USD', unit: 'B', price: 1, color: 'text-green-400' },           // Billones USD
+    oil: { icon: '🛢️', name: 'Petróleo', unit: 'Mb', price: 55, color: 'text-amber-600' },    // Millones de barriles, $55/b
+    gas: { icon: '🔥', name: 'Gas', unit: 'Bcf', price: 3, color: 'text-orange-400' },         // Billones pies cúbicos, $3/mcf
+    uranium: { icon: '☢️', name: 'Uranio', unit: 'klb', price: 135, color: 'text-yellow-300' }, // Miles de libras, $135/lb
+    lithium: { icon: '🔋', name: 'Litio', unit: 'kt', price: 15000, color: 'text-cyan-400' },   // Miles de toneladas, $15k/t
+    rareEarth: { icon: '💎', name: 'T.Raras', unit: 'kt', price: 50000, color: 'text-purple-400' }, // $50k/t
+    copper: { icon: '🔶', name: 'Cobre', unit: 'kt', price: 11000, color: 'text-orange-300' },  // $11k/t
+    gold: { icon: '🪙', name: 'Oro', unit: 't', price: 4800, color: 'text-yellow-400' },        // Toneladas, $4800/oz aprox
+    steel: { icon: '⚙️', name: 'Acero', unit: 'Mt', price: 600, color: 'text-gray-400' },       // Millones toneladas, $600/t
+    silicon: { icon: '💻', name: 'Silicio', unit: 'kt', price: 3000, color: 'text-blue-400' },  // $3k/t (semiconductor grade)
+    food: { icon: '🌾', name: 'Alimentos', unit: 'Mt', price: 300, color: 'text-green-500' },   // Millones toneladas
+    manpower: { icon: '👷', name: 'Población', unit: 'M', price: 0, color: 'text-sky-400' },    // Millones de trabajadores
+}
+
+// Unit configs with sprites and stats
+const UNIT_SPRITES: Record<string, { icon: string; sprite: string; name: string; hp: number; attack: number; speed: string }> = {
+    infantry: { icon: '🚶', sprite: '⚔️🧍', name: 'Soldado', hp: 100, attack: 10, speed: '1h/prov' },
+    tank: { icon: '🚜', sprite: '🛡️🚜', name: 'Tanque', hp: 500, attack: 50, speed: '30m/prov' },
+    artillery: { icon: '💥', sprite: '🎯💥', name: 'Artillería', hp: 200, attack: 80, speed: '45m/prov' },
+    fighter: { icon: '✈️', sprite: '🦅✈️', name: 'Caza', hp: 150, attack: 60, speed: '5m/prov' },
+    drone: { icon: '🛸', sprite: '👁️🛸', name: 'Drone', hp: 50, attack: 40, speed: '3m/prov' },
+    battleship: { icon: '🚢', sprite: '⚓🚢', name: 'Acorazado', hp: 1000, attack: 100, speed: '90m/prov' },
+    submarine: { icon: '🦈', sprite: '🌊🦈', name: 'Submarino', hp: 300, attack: 80, speed: '60m/prov' },
+    missile: { icon: '🚀', sprite: '💢🚀', name: 'Misil', hp: 10, attack: 200, speed: '1m/prov' },
+}
+
+// Building types that can be constructed
+const BUILDING_TYPES: Record<string, {
+    name: string; icon: string; cost: string; buildTime: string;
+    generates?: { unit: string; qty: number; interval: string }
+}> = {
+    // Economic
+    industry: { name: 'Industria', icon: '🏭', cost: '50💵 10⚙️ 5🔶', buildTime: '30m' },
+    refinery: { name: 'Refinería', icon: '⛽', cost: '75💵 20⚙️ 8🔶', buildTime: '40m' },
+    lab: { name: 'Laboratorio', icon: '🔬', cost: '100💵 5⚙️ 10💻', buildTime: '1h' },
+    // Defense
+    bunker: { name: 'Búnker', icon: '🛡️', cost: '25💵 15⚙️', buildTime: '15m' },
+    fortress: { name: 'Fortaleza', icon: '🏰', cost: '150💵 50⚙️', buildTime: '2h' },
+    // Unit Production
+    barracks: { name: 'Cuartel', icon: '🎖️', cost: '30💵 5⚙️ 10🌾', buildTime: '10m', generates: { unit: 'infantry', qty: 10, interval: '5m' } },
+    recruitment_office: { name: 'Of. Reclutamiento', icon: '📋', cost: '20💵 2⚙️', buildTime: '5m', generates: { unit: 'infantry', qty: 5, interval: '10m' } },
+    tank_factory: { name: 'Fáb. Tanques', icon: '🚜', cost: '100💵 30⚙️ 5🛢️', buildTime: '1h', generates: { unit: 'tank', qty: 2, interval: '30m' } },
+    artillery_foundry: { name: 'Fund. Artillería', icon: '💥', cost: '80💵 25⚙️', buildTime: '40m', generates: { unit: 'artillery', qty: 3, interval: '20m' } },
+    airport: { name: 'Aeropuerto', icon: '✈️', cost: '150💵 40⚙️ 20🛢️', buildTime: '90m', generates: { unit: 'fighter', qty: 1, interval: '1h' } },
+    drone_facility: { name: 'Centro Drones', icon: '🛸', cost: '120💵 15💻 5🔋', buildTime: '80m', generates: { unit: 'drone', qty: 2, interval: '30m' } },
+    naval_yard: { name: 'Astillero', icon: '🚢', cost: '200💵 60⚙️ 15🛢️', buildTime: '2h', generates: { unit: 'battleship', qty: 1, interval: '2h' } },
+    submarine_pen: { name: 'Base Submarina', icon: '🦈', cost: '180💵 50⚙️ 5☢️', buildTime: '90m', generates: { unit: 'submarine', qty: 1, interval: '90m' } },
+    missile_silo: { name: 'Silo Misiles', icon: '🚀', cost: '250💵 30⚙️ 10☢️', buildTime: '3h', generates: { unit: 'missile', qty: 1, interval: '3h' } },
+}
+
+const C = {
+    waterLight: '#0f172a', // Slate 900
+    waterDark: '#020617',  // Slate 950
+    land: '#1e293b',       // Slate 800 (Dark metallic)
+    landHover: '#334155',  // Slate 700
+    border: '#0ea5e9',     // Cyan Neon
+    borderSelected: '#f43f5e', // Rose Neon
+    uiBg: '#000000cc',     // Glass Black
+    uiPanel: '#0f172acc',  // Glass Slate
+    uiAccent: '#0ea5e9',   // Cyan
+}
+
+interface MapCell { id: string; name: string; path: string; centroid: [number, number]; area: number }
+
+export function WorldMapComponent() {
+    const provinces = useGameStore(state => state.provinces)
+    const setProvinces = useGameStore(state => state.setProvinces)
+    const updateProvince = useGameStore(state => state.updateProvince)
+    const armies = useGameStore(state => state.armies)
+    const resources = useGameStore(state => state.resources)
+
+    const selectedProvinceId = useUIStore(state => state.selectedProvinceId)
+    const selectProvince = useUIStore(state => state.selectProvince)
+    const hoveredProvinceId = useUIStore(state => state.hoveredProvinceId)
+    const setHoveredProvince = useUIStore(state => state.setHoveredProvince)
+    const selectedArmyId = useUIStore(state => state.selectedArmyId)
+    const selectArmy = useUIStore(state => state.selectArmy)
+
+    const playerId = usePlayerStore(state => state.playerId)
+    const color = usePlayerStore(state => state.color)
+    const username = usePlayerStore(state => state.username)
+
+    const { socket, moveArmy, recruitUnit, constructBuilding } = useSocket()
+
+    const [cells, setCells] = useState<MapCell[]>([])
+    const [loading, setLoading] = useState(true)
+    const [view, setView] = useState({ x: 0, y: 0, scale: 0.55 })
+    const [isDragging, setIsDragging] = useState(false)
+    const [dragStart, setDragStart] = useState({ x: 0, y: 0 })
+    const [gameDay, setGameDay] = useState(1)
+    const [lastTouchDist, setLastTouchDist] = useState(0)
+    const [activeTab, setActiveTab] = useState<'units' | 'buildings' | 'info'>('info')
+
+    const containerRef = useRef<HTMLDivElement>(null)
+    const width = 2000, height = 950
+
+    useEffect(() => { const t = setInterval(() => setGameDay(d => d + 1), 300000); return () => clearInterval(t) }, [])
+
+    const projection = useMemo(() => d3Geo.geoMercator().scale(280).center([20, 25]).translate([width / 2, height / 2]), [])
+    const pathGenerator = useMemo(() => d3Geo.geoPath().projection(projection), [projection])
+
+    useEffect(() => {
+        const loadMap = async () => {
+            try {
+                const res = await fetch(WORLD_URL)
+                const topo = await res.json()
+                const geo = topojson.feature(topo, topo.objects.countries) as any
+                const allCells: MapCell[] = geo.features.map((f: any) => {
+                    const path = pathGenerator(f)
+                    if (!path) return null
+                    const centroid = pathGenerator.centroid(f)
+                    const bounds = pathGenerator.bounds(f)
+                    const area = Math.abs((bounds[1][0] - bounds[0][0]) * (bounds[1][1] - bounds[0][1]))
+                    return { id: String(f.id), name: f.properties?.name || `Region ${f.id}`, path, centroid, area }
+                }).filter(Boolean) as MapCell[]
+                setCells(allCells)
+                if (provinces.length === 0) {
+                    // Real 2026 Country Resource Data (ISO numeric codes)
+                    // Based on actual production/reserves data
+                    const COUNTRY_RESOURCES: Record<string, Partial<Province>> = {
+                        // Top Oil Producers
+                        '840': { oilBonus: 50, gasBonus: 40, steelBonus: 30, siliconBonus: 25, foodBonus: 60 }, // USA
+                        '643': { oilBonus: 45, gasBonus: 60, uraniumBonus: 15, steelBonus: 25 }, // Russia
+                        '682': { oilBonus: 55, gasBonus: 45 }, // Saudi Arabia
+                        '784': { oilBonus: 35, gasBonus: 25, goldBonus: 5 }, // UAE
+                        '634': { oilBonus: 20, gasBonus: 80 }, // Qatar
+                        '364': { oilBonus: 25, gasBonus: 30, uraniumBonus: 5 }, // Iran
+                        '368': { oilBonus: 30, gasBonus: 15 }, // Iraq
+                        '414': { oilBonus: 25, gasBonus: 20 }, // Kuwait
+                        // Lithium Triangle
+                        '152': { lithiumBonus: 40, copperBonus: 35 }, // Chile
+                        '032': { lithiumBonus: 25, foodBonus: 45, copperBonus: 10 }, // Argentina
+                        '068': { lithiumBonus: 15, gasBonus: 8 }, // Bolivia
+                        '036': { lithiumBonus: 20, uraniumBonus: 12, steelBonus: 15, goldBonus: 10 }, // Australia
+                        // Rare Earths & Tech
+                        '156': { rareEarthBonus: 45, steelBonus: 55, siliconBonus: 40, lithiumBonus: 15, copperBonus: 20 }, // China
+                        '392': { siliconBonus: 35, steelBonus: 20, rareEarthBonus: 8 }, // Japan
+                        '410': { siliconBonus: 30, steelBonus: 15 }, // South Korea
+                        '158': { siliconBonus: 45, rareEarthBonus: 5 }, // Taiwan
+                        // Uranium
+                        '398': { uraniumBonus: 25, oilBonus: 15, gasBonus: 12 }, // Kazakhstan
+                        '124': { uraniumBonus: 18, oilBonus: 20, gasBonus: 15, foodBonus: 35 }, // Canada
+                        '516': { uraniumBonus: 12 }, // Namibia
+                        // Copper & Mining
+                        '604': { copperBonus: 20, goldBonus: 12, lithiumBonus: 5 }, // Peru
+                        '180': { copperBonus: 30, rareEarthBonus: 15, goldBonus: 8 }, // DR Congo
+                        '894': { copperBonus: 18, goldBonus: 5 }, // Zambia
+                        // Gold
+                        '710': { goldBonus: 15, copperBonus: 8, steelBonus: 10 }, // South Africa
+                        '288': { goldBonus: 12, oilBonus: 8 }, // Ghana
+                        // Steel & Industry
+                        '356': { steelBonus: 35, copperBonus: 12, foodBonus: 50 }, // India
+                        '076': { steelBonus: 30, foodBonus: 55, oilBonus: 10 }, // Brazil
+                        '276': { steelBonus: 25, siliconBonus: 15, copperBonus: 10 }, // Germany
+                        // Food (Agriculture)
+                        '804': { foodBonus: 45, steelBonus: 8 }, // Ukraine
+                        '250': { foodBonus: 35, steelBonus: 12 }, // France
+                        '360': { foodBonus: 40, oilBonus: 8, gasBonus: 12 }, // Indonesia
+                        '764': { foodBonus: 30 }, // Thailand
+                        '704': { foodBonus: 35, rareEarthBonus: 8 }, // Vietnam
+                        // Europe
+                        '826': { oilBonus: 8, gasBonus: 12, goldBonus: 5, steelBonus: 10 }, // UK
+                        '578': { oilBonus: 18, gasBonus: 25 }, // Norway
+                        '528': { gasBonus: 15, foodBonus: 20 }, // Netherlands
+                        // Middle East & Africa
+                        '818': { gasBonus: 12, foodBonus: 15 }, // Egypt
+                        '566': { oilBonus: 22, gasBonus: 18 }, // Nigeria
+                        '024': { oilBonus: 15, gasBonus: 8 }, // Angola
+                        '434': { oilBonus: 18, gasBonus: 12 }, // Libya
+                        '012': { oilBonus: 12, gasBonus: 20 }, // Algeria
+                    }
+                    const gameProvinces: Province[] = allCells.map(c => {
+                        const countryData = COUNTRY_RESOURCES[c.id] || {}
+                        return {
+                            id: c.id, name: c.name,
+                            coordX: c.centroid[0], coordY: c.centroid[1], coordZ: 0,
+                            ownerId: null, ownerColor: undefined,
+                            oilBonus: countryData.oilBonus || Math.floor(Math.random() * 5),
+                            gasBonus: countryData.gasBonus || Math.floor(Math.random() * 5),
+                            uraniumBonus: countryData.uraniumBonus || Math.floor(Math.random() * 2),
+                            lithiumBonus: countryData.lithiumBonus || Math.floor(Math.random() * 3),
+                            rareEarthBonus: countryData.rareEarthBonus || Math.floor(Math.random() * 2),
+                            copperBonus: countryData.copperBonus || Math.floor(Math.random() * 5),
+                            goldBonus: countryData.goldBonus || Math.floor(Math.random() * 3),
+                            steelBonus: countryData.steelBonus || 3 + Math.floor(Math.random() * 8),
+                            siliconBonus: countryData.siliconBonus || Math.floor(Math.random() * 5),
+                            foodBonus: countryData.foodBonus || 5 + Math.floor(Math.random() * 15),
+                            defenseBonus: Math.floor(Math.random() * 30),
+                            terrain: 'PLAINS', buildings: [], units: [],
+                        }
+                    })
+                    setProvinces(gameProvinces)
+                }
+                setLoading(false)
+            } catch (err) { console.error(err); setLoading(false) }
+        }
+        loadMap()
+    }, [pathGenerator, provinces.length, setProvinces])
+
+    const getProvince = useCallback((id: string) => provinces.find(p => p.id === id), [provinces])
+    const armyMap = useMemo(() => { const m = new Map<string, Army>(); armies.forEach(a => m.set(a.currentProvinceId, a)); return m }, [armies])
+    const s = useCallback((base: number) => base / Math.max(view.scale, 0.3), [view.scale])
+    const getFillColor = useCallback((id: string) => {
+        const p = getProvince(id), isH = hoveredProvinceId === id
+        if (p?.ownerColor) return isH ? p.ownerColor : p.ownerColor + 'cc'
+        return isH ? C.landHover : C.land
+    }, [getProvince, hoveredProvinceId])
+
+    const handleClick = useCallback((id: string) => {
+        if (selectedArmyId) { const a = armies.find(x => x.id === selectedArmyId); if (a && a.currentProvinceId !== id) { moveArmy?.(selectedArmyId, id); selectArmy(null) } }
+        selectProvince(id)
+    }, [selectedArmyId, armies, moveArmy, selectArmy, selectProvince])
+
+
+
+    const handleRecruit = useCallback((type: string) => { if (selectedProvinceId) recruitUnit?.(selectedProvinceId, type, 1) }, [selectedProvinceId, recruitUnit])
+    const handleBuild = useCallback((type: string) => { if (selectedProvinceId) constructBuilding?.(selectedProvinceId, type as 'industry' | 'bunker') }, [selectedProvinceId, constructBuilding])
+    const handleArmyClick = useCallback((e: React.MouseEvent | React.TouchEvent, id: string) => { e.stopPropagation(); selectArmy(selectedArmyId === id ? null : id) }, [selectedArmyId, selectArmy])
+
+    // Controls
+    const onMouseDown = (e: React.MouseEvent) => { setIsDragging(true); setDragStart({ x: e.clientX - view.x, y: e.clientY - view.y }) }
+    const onMouseMove = (e: React.MouseEvent) => {
+        if (isDragging) {
+            const r = containerRef.current?.getBoundingClientRect()
+            if (!r) return
+            const rawX = e.clientX - dragStart.x
+            const rawY = e.clientY - dragStart.y
+
+            // Constrain Pan
+            const mw = width * view.scale, mh = height * view.scale
+            const cx = mw < r.width ? (r.width - mw) / 2 : Math.max(r.width - mw, Math.min(0, rawX))
+            const cy = mh < r.height ? (r.height - mh) / 2 : Math.max(r.height - mh, Math.min(0, rawY))
+
+            setView({ ...view, x: cx, y: cy })
+        }
+    }
+    const onMouseUp = () => setIsDragging(false)
+    const onWheel = useCallback((e: React.WheelEvent) => {
+        e.preventDefault(); const r = containerRef.current?.getBoundingClientRect(); if (!r) return
+        const mx = e.clientX - r.left, my = e.clientY - r.top, f = e.deltaY > 0 ? 0.85 : 1.18 // 0.85/1.18 for smooth zoom
+
+        // Constrain Zoom (250% to 2000% as requested)
+        const ns = Math.max(2.5, Math.min(20, view.scale * f))
+        const sc = ns / view.scale
+
+        const rawX = mx - (mx - view.x) * sc
+        const rawY = my - (my - view.y) * sc
+
+        // Constrain Pan after zoom
+        const mw = width * ns, mh = height * ns
+        const cx = mw < r.width ? (r.width - mw) / 2 : Math.max(r.width - mw, Math.min(0, rawX))
+        const cy = mh < r.height ? (r.height - mh) / 2 : Math.max(r.height - mh, Math.min(0, rawY))
+
+        setView({ x: cx, y: cy, scale: ns })
+    }, [view, width, height])
+
+    const onTouchStart = (e: React.TouchEvent) => {
+        if (e.touches.length === 1) { setIsDragging(true); setDragStart({ x: e.touches[0].clientX - view.x, y: e.touches[0].clientY - view.y }) }
+        else if (e.touches.length === 2) setLastTouchDist(Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY))
+    }
+    const onTouchMove = (e: React.TouchEvent) => {
+        e.preventDefault(); const r = containerRef.current?.getBoundingClientRect(); if (!r) return
+
+        if (e.touches.length === 1 && isDragging) {
+            const rawX = e.touches[0].clientX - dragStart.x
+            const rawY = e.touches[0].clientY - dragStart.y
+            const mw = width * view.scale, mh = height * view.scale
+            const cx = mw < r.width ? (r.width - mw) / 2 : Math.max(r.width - mw, Math.min(0, rawX))
+            const cy = mh < r.height ? (r.height - mh) / 2 : Math.max(r.height - mh, Math.min(0, rawY))
+            setView({ ...view, x: cx, y: cy })
+        }
+        else if (e.touches.length === 2 && lastTouchDist > 0) {
+            const nd = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY)
+            const f = nd / lastTouchDist
+            const ns = Math.max(2.5, Math.min(20, view.scale * f))
+            // Center zoom for touch is tricky without midpoint, simplifying to center-screen zoom or previous center
+            // For robust pinch zoom, we need midpoint. For now, keeping simple scale constraint.
+            setView(v => ({ ...v, scale: ns })); setLastTouchDist(nd)
+        }
+    }
+    const onTouchEnd = () => { setIsDragging(false); setLastTouchDist(0) }
+
+    const showLabels = view.scale >= 0.5
+
+    if (loading) return <div className="w-full h-full flex items-center justify-center" style={{ background: C.waterDark }}><div className="text-white text-2xl animate-pulse">⚔️ WORLD CONFLICT 2026</div></div>
+
+    const selectedProv = selectedProvinceId ? getProvince(selectedProvinceId) : null
+    const selectedCell = selectedProvinceId ? cells.find(c => c.id === selectedProvinceId) : null
+    const selectedArmy = selectedArmyId ? armies.find(a => a.id === selectedArmyId) : null
+    const canClaim = selectedProv && !selectedProv.ownerId
+    const isOwned = selectedProv?.ownerId === playerId
+    const myProvinces = provinces.filter(p => p.ownerId === playerId).length
+
+    return (
+        <div className="w-full h-full flex flex-col" style={{ background: C.uiBg }}>
+            {/* TOP BAR - COMPACT RESOURCES */}
+            <div className="flex items-center justify-between px-2 py-1 shrink-0" style={{ background: C.uiPanel, borderBottom: `1px solid ${C.uiAccent}40` }}>
+                <div className="flex items-center gap-2">
+                    <span className="text-xs text-gray-500">DÍA</span>
+                    <span className="text-lg font-bold" style={{ color: C.uiAccent }}>{gameDay}</span>
+                </div>
+                <div className="flex items-center gap-2 overflow-x-auto text-xs">
+                    {/* Macroeconomía 2026 realista - Valores por turno representan producción nacional */}
+                    <R icon="💵" val={resources?.money || 500} rate={myProvinces * 25} unit="B" c="text-green-400" />
+                    <R icon="🛢️" val={resources?.oil || 50} rate={myProvinces * 3} unit="Mb" c="text-amber-500" />
+                    <R icon="🔥" val={resources?.gas || 30} rate={myProvinces * 2} unit="Bcf" c="text-orange-400" />
+                    <R icon="☢️" val={resources?.uranium || 5} rate={Math.floor(myProvinces * 0.3)} unit="klb" c="text-yellow-300" />
+                    <R icon="🔋" val={resources?.lithium || 10} rate={Math.floor(myProvinces * 0.5)} unit="kt" c="text-cyan-400" />
+                    <R icon="💎" val={resources?.rareEarth || 3} rate={Math.floor(myProvinces * 0.2)} unit="kt" c="text-purple-400" />
+                    <R icon="🔶" val={resources?.copper || 200} rate={myProvinces * 5} unit="kt" c="text-orange-300" />
+                    <R icon="🪙" val={resources?.gold || 2} rate={Math.floor(myProvinces * 0.1)} unit="t" c="text-yellow-400" />
+                    <R icon="⚙️" val={resources?.steel || 100} rate={myProvinces * 8} unit="Mt" c="text-gray-400" />
+                    <R icon="💻" val={resources?.silicon || 15} rate={myProvinces * 1} unit="kt" c="text-blue-400" />
+                    <R icon="🌾" val={resources?.food || 500} rate={myProvinces * 10} unit="Mt" c="text-green-500" />
+                    <R icon="👷" val={resources?.manpower || 50} rate={myProvinces * 2} unit="M" c="text-sky-400" />
+                </div>
+                <div className="text-xs text-gray-400">{username} | <span className="text-white font-bold">{myProvinces}</span> prov</div>
+            </div>
+
+            {/* MAIN AREA */}
+            <div className="flex flex-1 overflow-hidden">
+                {/* SIDEBAR */}
+                <div className="w-10 shrink-0 flex flex-col items-center py-2 gap-1 border-r border-zinc-800" style={{ background: C.uiPanel }}>
+                    <SB icon="📍" active={activeTab === 'info'} onClick={() => setActiveTab('info')} />
+                    <SB icon="🚶" active={activeTab === 'units'} onClick={() => setActiveTab('units')} />
+                    <SB icon="🏭" active={activeTab === 'buildings'} onClick={() => setActiveTab('buildings')} />
+                </div>
+
+                {/* MAP */}
+                <div ref={containerRef} className="flex-1 relative overflow-hidden select-none touch-none"
+                    style={{ background: `linear-gradient(${C.waterLight}, ${C.waterDark})`, cursor: isDragging ? 'grabbing' : 'grab' }}
+                    onMouseDown={onMouseDown} onMouseMove={onMouseMove} onMouseUp={onMouseUp} onMouseLeave={onMouseUp}
+                    onWheel={onWheel} onTouchStart={onTouchStart} onTouchMove={onTouchMove} onTouchEnd={onTouchEnd}>
+                    <svg width="100%" height="100%" viewBox={`0 0 ${width} ${height}`} style={{ transform: `translate(${view.x}px, ${view.y}px) scale(${view.scale})`, transformOrigin: '0 0' }}>
+                        {cells.map(cell => {
+                            const sel = selectedProvinceId === cell.id, army = armyMap.get(cell.id)
+                            return (
+                                <g key={cell.id}>
+                                    <path d={cell.path} fill={getFillColor(cell.id)} stroke={sel ? C.borderSelected : C.border} strokeWidth={s(sel ? 3 : 0.7)}
+                                        style={{ cursor: 'pointer' }} onClick={() => !isDragging && handleClick(cell.id)}
+                                        onMouseEnter={() => !isDragging && setHoveredProvince(cell.id)} onMouseLeave={() => setHoveredProvince(null)} />
+                                    {showLabels && cell.area > 600 && <text x={cell.centroid[0]} y={cell.centroid[1]} textAnchor="middle" dominantBaseline="middle"
+                                        fill="#cbd5e1" fontSize={s(Math.min(11, Math.max(6, cell.area / 700)))} fontWeight="600" style={{ pointerEvents: 'none', textTransform: 'uppercase', textShadow: '0px 1px 2px #000' }}>{cell.name}</text>}
+                                    {army && <g transform={`translate(${cell.centroid[0]}, ${cell.centroid[1] + s(16)})`} style={{ cursor: 'pointer' }} onClick={(e) => !isDragging && handleArmyClick(e, army.id)}>
+                                        <rect x={s(-18)} y={s(-12)} width={s(36)} height={s(24)} rx={s(3)} fill={army.playerColor || '#c44'} stroke={selectedArmyId === army.id ? '#fff' : '#000'} strokeWidth={s(2)} />
+                                        <text textAnchor="middle" dy={s(4)} fontSize={s(14)} fontWeight="bold" fill="#fff" style={{ pointerEvents: 'none' }}>{army.units.reduce((s, u) => s + u.quantity, 0)}</text>
+                                    </g>}
+                                </g>
+                            )
+                        })}
+                    </svg>
+                    <div className="absolute top-2 right-2 flex flex-col gap-1">
+                        <button onClick={() => setView(v => {
+                            const ns = Math.min(20, v.scale * 1.5)
+                            const r = containerRef.current?.getBoundingClientRect()
+                            if (!r) return { ...v, scale: ns }
+                            const mw = width * ns, mh = height * ns
+                            // Apply clamping based on current center ratio? Simplified to clamping edges.
+                            const cx = mw < r.width ? (r.width - mw) / 2 : Math.max(r.width - mw, Math.min(0, v.x)) // Keep x if valid, else clamp
+                            const cy = mh < r.height ? (r.height - mh) / 2 : Math.max(r.height - mh, Math.min(0, v.y))
+                            return { x: cx, y: cy, scale: ns }
+                        })} className="w-7 h-7 bg-zinc-800/90 hover:bg-zinc-700 text-white rounded border border-zinc-600">+</button>
+                        <button onClick={() => setView(v => {
+                            const ns = Math.max(2.5, v.scale / 1.5)
+                            const r = containerRef.current?.getBoundingClientRect()
+                            if (!r) return { ...v, scale: ns }
+                            const mw = width * ns, mh = height * ns
+                            const cx = mw < r.width ? (r.width - mw) / 2 : Math.max(r.width - mw, Math.min(0, v.x))
+                            const cy = mh < r.height ? (r.height - mh) / 2 : Math.max(r.height - mh, Math.min(0, v.y))
+                            return { x: cx, y: cy, scale: ns }
+                        })} className="w-7 h-7 bg-zinc-800/90 hover:bg-zinc-700 text-white rounded border border-zinc-600">−</button>
+                    </div>
+                    <div className="absolute top-2 left-2 bg-black/60 px-2 py-0.5 rounded text-[10px] text-gray-300">{Math.round(view.scale * 100)}%</div>
+                </div>
+            </div>
+
+            {/* BOTTOM PANEL - SUPREMACY 1914 STYLE */}
+            <div className={`fixed bottom-0 left-0 right-0 border-t border-white/10 transition-transform duration-300 ease-out z-50 ${selectedProv ? 'translate-y-0' : 'translate-y-full'}`}
+                style={{ background: 'rgba(5, 10, 20, 0.95)', backdropFilter: 'blur(12px)', height: '240px', boxShadow: '0 -10px 40px rgba(0,0,0,0.5)' }}>
+                {selectedProv && selectedCell && (
+                    <div className="flex h-full text-zinc-100 max-w-7xl mx-auto">
+                        {/* LEFT: PROVINCE INFO & RESOURCES */}
+                        <div className="w-72 flex flex-col border-r border-white/10 relative shrink-0">
+                            {/* Province Header */}
+                            <div className="p-4 bg-gradient-to-r from-zinc-900 to-transparent border-b border-white/5 flex items-center justify-between">
+                                <div>
+                                    <div className="font-black text-xl tracking-widest text-white truncate uppercase drop-shadow-lg">{selectedCell.name}</div>
+                                    <div className={`text-[10px] font-bold uppercase tracking-[0.2em] ${isOwned ? 'text-emerald-400' : (canClaim ? 'text-zinc-400' : 'text-rose-500')}`}>
+                                        {isOwned ? 'TERRITORIO NACIONAL' : (canClaim ? 'ZONA NEUTRAL' : 'TERRITORIO ENEMIGO')}
+                                    </div>
+                                </div>
+                                <div className="text-2xl">{isOwned ? '🚩' : (canClaim ? '🏳️' : '⚔️')}</div>
+                            </div>
+
+                            {/* Moral Bar */}
+                            <div className="px-5 py-3 border-b border-white/5 bg-black/20">
+                                <div className="flex justify-between text-xs font-medium text-zinc-400 mb-1.5 ">
+                                    <span>MORAL PÚBLICA</span>
+                                    <span className={isOwned ? 'text-emerald-400' : 'text-zinc-500'}>{(selectedProv as any).moral || 100}%</span>
+                                </div>
+                                <div className="h-2 w-full bg-zinc-800 rounded-full overflow-hidden shadow-inner">
+                                    <div className="h-full bg-gradient-to-r from-red-600 via-amber-500 to-emerald-500" style={{ width: `${(selectedProv as any).moral || 100}%` }} />
+                                </div>
+                            </div>
+
+                            {/* Resource Bonuses */}
+                            <div className="flex-1 p-3 grid grid-cols-2 gap-2 content-start overflow-y-auto">
+                                {Object.entries(selectedProv).filter(([k, v]) => k.includes('Bonus') && typeof v === 'number' && v > 0).map(([k, v]) => {
+                                    const resName = k.replace('Bonus', '');
+                                    const ICONS: any = { oil: '🛢️', gas: '🔥', uranium: '☢️', lithium: '🔋', rareEarth: '💎', copper: '🔶', gold: '🪙', steel: '⚙️', silicon: '💻', food: '🌾' };
+                                    return (
+                                        <div key={k} className="flex items-center gap-2 bg-gradient-to-br from-white/5 to-transparent p-2 rounded border border-white/5 hover:border-amber-500/30 transition-colors">
+                                            <span className="text-xl filter drop-shadow opacity-90">{ICONS[resName] || '📦'}</span>
+                                            <div className="flex flex-col leading-none">
+                                                <span className="text-[9px] text-zinc-500 uppercase font-bold tracking-wider">{resName}</span>
+                                                <span className="text-sm font-bold text-emerald-400">+{v as number}</span>
+                                            </div>
+                                        </div>
+                                    )
+                                })}
+                            </div>
+                        </div>
+
+                        {/* MIDDLE: BUILDINGS & QUEUE */}
+                        <div className="flex-1 flex flex-col border-r border-white/10 min-w-0">
+                            <div className="p-3 bg-black/20 border-b border-white/5 flex justify-between items-center">
+                                <span className="text-xs font-bold text-zinc-400 uppercase tracking-widest pl-2">INFRAESTRUCTURA Y CONSTRUCCIÓN</span>
+                                <button onClick={() => isOwned && setActiveTab('buildings')} className={`text-xs px-3 py-1 rounded border ${isOwned ? 'border-amber-500/50 text-amber-400 hover:bg-amber-500/10' : 'border-zinc-700 text-zinc-600 cursor-not-allowed'} transition-all uppercase font-bold`}>
+                                    {isOwned ? '+ NUEVA ORDEN' : 'REQUIERE CONQUISTA'}
+                                </button>
+                            </div>
+
+                            {/* Buildings Grid */}
+                            <div className="p-4 flex gap-3 overflow-x-auto h-full items-center content-center scrollbar-thin scrollbar-thumb-zinc-700">
+                                {selectedProv.buildings && selectedProv.buildings.length > 0 ? selectedProv.buildings.map((b, i) => (
+                                    <div key={i} className="flex flex-col items-center justify-center shrink-0 w-24 h-32 bg-gradient-to-b from-zinc-800 to-zinc-900 rounded-lg border border-zinc-700 relative group hover:border-amber-500/50 hover:shadow-lg transition-all shadow-black/50 shadow-md">
+                                        <span className="text-4xl mb-2 filter drop-shadow-md group-hover:scale-110 transition-transform">{BUILDING_TYPES[b.type]?.icon}</span>
+                                        <span className="text-[10px] text-zinc-400 font-bold uppercase tracking-wider">{BUILDING_TYPES[b.type]?.name}</span>
+                                        <div className="absolute top-1 right-1 w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_5px_rgba(16,185,129,0.8)]"></div>
+                                    </div>
+                                )) : (
+                                    <div className="w-full h-32 border-2 border-dashed border-zinc-800 rounded-xl flex flex-col items-center justify-center text-zinc-600">
+                                        <span className="text-3xl mb-1 opacity-20">🏗️</span>
+                                        <span className="text-xs font-bold uppercase tracking-wide opacity-50">Sin edificios activos</span>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+
+                        {/* RIGHT: TABS AND ACTIONS (Control Panel) */}
+                        <div className="w-96 flex flex-col bg-zinc-900/80 backdrop-blur-xl shrink-0">
+                            {/* Tabs */}
+                            <div className="flex border-b border-white/10 bg-black/40">
+                                <button onClick={() => setActiveTab('units')} className={`flex-1 py-3 text-[10px] font-black uppercase tracking-widest transition-all ${activeTab === 'units' ? 'bg-amber-600/10 text-amber-400 border-b-2 border-amber-500' : 'text-zinc-600 hover:text-zinc-300'}`}>RECLUTAMIENTO</button>
+                                <button onClick={() => setActiveTab('buildings')} className={`flex-1 py-3 text-[10px] font-black uppercase tracking-widest transition-all ${activeTab === 'buildings' ? 'bg-amber-600/10 text-amber-400 border-b-2 border-amber-500' : 'text-zinc-600 hover:text-zinc-300'}`}>CONSTRUCCIÓN</button>
+                                <button onClick={() => setActiveTab('info')} className={`flex-1 py-3 text-[10px] font-black uppercase tracking-widest transition-all ${activeTab === 'info' ? 'bg-amber-600/10 text-amber-400 border-b-2 border-amber-500' : 'text-zinc-600 hover:text-zinc-300'}`}>ESPIONAJE</button>
+                            </div>
+
+                            {/* Content */}
+                            <div className="flex-1 p-4 overflow-y-auto bg-gradient-to-b from-zinc-900/50 to-black/20">
+                                {activeTab === 'units' && isOwned && (
+                                    <div className="grid grid-cols-4 gap-2">
+                                        {Object.entries(UNIT_SPRITES).map(([t, u]) => (
+                                            <button key={t} onClick={() => handleRecruit(t)} className="flex flex-col items-center justify-center p-1 bg-zinc-800/50 hover:bg-zinc-700/80 border border-zinc-700 hover:border-amber-500/50 rounded transition-all group h-20">
+                                                <span className="text-2xl group-hover:scale-110 transition-transform mb-1">{u.sprite}</span>
+                                                <span className="text-[8px] font-bold text-zinc-400 group-hover:text-white uppercase truncate w-full text-center">{u.name}</span>
+                                            </button>
+                                        ))}
+                                    </div>
+                                )}
+                                {activeTab === 'buildings' && isOwned && (
+                                    <div className="grid grid-cols-3 gap-2">
+                                        {Object.entries(BUILDING_TYPES).map(([k, b]) => (
+                                            <button key={k} onClick={() => handleBuild(k)} className="flex flex-col items-center p-2 bg-zinc-800/50 hover:bg-zinc-700/80 border border-zinc-700 hover:border-amber-500/50 rounded transition-all text-left h-20 relative overflow-hidden group">
+                                                <span className="text-xl mb-1 z-10">{b.icon}</span>
+                                                <span className="text-[8px] font-bold text-zinc-400 group-hover:text-white uppercase z-10">{b.name}</span>
+                                                <div className="absolute inset-x-0 bottom-0 h-0.5 bg-amber-500/0 group-hover:bg-amber-500 transition-colors"></div>
+                                            </button>
+                                        ))}
+                                    </div>
+                                )}
+                                {activeTab === 'info' && !isOwned && (
+                                    <div className="flex flex-col items-center justify-center h-full text-center p-4">
+                                        <span className="text-4xl mb-3 opacity-30">🛡️</span>
+                                        <p className="text-xs text-zinc-400 mb-4">Esta provincia no está bajo tu control.</p>
+                                        {canClaim && <div className="text-[10px] text-amber-500 font-bold bg-amber-500/10 px-3 py-1 rounded-full animate-pulse border border-amber-500/20">ENVÍA TROPAS PARA INICIAR SITIO</div>}
+                                    </div>
+                                )}
+                                {/* Fallback for owned info tab/espionage placeholder */}
+                                {activeTab === 'info' && isOwned && (
+                                    <div className="flex flex-col items-center justify-center h-full text-center opacity-50">
+                                        <span className="text-3xl mb-2">🕵️</span>
+                                        <span className="text-xs uppercase font-bold tracking-widest">RED DE ESPIONAJE (WIP)</span>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                )}
+            </div>
+        </div>
+    )
+}
+
+function R({ icon, val, rate, unit, c }: { icon: string; val: number; rate: number; unit?: string; c: string }) {
+    const fmt = (v: number) => v >= 1000 ? (v / 1000).toFixed(1) + 'k' : v.toFixed(v < 10 ? 1 : 0)
+    return <div className="flex items-center gap-1 px-1.5 py-0.5 rounded bg-black/30"><span className="text-sm">{icon}</span><span className={`font-bold text-xs ${c}`}>{fmt(val)}{unit && <span className="text-[8px] opacity-60">{unit}</span>}</span><span className={`text-[8px] ${rate >= 0 ? 'text-green-400' : 'text-red-400'}`}>{rate >= 0 ? '+' : ''}{rate}</span></div>
+}
+function SB({ icon, active, onClick }: { icon: string; active?: boolean; onClick: () => void }) {
+    return <button onClick={onClick} className={`w-8 h-8 flex items-center justify-center rounded text-lg ${active ? 'bg-amber-600 text-white' : 'bg-zinc-700 hover:bg-zinc-600 text-gray-300'}`}>{icon}</button>
+}
+
+export default WorldMapComponent

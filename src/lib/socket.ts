@@ -101,7 +101,7 @@ const initializeGameListeners = (socket: Socket) => {
         playerId: string
         nation: string
         color: string
-        resources: { gold: number; iron: number; oil: number; food: number }
+        resources: any // Modern resources
         provinces: Array<{
             id: string
             name: string
@@ -109,9 +109,15 @@ const initializeGameListeners = (socket: Socket) => {
             coordY: number
             coordZ: number
             ownerId: string | null
-            goldBonus: number
-            ironBonus: number
             oilBonus: number
+            gasBonus: number
+            uraniumBonus: number
+            lithiumBonus: number
+            rareEarthBonus: number
+            copperBonus: number
+            goldBonus: number
+            steelBonus: number
+            siliconBonus: number
             foodBonus: number
             defenseBonus: number
             terrain: string
@@ -163,7 +169,7 @@ const initializeGameListeners = (socket: Socket) => {
         console.log('👤 Player left:', data.playerId)
     })
 
-    socket.on('player:resources', (data: { gold: number; iron: number; oil: number; food: number }) => {
+    socket.on('player:resources', (data: any) => {
         useGameStore.getState().setResources(data)
     })
 
