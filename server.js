@@ -1774,11 +1774,13 @@ setInterval(() => {
 }, TICK_RATE)
 
 // Start server
-httpServer.listen(PORT, () => {
+const HOST = '0.0.0.0';
+httpServer.listen(PORT, HOST, () => {
     console.log('')
     console.log('🎖️  WORLD CONFLICT 1945 - Game Server')
     console.log('=====================================')
     console.log(`🚀 Server running on port ${PORT}`)
-    console.log(`🌐 Ready for connections`)
+    console.log(`🌐 Bound to ${HOST}`)
+    console.log(`📡 Ready for connections`)
     console.log('')
 })
