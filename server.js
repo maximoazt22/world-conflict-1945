@@ -687,8 +687,8 @@ function resetGame(room) {
     })
 
     // Clear server state
-    room.provinces.clear()
-    room.armies.clear()
+    if (room.provinces) room.provinces.clear()
+    if (room.armies) room.armies.clear()
     room.players.forEach(p => {
         p.resources = {
             money: 500, oil: 50, gas: 30, uranium: 5, lithium: 10,
@@ -710,8 +710,11 @@ gameRooms.set(DEFAULT_GAME, {
     id: DEFAULT_GAME,
     name: 'WORLD CONFLICT 1945',
     players: new Map(),
+    armies: new Map(),
+    provinces: new Map(),
     tick: 0,
     status: 'PLAYING',
+    mapSeed: Math.floor(Math.random() * 1000000),
     diplomacy: new Map(), // key: "player1_player2" -> value: "ally"/"war"/"neutral"
     tradeOffers: [] // Array of pending trade offers
 })
@@ -1532,6 +1535,10 @@ function handlePlayerLeave(socket) {
 setInterval(() => {
     gameRooms.forEach((room) => {
         if (room.status !== 'PLAYING') return
+        if (!room.provinces || !room.players || !room.armies) {
+            console.error(`⚠️ Room ${room.id} is missing internal Maps (provinces/players/armies). Skipping tick.`)
+            return
+        }
 
         room.tick++
 
@@ -1665,7 +1672,7 @@ setInterval(() => {
         // BUILDING PRODUCTION TICK - Every 60 ticks (1 min)
         // Buildings generate units automatically!
         // ========================================
-        if (room.tick % 60 === 0) {
+        if (room.tick % 60 === 0 && room.provinces) {
             const now = Date.now()
 
             room.provinces.forEach((prov, provId) => {
