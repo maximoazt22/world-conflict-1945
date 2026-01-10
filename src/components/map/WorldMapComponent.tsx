@@ -119,7 +119,9 @@ export function WorldMapComponent() {
                     const centroid = pathGenerator.centroid(f)
                     const bounds = pathGenerator.bounds(f)
                     const area = Math.abs((bounds[1][0] - bounds[0][0]) * (bounds[1][1] - bounds[0][1]))
-                    return { id: String(f.id), name: f.properties?.name || `Region ${f.id}`, path, centroid, area }
+                    // Robust ID generation to avoid duplicate keys
+                    const cellId = f.id ? String(f.id) : `region_${Math.random().toString(36).substr(2, 9)}`;
+                    return { id: cellId, name: f.properties?.name || `Region ${cellId}`, path, centroid, area }
                 }).filter(Boolean) as MapCell[]
                 setCells(allCells)
                 if (provinces.length === 0) {

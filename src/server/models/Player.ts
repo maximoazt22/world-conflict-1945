@@ -14,6 +14,8 @@ export class Player {
         manpower: number;
     };
 
+    color?: string; // Player color (hex)
+
     // Relations with other players (Map<PlayerId, RelationStatus>)
     // RelationStatus: 'WAR' | 'PEACE' | 'RIGHT_OF_WAY' | 'SHARE_MAP'
     relations: Map<string, string>;
@@ -23,6 +25,7 @@ export class Player {
         this.username = username;
         this.nation = nation;
         this.socketId = socketId;
+        this.color = '#ffffff'; // Default, will be overwritten by nation config
         this.isOnline = true;
         this.relations = new Map();
 

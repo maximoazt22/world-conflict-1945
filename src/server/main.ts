@@ -82,6 +82,20 @@ setInterval(() => {
     });
 }, 1000); // 1 tick = 1 second for now
 
+// --- CONSTANTS ---
+const NATION_MAPPING: Record<string, { name: string; provinces: string[]; color: string }> = {
+    'USA': { name: 'United States', color: '#3b82f6', provinces: ['840', '124', '484'] },
+    'CHN': { name: 'China', color: '#ef4444', provinces: ['156', '496', '704'] },
+    'RUS': { name: 'Russia', color: '#b91c1c', provinces: ['643', '398', '804'] },
+    'GER': { name: 'Germany', color: '#1c1917', provinces: ['276', '616', '250'] },
+    'JPN': { name: 'Japan', color: '#f59e0b', provinces: ['392', '410', '158'] },
+    'UK': { name: 'United Kingdom', color: '#7c3aed', provinces: ['826', '372', '710'] },
+    'FRA': { name: 'France', color: '#2563eb', provinces: ['250', '724', '012'] },
+    'ITA': { name: 'Italy', color: '#16a34a', provinces: ['380', '300', '434'] },
+    'BRA': { name: 'Brazil', color: '#059669', provinces: ['076', '032', '604'] },
+    'IND': { name: 'India', color: '#d97706', provinces: ['356', '586', '050'] },
+};
+
 // --- SOCKET EVENTS ---
 io.on('connection', (socket) => {
     console.log(`🔌 Client connected: ${socket.id}`);
@@ -96,20 +110,63 @@ io.on('connection', (socket) => {
         let player = game.players.get(playerId);
         if (!player) {
             player = new Player(playerId, username, nation, socket.id);
+
+            // STARTER KIT IMPLEMENTATION
+            const nationConfig = NATION_MAPPING[nation];
+            if (nationConfig && player) {
+                player.color = nationConfig.color; // Set player color from mapping
+
+                // Assign Provinces
+                let provincesAssigned = 0;
+
+                nationConfig.provinces.forEach(provId => {
+                    let prov = game.provinces.get(provId);
+                    if (!prov) {
+                        // Create placeholder province if not exists (Server authoritative state)
+                        game.provinces.set(provId, {
+                            id: provId,
+                            name: `Region ${provId}`,
+                            ownerId: player!.id,
+                            ownerColor: player!.color,
+                            resourceType: 'FOOD', // Default
+                            baseProduction: 1000,
+                            morale: 100,
+                            buildings: [],
+                            units: [],
+                            coordX: 0, coordY: 0, coordZ: 0,
+                            terrain: 'PLAINS'
+                        } as any);
+                    } else {
+                        prov.ownerId = player!.id;
+                        prov.ownerColor = player!.color;
+                    }
+                    provincesAssigned++;
+                });
+
+                console.log(`🗺️ Assigned ${provincesAssigned} initial provinces to ${username}`);
+            }
+
             game.addPlayer(player);
         } else {
             player.isOnline = true;
             player.socketId = socket.id;
+            // Optionally update color/nation if they changed it? No, keep persistence.
         }
 
         // Send Initial State
+        // Convert Map to Array for JSON serialization
+        const provincesArray = Array.from(game.provinces.values());
+
         socket.emit('game:state', {
             gameId: game.id,
             day: game.day,
             player: player,
             resources: player.resources,
-            // provinces: Array.from(game.provinces.values()) // TODO: Send provinces
+            provinces: provincesArray
         });
+
+        // Broadcast new player to others (so they see the new territory)
+        socket.broadcast.to(DEFAULT_GAME_ID).emit('game:update_provinces', provincesArray);
     });
 
     socket.on('disconnect', () => {

@@ -2,6 +2,7 @@ export class Province {
     id: string;
     name: string;
     ownerId: string | null;
+    ownerColor?: string; // Visual helper
     core: boolean; // True if original territory (morale penalty if false)
 
     // Production
