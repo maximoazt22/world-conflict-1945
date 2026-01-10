@@ -126,8 +126,20 @@ export function GameInfoPanel() {
                 <div className="flex justify-between">
                     <span className="text-zinc-500">Servidor:</span>
                     <span className="text-zinc-500 text-xs truncate max-w-[150px]" title={wsUrl}>
-                        {isConnected ? 'Railway Global' : 'Conectando...'}
+                        {isConnected ? (wsUrl.includes('localhost') ? 'Local Dev Server' : 'Railway Production') : 'Conectando...'}
                     </span>
+                </div>
+
+                <div className="pt-4 mt-2 border-t border-zinc-700">
+                    <button
+                        onClick={() => {
+                            localStorage.clear();
+                            window.location.href = '/login';
+                        }}
+                        className="w-full py-1.5 bg-red-500/10 text-red-400 border border-red-500/20 rounded hover:bg-red-500/20 transition-colors text-xs font-medium uppercase tracking-wider"
+                    >
+                        Cerrar Sesión
+                    </button>
                 </div>
             </div>
         </div>

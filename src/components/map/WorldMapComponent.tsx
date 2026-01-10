@@ -211,13 +211,30 @@ export function WorldMapComponent() {
                             copperBonus: 0, goldBonus: 0, steelBonus: 0, siliconBonus: 0, foodBonus: 0, defenseBonus: 0
                         }
                     })
-                    setProvinces(gameProvinces)
-                }
-                setLoading(false)
-            } catch (err) { console.error(err); setLoading(false) }
-        }
+                    setCells(allCells)
+                    if (provinces.length === 0) {
+                        setProvinces(gameProvinces)
+                    }
+                    setLoading(false)
+
+                    // Auto-center map on first load
+                    // We use a timeout to let the DOM settle
+                    setTimeout(() => {
+                        if (containerRef.current) {
+                            const r = containerRef.current.getBoundingClientRect()
+                            // Default scale 0.55
+                            const mapW = width * 0.55
+                            const mapH = height * 0.55
+                            const cx = (r.width - mapW) / 2
+                            const cy = (r.height - mapH) / 2
+                            setView(v => ({ ...v, x: cx, y: cy, scale: 0.55 }))
+                        }
+                    }, 100)
+
+                } catch (err) { console.error(err); setLoading(false) }
+            }
         loadMap()
-    }, [pathGenerator, provinces.length, setProvinces])
+        }, [pathGenerator, provinces.length, setProvinces])
 
     const getProvince = useCallback((id: string) => provinces.find(p => p.id === id), [provinces])
     const armyMap = useMemo(() => { const m = new Map<string, Army>(); armies.forEach(a => m.set(a.currentProvinceId, a)); return m }, [armies])
