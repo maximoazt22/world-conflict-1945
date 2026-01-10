@@ -5,7 +5,13 @@ const { Server } = require('socket.io')
 const { MercadoPagoConfig, Preference } = require('mercadopago')
 
 const PORT = process.env.PORT || 3001
-const client = new MercadoPagoConfig({ accessToken: 'APP_USR-5130638905255947-010916-8d5d897e509bdb3f1705b2169a8d0493-3124472152' });
+let client;
+try {
+    client = new MercadoPagoConfig({ accessToken: 'APP_USR-5130638905255947-010916-8d5d897e509bdb3f1705b2169a8d0493-3124472152' });
+    console.log('💳 MercadoPago initialized');
+} catch (e) {
+    console.error('❌ MercadoPago init failed:', e.message);
+}
 
 const app = express()
 app.use(cors({
