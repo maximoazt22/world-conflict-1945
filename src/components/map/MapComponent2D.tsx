@@ -147,16 +147,16 @@ function HexTile({ province, isSelected, isHovered, hasArmy, army, isArmySelecte
             )}
 
             {/* Building Icons */}
-            {province.buildings && province.buildings.length > 0 && (
+            {province.buildings && Object.keys(province.buildings).length > 0 && (
                 <div className="absolute top-1 right-1 flex gap-0.5 pointer-events-none">
-                    {province.buildings.map((building: any) => (
+                    {Object.keys(province.buildings).filter(k => (province.buildings as any)[k]).map((type) => (
                         <div
-                            key={building.id}
+                            key={type}
                             className="w-5 h-5 bg-black/60 rounded-sm flex items-center justify-center border border-yellow-500/50"
-                            title={building.type}
+                            title={type}
                         >
                             <span className="text-xs">
-                                {building.type === 'industry' ? '🏭' : '🏰'}
+                                {type === 'industry' ? '🏭' : type === 'fortress' ? '🏰' : '🏗️'}
                             </span>
                         </div>
                     ))}
@@ -256,7 +256,8 @@ export function MapComponent2D() {
                         foodBonus: terrainType === 'OCEAN' ? 2 : Math.floor(random() * 15) + 5,
                         defenseBonus: terrainType === 'MOUNTAINS' ? 50 : terrainType === 'FOREST' ? 25 : 0,
                         terrain: terrainType,
-                        buildings: [],
+                        buildings: {},
+                        construction: { building: null, timeLeft: 0 },
                         units: [],
                     }
                     worldMap.push(province)

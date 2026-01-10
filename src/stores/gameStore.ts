@@ -1,94 +1,12 @@
 import { create } from 'zustand'
+export * from '@/lib/types'
+import { Resources, Province, Unit, Army, Battle, Player } from '@/lib/types'
 
 // ============================================
 // TYPES
 // ============================================
 
-export interface Resources {
-  money: number        // Money (USD/Gold)
-  food: number         // Grain + Fish
-  materials: number    // Wood + Iron
-  energy: number       // Coal + Oil + Gas
-  manpower: number     // Population available for army
-}
-
-export interface Province {
-  id: string
-  name: string
-  coordX: number
-  coordY: number
-  coordZ: number
-  ownerId: string | null
-  ownerName?: string
-  ownerColor?: string
-  // Modern Resource Bonuses
-  oilBonus: number
-  gasBonus: number
-  uraniumBonus: number
-  lithiumBonus: number
-  rareEarthBonus: number
-  copperBonus: number
-  goldBonus: number
-  steelBonus: number
-  siliconBonus: number
-  foodBonus: number
-  defenseBonus: number
-  terrain: string
-  buildings: Building[]
-  units: Unit[]
-}
-
-export interface Building {
-  id: string
-  type: string
-  level: number
-  isComplete: boolean
-}
-
-export interface Unit {
-  id: string
-  type: string
-  quantity: number
-  strength: number
-  morale: number
-}
-
-export interface Army {
-  id: string
-  playerId: string
-  playerColor: string
-  currentProvinceId: string
-  units: Unit[]
-  isMoving: boolean
-  destinationId?: string | null
-  fromProvinceId?: string // For interpolation
-  arrivalTime?: number    // For interpolation
-  name?: string
-}
-
-export interface Battle {
-  id: string
-  provinceId: string
-  provinceName?: string
-  attackerArmyId: string
-  attackerName?: string
-  defenderArmyId: string | null
-  defenderName?: string
-  startTime: Date
-  duration: number
-  status: 'PENDING' | 'ACTIVE' | 'COMPLETED' | 'CANCELLED'
-  attackerCasualties: number
-  defenderCasualties: number
-  winner: string | null
-}
-
-export interface Player {
-  id: string
-  username: string
-  nation: string
-  color: string
-  isOnline: boolean
-}
+//// Local definitions removed. Using shared types from @/lib/types
 
 // ============================================
 // GAME STORE

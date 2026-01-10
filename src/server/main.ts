@@ -71,6 +71,7 @@ const game = new Game(DEFAULT_GAME_ID);
 console.log(`🌍 Game Engine initialized: ${DEFAULT_GAME_ID}`);
 
 // Start the Game Loop
+// Start the Game Loop
 setInterval(() => {
     game.processTick();
 
@@ -78,8 +79,35 @@ setInterval(() => {
     io.to(DEFAULT_GAME_ID).emit('game:tick', {
         tick: game.tick,
         day: game.day,
-        // TODO: Optimize payload, sending full state is expensive
     });
+
+    // Process Construction Queue
+    game.provinces.forEach(province => {
+        if (province.construction && province.construction.building) {
+            province.construction.timeLeft--;
+
+            if (province.construction.timeLeft <= 0) {
+                // Construction Complete
+                const bType = province.construction.building;
+
+                // Add to buildings list
+                // For simplicity in MVP, we just use a boolean map or level counter
+                // Using 'any' cast to bypass strict typing for MVP speed (should fix in Phase 4)
+                const buildings = province.buildings as any;
+                if (typeof buildings[bType] === 'number') {
+                    buildings[bType]++;
+                } else {
+                    buildings[bType] = true;
+                }
+
+                console.log(`✅ Completed ${bType} in ${province.name}`);
+
+                province.construction = { building: null, timeLeft: 0 };
+                io.to(DEFAULT_GAME_ID).emit('province:update', province);
+            }
+        }
+    });
+
 }, 1000); // 1 tick = 1 second for now
 
 // --- CONSTANTS ---
@@ -96,9 +124,62 @@ const NATION_MAPPING: Record<string, { name: string; provinces: string[]; color:
     'IND': { name: 'India', color: '#d97706', provinces: ['356', '586', '050'] },
 };
 
+const BUILDING_COSTS: Record<string, { money: number, materials: number, energy: number, food: number, time: number }> = {
+    'industry': { money: 50, materials: 10, energy: 5, food: 0, time: 30 }, // 30s for demo
+    'recruitment_office': { money: 20, materials: 5, energy: 0, food: 0, time: 10 },
+    'bunker': { money: 25, materials: 15, energy: 0, food: 0, time: 15 },
+    'fortress': { money: 150, materials: 50, energy: 0, food: 0, time: 60 },
+    'tank_factory': { money: 100, materials: 30, energy: 5, food: 0, time: 45 },
+};
+
 // --- SOCKET EVENTS ---
 io.on('connection', (socket) => {
     console.log(`🔌 Client connected: ${socket.id}`);
+
+    // --- BUILDING CONSTRUCTION ---
+    socket.on('building:construct', (data) => {
+        const { provinceId, type, playerId } = data;
+        const player = game.players.get(playerId);
+        const province = game.provinces.get(provinceId);
+
+        if (!player || !province) return;
+
+        // Validation
+        if (province.ownerId !== playerId) {
+            return; // Not your province
+        }
+        if (province.construction.building) {
+            return; // Already building
+        }
+
+        const cost = BUILDING_COSTS[type];
+        if (!cost) return;
+
+        // check resources
+        if (player.resources.money < cost.money ||
+            player.resources.materials < cost.materials ||
+            player.resources.energy < cost.energy ||
+            player.resources.food < cost.food) {
+            return; // Not enough resources
+        }
+
+        // Processing
+        player.resources.money -= cost.money;
+        player.resources.materials -= cost.materials;
+        player.resources.energy -= cost.energy;
+        player.resources.food -= cost.food;
+
+        province.construction = {
+            building: type,
+            timeLeft: cost.time
+        };
+
+        // Emit updates
+        socket.emit('game:state', { resources: player.resources }); // Update player UI
+        io.to(DEFAULT_GAME_ID).emit('province:update', province); // Update map for everyone
+        console.log(`🔨 ${player.username} started building ${type} in ${province.name}`);
+    });
+
 
     socket.on('game:join', (data) => {
         const { username, nation, playerId } = data;
@@ -131,14 +212,17 @@ io.on('connection', (socket) => {
                             resourceType: 'FOOD', // Default
                             baseProduction: 1000,
                             morale: 100,
-                            buildings: [],
+                            buildings: {},
                             units: [],
                             coordX: 0, coordY: 0, coordZ: 0,
-                            terrain: 'PLAINS'
+                            terrain: 'PLAINS',
+                            construction: { building: null, timeLeft: 0 } // INIT CONSTRUCTION
                         } as any);
                     } else {
                         prov.ownerId = player!.id;
                         prov.ownerColor = player!.color;
+                        if (!prov.construction) prov.construction = { building: null, timeLeft: 0 };
+                        if (Array.isArray(prov.buildings)) prov.buildings = {};
                     }
                     provincesAssigned++;
                 });

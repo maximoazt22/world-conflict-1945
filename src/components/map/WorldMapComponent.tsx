@@ -123,10 +123,11 @@ export function WorldMapComponent() {
                     const cellId = f.id ? String(f.id) : `region_${Math.random().toString(36).substr(2, 9)}`;
                     return { id: cellId, name: f.properties?.name || `Region ${cellId}`, path, centroid, area }
                 }).filter(Boolean) as MapCell[]
+
                 setCells(allCells)
+
                 if (provinces.length === 0) {
                     // Real 2026 Country Resource Data (ISO numeric codes)
-                    // Based on actual production/reserves data
                     const COUNTRY_RESOURCES: Record<string, Partial<Province>> = {
                         // Top Oil Producers
                         '840': { oilBonus: 50, gasBonus: 40, steelBonus: 30, siliconBonus: 25, foodBonus: 60 }, // USA
@@ -142,7 +143,7 @@ export function WorldMapComponent() {
                         '032': { lithiumBonus: 25, foodBonus: 45, copperBonus: 10 }, // Argentina
                         '068': { lithiumBonus: 15, gasBonus: 8 }, // Bolivia
                         '036': { lithiumBonus: 20, uraniumBonus: 12, steelBonus: 15, goldBonus: 10 }, // Australia
-                        // Rare Earths & Tech
+                        // Rare Earths
                         '156': { rareEarthBonus: 45, steelBonus: 55, siliconBonus: 40, lithiumBonus: 15, copperBonus: 20 }, // China
                         '392': { siliconBonus: 35, steelBonus: 20, rareEarthBonus: 8 }, // Japan
                         '410': { siliconBonus: 30, steelBonus: 15 }, // South Korea
@@ -151,90 +152,65 @@ export function WorldMapComponent() {
                         '398': { uraniumBonus: 25, oilBonus: 15, gasBonus: 12 }, // Kazakhstan
                         '124': { uraniumBonus: 18, oilBonus: 20, gasBonus: 15, foodBonus: 35 }, // Canada
                         '516': { uraniumBonus: 12 }, // Namibia
-                        // Copper & Mining
-                        '604': { copperBonus: 20, goldBonus: 12, lithiumBonus: 5 }, // Peru
-                        '180': { copperBonus: 30, rareEarthBonus: 15, goldBonus: 8 }, // DR Congo
-                        '894': { copperBonus: 18, goldBonus: 5 }, // Zambia
-                        // Gold
-                        '710': { goldBonus: 15, copperBonus: 8, steelBonus: 10 }, // South Africa
-                        '288': { goldBonus: 12, oilBonus: 8 }, // Ghana
-                        // Steel & Industry
-                        '356': { steelBonus: 35, copperBonus: 12, foodBonus: 50 }, // India
-                        '076': { steelBonus: 30, foodBonus: 55, oilBonus: 10 }, // Brazil
-                        '276': { steelBonus: 25, siliconBonus: 15, copperBonus: 10 }, // Germany
-                        // Food (Agriculture)
-                        '804': { foodBonus: 45, steelBonus: 8 }, // Ukraine
-                        '250': { foodBonus: 35, steelBonus: 12 }, // France
-                        '360': { foodBonus: 40, oilBonus: 8, gasBonus: 12 }, // Indonesia
-                        '764': { foodBonus: 30 }, // Thailand
-                        '704': { foodBonus: 35, rareEarthBonus: 8 }, // Vietnam
                         // Europe
                         '826': { oilBonus: 8, gasBonus: 12, goldBonus: 5, steelBonus: 10 }, // UK
-                        '578': { oilBonus: 18, gasBonus: 25 }, // Norway
-                        '528': { gasBonus: 15, foodBonus: 20 }, // Netherlands
-                        // Middle East & Africa
-                        '818': { gasBonus: 12, foodBonus: 15 }, // Egypt
-                        '566': { oilBonus: 22, gasBonus: 18 }, // Nigeria
-                        '024': { oilBonus: 15, gasBonus: 8 }, // Angola
-                        '434': { oilBonus: 18, gasBonus: 12 }, // Libya
-                        '012': { oilBonus: 12, gasBonus: 20 }, // Algeria
+                        '250': { foodBonus: 35, steelBonus: 12 }, // France
+                        '276': { steelBonus: 25, siliconBonus: 15, copperBonus: 10 }, // Germany
                     }
+
                     const gameProvinces: Province[] = allCells.map((c, i) => {
-                        // Assign resources based on real world data roughly
                         const countryData = COUNTRY_RESOURCES[c.id] || {}
-                        let rType: 'FOOD' | 'MATERIALS' | 'ENERGY' = 'FOOD' // Default
+                        let rType: 'FOOD' | 'MATERIALS' | 'ENERGY' = 'FOOD'
 
-                        // Heuristic to assign type
+                        // Heuristic
                         if (countryData.oilBonus || countryData.gasBonus || countryData.uraniumBonus) rType = 'ENERGY'
-                        else if (countryData.steelBonus || countryData.rareEarthBonus || countryData.lithiumBonus || countryData.copperBonus) rType = 'MATERIALS'
-
-                        // Randomize slightly for variety if no specific data
-                        if (!countryData.oilBonus && !countryData.steelBonus) {
-                            const rnd = Math.random()
-                            if (rnd > 0.6) rType = 'MATERIALS'
-                            else if (rnd > 0.8) rType = 'ENERGY'
-                        }
+                        else if (countryData.steelBonus || countryData.rareEarthBonus || countryData.lithiumBonus) rType = 'MATERIALS'
+                        else if (!countryData.oilBonus && Math.random() > 0.6) rType = Math.random() > 0.5 ? 'MATERIALS' : 'ENERGY'
 
                         return {
                             id: c.id, name: c.name,
                             coordX: c.centroid[0], coordY: c.centroid[1], coordZ: 0,
                             ownerId: null, ownerColor: undefined,
-                            // New System Properties
                             resourceType: rType,
                             baseProduction: 1000 + Math.floor(Math.random() * 500),
                             morale: 100,
                             terrain: 'PLAINS',
-                            buildings: [],
+                            buildings: {},
                             units: [],
-                            // Legacy filler to keep types satisfied if needed, or better: remove form type definition later
-                            oilBonus: 0, gasBonus: 0, uraniumBonus: 0, lithiumBonus: 0, rareEarthBonus: 0,
-                            copperBonus: 0, goldBonus: 0, steelBonus: 0, siliconBonus: 0, foodBonus: 0, defenseBonus: 0
+                            // Bonus properties
+                            oilBonus: countryData.oilBonus || 0,
+                            gasBonus: countryData.gasBonus || 0,
+                            uraniumBonus: countryData.uraniumBonus || 0,
+                            lithiumBonus: countryData.lithiumBonus || 0,
+                            rareEarthBonus: countryData.rareEarthBonus || 0,
+                            copperBonus: countryData.copperBonus || 0,
+                            goldBonus: countryData.goldBonus || 0,
+                            steelBonus: countryData.steelBonus || 0,
+                            siliconBonus: countryData.siliconBonus || 0,
+                            foodBonus: countryData.foodBonus || 0,
+                            defenseBonus: countryData.defenseBonus || 0,
+                            construction: { building: null, timeLeft: 0 }
                         }
                     })
-                    setCells(allCells)
-                    if (provinces.length === 0) {
-                        setProvinces(gameProvinces)
+                    setProvinces(gameProvinces)
+                }
+                setLoading(false)
+
+                // Auto-center
+                setTimeout(() => {
+                    if (containerRef.current) {
+                        const r = containerRef.current.getBoundingClientRect()
+                        const mapW = width * 0.55
+                        const mapH = height * 0.55
+                        const cx = (r.width - mapW) / 2
+                        const cy = (r.height - mapH) / 2
+                        setView(v => ({ ...v, x: cx, y: cy, scale: 0.55 }))
                     }
-                    setLoading(false)
-
-                    // Auto-center map on first load
-                    // We use a timeout to let the DOM settle
-                    setTimeout(() => {
-                        if (containerRef.current) {
-                            const r = containerRef.current.getBoundingClientRect()
-                            // Default scale 0.55
-                            const mapW = width * 0.55
-                            const mapH = height * 0.55
-                            const cx = (r.width - mapW) / 2
-                            const cy = (r.height - mapH) / 2
-                            setView(v => ({ ...v, x: cx, y: cy, scale: 0.55 }))
-                        }
-                    }, 100)
-
-                } catch (err) { console.error(err); setLoading(false) }
-            }
+                }, 100)
+            } catch (err) { console.error(err); setLoading(false) }
+        }
         loadMap()
-        }, [pathGenerator, provinces.length, setProvinces])
+    }, [pathGenerator, provinces.length, setProvinces])
 
     const getProvince = useCallback((id: string) => provinces.find(p => p.id === id), [provinces])
     const armyMap = useMemo(() => { const m = new Map<string, Army>(); armies.forEach(a => m.set(a.currentProvinceId, a)); return m }, [armies])
@@ -253,7 +229,7 @@ export function WorldMapComponent() {
 
 
     const handleRecruit = useCallback((type: string) => { if (selectedProvinceId) recruitUnit?.(selectedProvinceId, type, 1) }, [selectedProvinceId, recruitUnit])
-    const handleBuild = useCallback((type: string) => { if (selectedProvinceId) constructBuilding?.(selectedProvinceId, type as 'industry' | 'bunker') }, [selectedProvinceId, constructBuilding])
+    const handleBuild = useCallback((type: string) => { if (selectedProvinceId) constructBuilding?.(selectedProvinceId, type) }, [selectedProvinceId, constructBuilding])
     const handleArmyClick = useCallback((e: React.MouseEvent | React.TouchEvent, id: string) => { e.stopPropagation(); selectArmy(selectedArmyId === id ? null : id) }, [selectedArmyId, selectArmy])
 
     // Controls
@@ -466,10 +442,10 @@ export function WorldMapComponent() {
 
                             {/* Buildings Grid */}
                             <div className="p-4 flex gap-3 overflow-x-auto h-full items-center content-center scrollbar-thin scrollbar-thumb-zinc-700">
-                                {selectedProv.buildings && selectedProv.buildings.length > 0 ? selectedProv.buildings.map((b, i) => (
+                                {selectedProv.buildings && Object.keys(selectedProv.buildings).length > 0 ? Object.keys(selectedProv.buildings).filter(k => (selectedProv.buildings as any)[k]).map((type, i) => (
                                     <div key={i} className="flex flex-col items-center justify-center shrink-0 w-24 h-32 bg-gradient-to-b from-zinc-800 to-zinc-900 rounded-lg border border-zinc-700 relative group hover:border-amber-500/50 hover:shadow-lg transition-all shadow-black/50 shadow-md">
-                                        <span className="text-4xl mb-2 filter drop-shadow-md group-hover:scale-110 transition-transform">{BUILDING_TYPES[b.type]?.icon}</span>
-                                        <span className="text-[10px] text-zinc-400 font-bold uppercase tracking-wider">{BUILDING_TYPES[b.type]?.name}</span>
+                                        <span className="text-4xl mb-2 filter drop-shadow-md group-hover:scale-110 transition-transform">{BUILDING_TYPES[type]?.icon || '🏗️'}</span>
+                                        <span className="text-[10px] text-zinc-400 font-bold uppercase tracking-wider truncate w-full text-center px-1">{BUILDING_TYPES[type]?.name || type}</span>
                                         <div className="absolute top-1 right-1 w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_5px_rgba(16,185,129,0.8)]"></div>
                                     </div>
                                 )) : (
@@ -504,13 +480,37 @@ export function WorldMapComponent() {
                                 )}
                                 {activeTab === 'buildings' && isOwned && (
                                     <div className="grid grid-cols-3 gap-2">
-                                        {Object.entries(BUILDING_TYPES).map(([k, b]) => (
-                                            <button key={k} onClick={() => handleBuild(k)} className="flex flex-col items-center p-2 bg-zinc-800/50 hover:bg-zinc-700/80 border border-zinc-700 hover:border-amber-500/50 rounded transition-all text-left h-20 relative overflow-hidden group">
-                                                <span className="text-xl mb-1 z-10">{b.icon}</span>
-                                                <span className="text-[8px] font-bold text-zinc-400 group-hover:text-white uppercase z-10">{b.name}</span>
-                                                <div className="absolute inset-x-0 bottom-0 h-0.5 bg-amber-500/0 group-hover:bg-amber-500 transition-colors"></div>
-                                            </button>
-                                        ))}
+                                        {Object.entries(BUILDING_TYPES).map(([k, b]) => {
+                                            const isConstructing = selectedProv.construction?.building === k;
+                                            const isBusy = !!selectedProv.construction?.building;
+
+                                            // Determine if we can afford it (simple check vs cost string parsing? Logic is complex string parsing, skip for now or doing it properly?)
+                                            // For MVP, just show button. Validation is server-side.
+
+                                            return (
+                                                <button key={k}
+                                                    onClick={() => !isBusy && handleBuild(k)}
+                                                    disabled={isBusy}
+                                                    className={`flex flex-col items-center p-2 border rounded transition-all text-left h-24 relative overflow-hidden group 
+                                                    ${isConstructing ? 'bg-amber-900/40 border-amber-500' : (isBusy ? 'bg-zinc-800/30 border-zinc-800 opacity-50 cursor-not-allowed' : 'bg-zinc-800/50 hover:bg-zinc-700/80 border-zinc-700 hover:border-amber-500/50')}
+                                                `}
+                                                >
+                                                    <span className="text-xl mb-1 z-10">{b.icon}</span>
+                                                    <span className="text-[8px] font-bold text-zinc-400 group-hover:text-white uppercase z-10 truncate w-full text-center">{b.name}</span>
+                                                    <span className="text-[8px] text-zinc-500 z-10">{b.buildTime}</span>
+
+                                                    {/* Construction Progress Overlay */}
+                                                    {isConstructing && (
+                                                        <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/60 z-20">
+                                                            <span className="text-amber-500 animate-spin mb-1">⚙️</span>
+                                                            <span className="text-[10px] font-bold text-white">{selectedProv.construction?.timeLeft}s</span>
+                                                        </div>
+                                                    )}
+
+                                                    <div className={`absolute inset-x-0 bottom-0 h-0.5 transition-colors ${isConstructing ? 'bg-amber-500' : 'bg-amber-500/0 group-hover:bg-amber-500'}`}></div>
+                                                </button>
+                                            )
+                                        })}
                                     </div>
                                 )}
                                 {activeTab === 'info' && !isOwned && (

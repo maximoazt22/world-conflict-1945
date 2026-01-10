@@ -251,8 +251,10 @@ export function useSocket() {
         socket?.emit('province:capture', { provinceId, color })
     }, [])
 
-    const constructBuilding = useCallback((provinceId: string, buildingType: 'industry' | 'bunker') => {
-        socket?.emit('building:construct', { provinceId, buildingType })
+    const constructBuilding = useCallback((provinceId: string, type: string) => {
+        const playerId = useSessionStore.getState().userId
+        if (!playerId) return
+        socket?.emit('building:construct', { provinceId, type, playerId })
     }, [])
 
     return {

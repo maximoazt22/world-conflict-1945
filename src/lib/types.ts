@@ -514,3 +514,84 @@ export const GAME_CONSTANTS = {
     MAX_BATTLE_DURATION: 600, // 10 minutes
     RETREAT_CASUALTY_PERCENTAGE: 50,
 }
+
+// ============================================
+// MAP & PROVINCES
+// ============================================
+
+export interface Province {
+    id: string
+    name: string
+    coordX: number
+    coordY: number
+    coordZ: number
+    ownerId: string | null
+    ownerName?: string
+    ownerColor?: string
+    // Modern Resource Bonuses
+    oilBonus: number
+    gasBonus: number
+    uraniumBonus: number
+    lithiumBonus: number
+    rareEarthBonus: number
+    copperBonus: number
+    goldBonus: number
+    steelBonus: number
+    siliconBonus: number
+    foodBonus: number
+    defenseBonus: number
+    terrain: string
+    buildings: Partial<Record<string, number | boolean>>
+    units: any[] // TODO: Define Unit type properly
+
+    // Real-time Status
+    construction: {
+        building: string | null
+        timeLeft: number
+    }
+}
+
+export interface Unit {
+    id: string
+    type: string
+    quantity: number
+    strength: number
+    morale: number
+}
+
+export interface Army {
+    id: string
+    playerId: string
+    playerColor: string
+    currentProvinceId: string
+    units: Unit[]
+    isMoving: boolean
+    destinationId?: string | null
+    fromProvinceId?: string
+    arrivalTime?: number
+    name?: string
+}
+
+export interface Battle {
+    id: string
+    provinceId: string
+    provinceName?: string
+    attackerArmyId: string
+    attackerName?: string
+    defenderArmyId: string | null
+    defenderName?: string
+    startTime: Date
+    duration: number
+    status: 'PENDING' | 'ACTIVE' | 'COMPLETED' | 'CANCELLED'
+    attackerCasualties: number
+    defenderCasualties: number
+    winner: string | null
+}
+
+export interface Player {
+    id: string
+    username: string
+    nation: string
+    color: string
+    isOnline: boolean
+}

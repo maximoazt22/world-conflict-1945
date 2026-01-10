@@ -96,7 +96,7 @@ function ProvinceMesh({ province, isSelected, isHovered, isOwned, onClick, onHov
             )}
 
             {/* Building Indicator */}
-            {province.buildings.length > 0 && (
+            {province.buildings && Object.keys(province.buildings).length > 0 && (
                 <mesh position={[0.4, 0.3, 0.4]}>
                     <boxGeometry args={[0.15, 0.3, 0.15]} />
                     <meshStandardMaterial color="#8B4513" />
@@ -241,8 +241,9 @@ function MapScene() {
                         foodBonus: Math.floor(random() * 15) + 5,
                         defenseBonus: terrainType === 'MOUNTAINS' ? 50 : terrainType === 'FOREST' ? 25 : 0,
                         terrain: terrainType,
-                        buildings: [],
+                        buildings: {},
                         units: [],
+                        construction: { building: null, timeLeft: 0 }
                     }
 
                     demo.push(province)
