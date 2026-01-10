@@ -113,7 +113,7 @@ export function GameInfoPanel() {
                 </div>
                 <div className="flex justify-between">
                     <span className="text-zinc-500">Versión:</span>
-                    <span className="text-emerald-400 font-bold">v5.2 - China Update (+Starter Kit)</span>
+                    <span className="text-emerald-400 font-bold">v0.2.1 (Supremacy Alpha)</span>
                 </div>
                 <div className="flex justify-between">
                     <span className="text-zinc-500">Partida:</span>
