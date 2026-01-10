@@ -137,14 +137,14 @@ io.on('connection', (socket: Socket) => {
             gameRooms.set(gameId, room)
         }
 
-        // Create player
+        // Create player with STARTER KIT
         const player: Player = {
             id: playerId,
             socketId: socket.id,
             username,
             nation,
             color,
-            resources: { gold: 1000, iron: 500, oil: 250, food: 750 },
+            resources: { gold: 20000, iron: 10000, oil: 5000, food: 50000 },
             isOnline: true,
         }
 
