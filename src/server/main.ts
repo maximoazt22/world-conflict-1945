@@ -202,6 +202,17 @@ io.on('connection', (socket) => {
 
                 nationConfig.provinces.forEach(provId => {
                     let prov = game.provinces.get(provId);
+                    const DEFAULT_BUILDINGS = {
+                        recruitment_office: false,
+                        barracks: false,
+                        workshop: 0,
+                        factory: 0,
+                        aerodrome: false,
+                        harbor: false,
+                        railroad: false,
+                        fortress: 0
+                    };
+
                     if (!prov) {
                         // Create placeholder province if not exists (Server authoritative state)
                         game.provinces.set(provId, {
@@ -212,7 +223,7 @@ io.on('connection', (socket) => {
                             resourceType: 'FOOD', // Default
                             baseProduction: 1000,
                             morale: 100,
-                            buildings: {},
+                            buildings: { ...DEFAULT_BUILDINGS },
                             units: [],
                             coordX: 0, coordY: 0, coordZ: 0,
                             terrain: 'PLAINS',
@@ -222,7 +233,7 @@ io.on('connection', (socket) => {
                         prov.ownerId = player!.id;
                         prov.ownerColor = player!.color;
                         if (!prov.construction) prov.construction = { building: null, timeLeft: 0 };
-                        if (Array.isArray(prov.buildings)) prov.buildings = {};
+                        if (Array.isArray(prov.buildings)) prov.buildings = { ...DEFAULT_BUILDINGS };
                     }
                     provincesAssigned++;
                 });
