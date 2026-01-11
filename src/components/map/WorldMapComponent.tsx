@@ -321,7 +321,13 @@ export function WorldMapComponent() {
                     <R icon="⚡" val={resources?.energy || 0} rate={50} unit="kWh" c="text-amber-500" />
                     <R icon="👷" val={resources?.manpower || 0} rate={10} unit="" c="text-sky-400" />
                 </div>
-                <div className="text-xs text-gray-400">{username} | <span className="text-white font-bold">{myProvinces}</span> prov</div>
+                <div className="flex items-center gap-2 px-2 border-l border-zinc-700">
+                    <div className="w-3 h-3 rounded-full" style={{ backgroundColor: color }}></div>
+                    <div className="flex flex-col items-end">
+                        <span className="text-[10px] text-zinc-500 leading-none">JUGANDO COMO</span>
+                        <span className="text-xs font-bold text-white uppercase leading-none">{username}</span>
+                    </div>
+                </div>
             </div>
 
             {/* MAIN AREA */}
