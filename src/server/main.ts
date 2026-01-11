@@ -112,17 +112,21 @@ setInterval(() => {
 
 // --- CONSTANTS ---
 const NATION_MAPPING: Record<string, { name: string; provinces: string[]; color: string }> = {
-    'usa': { name: 'United States', color: '#0A3161', provinces: ['840', '124', '484'] },
+    'usa': { name: 'United States', color: '#0A3161', provinces: ['840'] }, // Removed Canada/Mexico
+    'canada': { name: 'Canada', color: '#FF0000', provinces: ['124'] },
+    'mexico': { name: 'Mexico', color: '#006847', provinces: ['484'] },
     'china': { name: 'China', color: '#DE2910', provinces: ['156', '496', '704'] },
     'ussr': { name: 'Soviet Union', color: '#CC0000', provinces: ['643', '398', '804'] },
-    'germany': { name: 'Germany', color: '#DD0000', provinces: ['276', '616', '250'] },
+    'germany': { name: 'Germany', color: '#DD0000', provinces: ['276'] }, // Removed Poland/France
+    'poland': { name: 'Poland', color: '#DC143C', provinces: ['616'] },
     'japan': { name: 'Japan', color: '#BC002D', provinces: ['392', '410', '158'] },
     'uk': { name: 'United Kingdom', color: '#012169', provinces: ['826', '372', '710'] },
-    'france': { name: 'France', color: '#0055A4', provinces: ['250', '724', '012'] },
+    'france': { name: 'France', color: '#0055A4', provinces: ['250', '012'] }, // Removed Spain
+    'spain': { name: 'Spain', color: '#F1BF00', provinces: ['724'] },
     'italy': { name: 'Italy', color: '#008C45', provinces: ['380', '300', '434'] },
-    // Brazil/India commented out as they are not in main NATIONS list yet, but keeping for reference if needed
-    // 'brazil': { name: 'Brazil', color: '#059669', provinces: ['076', '032', '604'] },
-    // 'india': { name: 'India', color: '#d97706', provinces: ['356', '586', '050'] },
+    'brazil': { name: 'Brazil', color: '#059669', provinces: ['076', '604'] }, // Removed Argentina
+    'argentina': { name: 'Argentina', color: '#75AADB', provinces: ['032'] },
+    'india': { name: 'India', color: '#d97706', provinces: ['356', '586', '050'] },
 };
 
 const BUILDING_COSTS: Record<string, { money: number, materials: number, energy: number, food: number, time: number }> = {

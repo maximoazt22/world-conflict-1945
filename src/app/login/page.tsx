@@ -158,7 +158,7 @@ export default function LoginPage() {
                         {!isLogin && (
                             <div>
                                 <label className="block text-sm text-zinc-400 mb-1">Nación</label>
-                                <div className="grid grid-cols-3 gap-2">
+                                <div className="grid grid-cols-4 gap-2">
                                     {NATIONS.map((nation) => (
                                         <button
                                             key={nation.id}

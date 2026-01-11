@@ -11,7 +11,7 @@ const JWT_SECRET = new TextEncoder().encode(
 async function initializeTable() {
     try {
         await sql`
-            CREATE TABLE IF NOT EXISTS users (
+            CREATE TABLE IF NOT EXISTS users_v58 (
                 id TEXT PRIMARY KEY,
                 username TEXT UNIQUE NOT NULL,
                 email TEXT,
@@ -59,7 +59,7 @@ export async function POST(request: Request) {
 
         // Check if user exists
         const existingUser = await sql`
-            SELECT id FROM users WHERE username = ${username}
+            SELECT id FROM users_v58 WHERE username = ${username}
         `
 
         if (existingUser.rows.length > 0) {
@@ -78,7 +78,7 @@ export async function POST(request: Request) {
         const userColor = color || '#4169E1'
 
         await sql`
-            INSERT INTO users (id, username, email, password_hash, nation, color)
+            INSERT INTO users_v58 (id, username, email, password_hash, nation, color)
             VALUES (${userId}, ${username}, ${email || null}, ${passwordHash}, ${userNation}, ${userColor})
         `
 

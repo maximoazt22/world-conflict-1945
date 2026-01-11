@@ -399,7 +399,7 @@ export interface Nation {
     flag: string
     color: string
     bonus: {
-        type: 'attack' | 'defense' | 'economy' | 'production'
+        type: 'attack' | 'defense' | 'economy' | 'production' | 'manpower' | 'food'
         value: number
         description: string
     }
@@ -469,6 +469,62 @@ export const NATIONS: Nation[] = [
         flag: '🇨🇳',
         color: '#DE2910',
         bonus: { type: 'production', value: 15, description: '+15% infantry training speed' },
+    },
+    {
+        id: 'brazil',
+        name: 'Brazil',
+        nameEs: 'Brasil',
+        flag: '🇧🇷',
+        color: '#059669',
+        bonus: { type: 'economy', value: 10, description: '+10% food production' },
+    },
+    {
+        id: 'india',
+        name: 'India',
+        nameEs: 'India',
+        flag: '🇮🇳',
+        color: '#d97706',
+        bonus: { type: 'manpower', value: 20, description: '+20% manpower growth' },
+    },
+    {
+        id: 'spain',
+        name: 'Spain',
+        nameEs: 'España',
+        flag: '🇪🇸',
+        color: '#F1BF00',
+        bonus: { type: 'defense', value: 10, description: '+10% fortress defense' },
+    },
+    {
+        id: 'argentina',
+        name: 'Argentina',
+        nameEs: 'Argentina',
+        flag: '🇦🇷',
+        color: '#75AADB',
+        bonus: { type: 'food', value: 15, description: '+15% food production' },
+    },
+    {
+        id: 'poland',
+        name: 'Poland',
+        nameEs: 'Polonia',
+        flag: '🇵🇱',
+        color: '#DC143C',
+        bonus: { type: 'manpower', value: 10, description: '+10% manpower growth' },
+    },
+    {
+        id: 'canada',
+        name: 'Canada',
+        nameEs: 'Canadá',
+        flag: '🇨🇦',
+        color: '#FF0000',
+        bonus: { type: 'economy', value: 10, description: '+10% materials production' },
+    },
+    {
+        id: 'mexico',
+        name: 'Mexico',
+        nameEs: 'México',
+        flag: '🇲🇽',
+        color: '#006847',
+        bonus: { type: 'food', value: 10, description: '+10% food production' },
     },
 ]
 

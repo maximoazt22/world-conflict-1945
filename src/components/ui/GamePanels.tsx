@@ -113,7 +113,7 @@ export function GameInfoPanel() {
                 </div>
                 <div className="flex justify-between">
                     <span className="text-zinc-500">Versión:</span>
-                    <span className="text-emerald-400 font-bold">v5.5 - Identity Fixed</span>
+                    <span className="text-emerald-400 font-bold">v5.8 - Expanded World</span>
                 </div>
                 <div className="flex justify-between">
                     <span className="text-zinc-500">Partida:</span>

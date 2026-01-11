@@ -81,7 +81,7 @@ export async function POST(request: Request) {
         try {
             const result = await sql`
                 SELECT id, username, password_hash, nation, color 
-                FROM users 
+                FROM users_v58 
                 WHERE username = ${username}
             `
 
