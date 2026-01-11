@@ -112,16 +112,17 @@ setInterval(() => {
 
 // --- CONSTANTS ---
 const NATION_MAPPING: Record<string, { name: string; provinces: string[]; color: string }> = {
-    'USA': { name: 'United States', color: '#3b82f6', provinces: ['840', '124', '484'] },
-    'CHN': { name: 'China', color: '#ef4444', provinces: ['156', '496', '704'] },
-    'RUS': { name: 'Russia', color: '#b91c1c', provinces: ['643', '398', '804'] },
-    'GER': { name: 'Germany', color: '#1c1917', provinces: ['276', '616', '250'] },
-    'JPN': { name: 'Japan', color: '#f59e0b', provinces: ['392', '410', '158'] },
-    'UK': { name: 'United Kingdom', color: '#7c3aed', provinces: ['826', '372', '710'] },
-    'FRA': { name: 'France', color: '#2563eb', provinces: ['250', '724', '012'] },
-    'ITA': { name: 'Italy', color: '#16a34a', provinces: ['380', '300', '434'] },
-    'BRA': { name: 'Brazil', color: '#059669', provinces: ['076', '032', '604'] },
-    'IND': { name: 'India', color: '#d97706', provinces: ['356', '586', '050'] },
+    'usa': { name: 'United States', color: '#0A3161', provinces: ['840', '124', '484'] },
+    'china': { name: 'China', color: '#DE2910', provinces: ['156', '496', '704'] },
+    'ussr': { name: 'Soviet Union', color: '#CC0000', provinces: ['643', '398', '804'] },
+    'germany': { name: 'Germany', color: '#DD0000', provinces: ['276', '616', '250'] },
+    'japan': { name: 'Japan', color: '#BC002D', provinces: ['392', '410', '158'] },
+    'uk': { name: 'United Kingdom', color: '#012169', provinces: ['826', '372', '710'] },
+    'france': { name: 'France', color: '#0055A4', provinces: ['250', '724', '012'] },
+    'italy': { name: 'Italy', color: '#008C45', provinces: ['380', '300', '434'] },
+    // Brazil/India commented out as they are not in main NATIONS list yet, but keeping for reference if needed
+    // 'brazil': { name: 'Brazil', color: '#059669', provinces: ['076', '032', '604'] },
+    // 'india': { name: 'India', color: '#d97706', provinces: ['356', '586', '050'] },
 };
 
 const BUILDING_COSTS: Record<string, { money: number, materials: number, energy: number, food: number, time: number }> = {
