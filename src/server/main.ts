@@ -313,11 +313,14 @@ io.on('connection', (socket) => {
         // Send Initial State
         // Convert Map to Array for JSON serialization
         const provincesArray = Array.from(game.provinces.values());
+        const playersArray = Array.from(game.players.values());
 
-        socket.emit('game:state', {
+        socket.emit('game:joined', {
             gameId: game.id,
+            gameName: 'Global Conflict 1945',
             day: game.day,
             player: player,
+            players: playersArray,
             resources: player.resources,
             provinces: provincesArray
         });
