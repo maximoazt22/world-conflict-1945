@@ -131,13 +131,13 @@ export function CommandDeck() {
                                 icon="🛡️"
                                 label="Infantería"
                                 cost={'5k💰\n2k🌾'}
-                                onClick={() => recruitUnit(selectedProvince.id, 'infantry', 1)}
+                                onClick={() => recruitUnit(selectedProvince.id, 'infantry')}
                             />
                             <ActionButton
                                 icon="🚜"
                                 label="Tanque"
                                 cost={'25k💰\n5k🛢️'}
-                                onClick={() => recruitUnit(selectedProvince.id, 'tank', 1)}
+                                onClick={() => recruitUnit(selectedProvince.id, 'tank')}
                                 highlight
                             />
                         </>
@@ -149,20 +149,20 @@ export function CommandDeck() {
                                 icon="🎯"
                                 label="Artillería"
                                 cost={'15k💰\n8k⚙️'}
-                                onClick={() => recruitUnit(selectedProvince.id, 'artillery', 1)}
+                                onClick={() => recruitUnit(selectedProvince.id, 'artillery')}
                             />
                             <ActionButton
                                 icon="✈️"
                                 label="Aviación"
                                 cost={'30k💰\n10k⚙️\n8k🛢️'}
-                                onClick={() => recruitUnit(selectedProvince.id, 'fighter', 1)}
+                                onClick={() => recruitUnit(selectedProvince.id, 'fighter')}
                                 highlight
                             />
                             <ActionButton
                                 icon="🚢"
                                 label="Marina"
                                 cost={'50k💰\n20k⚙️\n15k🛢️'}
-                                onClick={() => recruitUnit(selectedProvince.id, 'battleship', 1)}
+                                onClick={() => recruitUnit(selectedProvince.id, 'battleship')}
                                 highlight
                             />
                         </>

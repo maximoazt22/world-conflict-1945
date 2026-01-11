@@ -553,9 +553,12 @@ export interface Province {
 
 export interface Unit {
     id: string
-    type: string
+    type: string // 'INFANTRY' | 'TANK' | 'ARTILLERY'
+    ownerId: string
+    provinceId: string
+    state: 'IDLE' | 'MOVING' | 'COMBAT'
     quantity: number
-    strength: number
+    strength: number // Hit points / Combat effective
     morale: number
 }
 

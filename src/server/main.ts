@@ -180,6 +180,68 @@ io.on('connection', (socket) => {
         console.log(`🔨 ${player.username} started building ${type} in ${province.name}`);
     });
 
+    // --- UNIT SYSTEM ---
+    const UNIT_COSTS: Record<string, any> = {
+        'INFANTRY': { money: 1000, food: 500, manpower: 100, time: 20 }, // 20 ticks (fast for testing)
+        'TANK': { money: 5000, steel: 1000, oil: 500, manpower: 200, time: 60 }
+    };
+
+    socket.on('unit:recruit', (data: { provinceId: string, type: string }) => {
+        const { provinceId, type } = data;
+        // Access 'game' from closure scope
+        const province = game.provinces.get(provinceId);
+
+        // Find player by socket (Auth check)
+        // In this MVP, we trust the client sends valid requests if they are authenticated via socket
+        let player: Player | undefined;
+        for (const p of game.players.values()) {
+            if (p.socketId === socket.id) {
+                player = p;
+                break;
+            }
+        }
+
+        if (!player) return; // Not authenticated / Not found
+        if (!province || province.ownerId !== player.id) return; // Not owner
+
+        // Check if already producing
+        if (province.production.unitType) return;
+
+        // Check prerequisites
+        if (type === 'INFANTRY' && !province.buildings.barracks) {
+            console.log(`❌ Recruitment failed: No Barracks in ${province.name}`);
+            return;
+        }
+        if (type === 'TANK' && province.buildings.factory < 1) {
+            console.log(`❌ Recruitment failed: No Factory in ${province.name}`);
+            return;
+        }
+
+        const cost = UNIT_COSTS[type];
+        if (!cost) return;
+
+        // Check resources 
+        if (player.resources.money < cost.money || player.resources.food < (cost.food || 0)) {
+            return; // Not enough
+        }
+
+        // Deduct
+        player.resources.money -= cost.money;
+        if (cost.food) player.resources.food -= cost.food;
+        // TODO: Materials/Energy deduction
+
+        // Start Production
+        province.production = {
+            unitType: type,
+            timeLeft: cost.time,
+            queue: []
+        };
+
+        socket.emit('game:state', { resources: player.resources });
+        io.to(DEFAULT_GAME_ID).emit('province:update', province);
+        console.log(`🪖 ${player.username} recruiting ${type} in ${province.name}`);
+    });
+
 
     socket.on('game:join', (data) => {
         const { username, nation, playerId } = data;

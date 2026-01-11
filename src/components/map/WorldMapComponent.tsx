@@ -228,7 +228,7 @@ export function WorldMapComponent() {
 
 
 
-    const handleRecruit = useCallback((type: string) => { if (selectedProvinceId) recruitUnit?.(selectedProvinceId, type, 1) }, [selectedProvinceId, recruitUnit])
+    const handleRecruit = useCallback((type: string) => { if (selectedProvinceId) recruitUnit?.(selectedProvinceId, type) }, [selectedProvinceId, recruitUnit])
     const handleBuild = useCallback((type: string) => { if (selectedProvinceId) constructBuilding?.(selectedProvinceId, type) }, [selectedProvinceId, constructBuilding])
     const handleArmyClick = useCallback((e: React.MouseEvent | React.TouchEvent, id: string) => { e.stopPropagation(); selectArmy(selectedArmyId === id ? null : id) }, [selectedArmyId, selectArmy])
 
@@ -348,6 +348,22 @@ export function WorldMapComponent() {
                                         onMouseEnter={() => !isDragging && setHoveredProvince(cell.id)} onMouseLeave={() => setHoveredProvince(null)} />
                                     {showLabels && cell.area > 600 && <text x={cell.centroid[0]} y={cell.centroid[1]} textAnchor="middle" dominantBaseline="middle"
                                         fill="#cbd5e1" fontSize={s(Math.min(11, Math.max(6, cell.area / 700)))} fontWeight="600" style={{ pointerEvents: 'none', textTransform: 'uppercase', textShadow: '0px 1px 2px #000' }}>{cell.name}</text>}
+
+                                    {/* Units / Garrisons */}
+                                    {getProvince(cell.id)?.units && (getProvince(cell.id)?.units?.length || 0) > 0 && (
+                                        <g transform={`translate(${cell.centroid[0]}, ${cell.centroid[1] + s(16)})`} style={{ cursor: 'pointer' }} onClick={(e) => !isDragging && handleArmyClick(e, cell.id)}>
+                                            <rect x={s(-18)} y={s(-12)} width={s(36)} height={s(24)} rx={s(3)} fill={getProvince(cell.id)?.ownerColor || '#444'} stroke={selectedArmyId === cell.id ? '#fff' : '#000'} strokeWidth={s(2)} />
+                                            <text textAnchor="middle" dy={s(4)} fontSize={s(14)} fontWeight="bold" fill="#fff" style={{ pointerEvents: 'none' }}>
+                                                {(getProvince(cell.id)?.units as any[]).reduce((sum, u) => sum + (u.quantity || 1), 0)}
+                                            </text>
+                                            {/* Unit Icon Badge */}
+                                            {(getProvince(cell.id)?.units as any[])[0] && UNIT_SPRITES[(getProvince(cell.id)?.units as any[])[0].type.toLowerCase()]?.icon && (
+                                                <text x={s(12)} y={s(-8)} fontSize={s(10)}>{UNIT_SPRITES[(getProvince(cell.id)?.units as any[])[0].type.toLowerCase()].icon}</text>
+                                            )}
+                                        </g>
+                                    )}
+
+                                    {/* Moving Armies (Separate Layer) */}
                                     {army && <g transform={`translate(${cell.centroid[0]}, ${cell.centroid[1] + s(16)})`} style={{ cursor: 'pointer' }} onClick={(e) => !isDragging && handleArmyClick(e, army.id)}>
                                         <rect x={s(-18)} y={s(-12)} width={s(36)} height={s(24)} rx={s(3)} fill={army.playerColor || '#c44'} stroke={selectedArmyId === army.id ? '#fff' : '#000'} strokeWidth={s(2)} />
                                         <text textAnchor="middle" dy={s(4)} fontSize={s(14)} fontWeight="bold" fill="#fff" style={{ pointerEvents: 'none' }}>{army.units.reduce((s, u) => s + u.quantity, 0)}</text>
@@ -470,12 +486,28 @@ export function WorldMapComponent() {
                             <div className="flex-1 p-4 overflow-y-auto bg-gradient-to-b from-zinc-900/50 to-black/20">
                                 {activeTab === 'units' && isOwned && (
                                     <div className="grid grid-cols-4 gap-2">
-                                        {Object.entries(UNIT_SPRITES).map(([t, u]) => (
-                                            <button key={t} onClick={() => handleRecruit(t)} className="flex flex-col items-center justify-center p-1 bg-zinc-800/50 hover:bg-zinc-700/80 border border-zinc-700 hover:border-amber-500/50 rounded transition-all group h-20">
-                                                <span className="text-2xl group-hover:scale-110 transition-transform mb-1">{u.sprite}</span>
-                                                <span className="text-[8px] font-bold text-zinc-400 group-hover:text-white uppercase truncate w-full text-center">{u.name}</span>
-                                            </button>
-                                        ))}
+                                        {Object.entries(UNIT_SPRITES).map(([t, u]) => {
+                                            const isProducing = (selectedProv as any).production?.unitType === t;
+                                            const isBusy = !!(selectedProv as any).production?.unitType;
+
+                                            return (
+                                                <button key={t} onClick={() => !isBusy && handleRecruit(t)} disabled={isBusy} className={`flex flex-col items-center justify-center p-1 border rounded transition-all group h-20 relative overflow-hidden
+                                                ${isProducing ? 'bg-indigo-900/40 border-indigo-500' : (isBusy ? 'bg-zinc-800/30 border-zinc-800 opacity-50 cursor-not-allowed' : 'bg-zinc-800/50 hover:bg-zinc-700/80 border-zinc-700 hover:border-amber-500/50')}
+                                            `}>
+                                                    <span className="text-2xl group-hover:scale-110 transition-transform mb-1">{u.sprite}</span>
+                                                    <span className="text-[8px] font-bold text-zinc-400 group-hover:text-white uppercase truncate w-full text-center">{u.name}</span>
+
+                                                    {/* Production Progress Overlay */}
+                                                    {isProducing && (
+                                                        <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/60 z-20">
+                                                            <span className="text-indigo-400 animate-spin text-xs">⚙️</span>
+                                                            <span className="text-[10px] font-bold text-white">{(selectedProv as any).production?.timeLeft}s</span>
+                                                        </div>
+                                                    )}
+                                                    <div className={`absolute inset-x-0 bottom-0 h-0.5 transition-colors ${isProducing ? 'bg-indigo-500' : 'bg-indigo-500/0 group-hover:bg-indigo-500'}`}></div>
+                                                </button>
+                                            )
+                                        })}
                                     </div>
                                 )}
                                 {activeTab === 'buildings' && isOwned && (
