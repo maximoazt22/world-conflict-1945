@@ -251,7 +251,8 @@ export function WorldMapComponent() {
     }
     const onMouseUp = () => setIsDragging(false)
     const onWheel = useCallback((e: React.WheelEvent) => {
-        e.preventDefault(); const r = containerRef.current?.getBoundingClientRect(); if (!r) return
+        if (e.cancelable) e.preventDefault();
+        const r = containerRef.current?.getBoundingClientRect(); if (!r) return
         const mx = e.clientX - r.left, my = e.clientY - r.top, f = e.deltaY > 0 ? 0.85 : 1.18 // 0.85/1.18 for smooth zoom
 
         // Constrain Zoom (250% to 2000% as requested)
@@ -274,7 +275,8 @@ export function WorldMapComponent() {
         else if (e.touches.length === 2) setLastTouchDist(Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY))
     }
     const onTouchMove = (e: React.TouchEvent) => {
-        e.preventDefault(); const r = containerRef.current?.getBoundingClientRect(); if (!r) return
+        if (e.cancelable) e.preventDefault();
+        const r = containerRef.current?.getBoundingClientRect(); if (!r) return
 
         if (e.touches.length === 1 && isDragging) {
             const rawX = e.touches[0].clientX - dragStart.x

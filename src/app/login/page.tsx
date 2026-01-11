@@ -48,9 +48,9 @@ export default function LoginPage() {
             if (data.user) {
                 localStorage.setItem('userId', data.user.id)
                 localStorage.setItem('username', data.user.username)
-                // Save nation and color from form selection
-                localStorage.setItem('nation', formData.nation)
-                localStorage.setItem('color', formData.color)
+                // Fix: Use server data if available (Login), else fallback to form (Register)
+                localStorage.setItem('nation', data.user.nation || formData.nation)
+                localStorage.setItem('color', data.user.color || formData.color)
             }
 
             // Store token if provided
