@@ -66,7 +66,7 @@ const io = new Server(httpServer, {
 });
 
 // --- GAME ENGINE INTIALIZATION ---
-const DEFAULT_GAME_ID = 'supremacy_world_1';
+const DEFAULT_GAME_ID = 'supremacy_world_3';
 const game = new Game(DEFAULT_GAME_ID);
 console.log(`🌍 Game Engine initialized: ${DEFAULT_GAME_ID}`);
 
